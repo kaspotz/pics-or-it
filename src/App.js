@@ -1,25 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
-
+import React from 'react'
+import { init, useConnectWallet } from '@web3-onboard/react'
+import injectedModule from '@web3-onboard/injected-wallets'
+ 
+const injected = injectedModule()
+ 
+const infuraKey = ''
+ 
+// initialize Onboard
+init({
+ wallets: [injected],
+ chains: [
+   {
+     id: '0x1',
+     token: 'ETH',
+     label: 'Ethereum',
+     rpcUrl: 'https://mainnet.infura.io/v3/${infuraKey}'
+   },
+   {
+     id: '0x4',
+     token: 'rETH',
+     label: 'Rinkeby',
+     rpcUrl: 'https://rinkeby.infura.io/v3/${infuraKey}'
+   }
+ ]
+})
+ 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+ const [{ wallet, connecting }, connect, disconnect] = useConnectWallet()
+ 
+ return (
+   <div>
+     <button
+       disabled={connecting}
+       onClick={() => (wallet ? disconnect({label: wallet.label}) : connect())}
+     >
+       {connecting ? 'connecting' : wallet ? 'disconnect' : 'connect'}
+     </button>
+   </div>
+ )
 }
-
-export default App;
+ 
+export default App
