@@ -26,6 +26,7 @@ init({
 })
  
 function App() {
+ console.log('it is me');
  const [{ wallet, connecting }, connect, disconnect] = useConnectWallet()
  
  return (
