@@ -26,7 +26,6 @@ init({
 })
  
 function App() {
- console.log('it is me');
  const [{ wallet, connecting }, connect, disconnect] = useConnectWallet()
  
  return (
@@ -37,6 +36,7 @@ function App() {
      >
        {connecting ? 'connecting' : wallet ? 'disconnect' : 'connect'}
      </button>
+     <h1>YO YO YO</h1>
    </div>
  )
 }
