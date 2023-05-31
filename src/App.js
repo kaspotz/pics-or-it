@@ -49,12 +49,28 @@ function App() {
        {connecting ? 'connecting' : wallet ? 'disconnect' : 'connect'}
      </button>
      {wallet && (
-       <div
-         onClick={() => {
-           connect()
-         }}
-       >
-         <h1>the form</h1>
+       <div class="form-center">
+         <form class="myForm">
+          <p>
+          <label>task name
+          <input type="text" name="customer_name" required />
+          </label> 
+          </p>
+          <p>
+          <label>eth
+          <input type="text" name="task_eth" required />
+          </label>
+          </p>
+
+          <p>
+          <label>task description
+          <textarea class="vertical" name="comments" maxlength="1000"></textarea>
+          </label>
+          </p>
+
+          <p><button>create task</button></p>
+
+          </form>
        </div>
      )}
    </div>
