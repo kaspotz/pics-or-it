@@ -1,0 +1,56 @@
+Arguments: 
+  /usr/local/bin/node /Users/elo/.yarn/bin/yarn.js add --dev prettier prettier-plugin-solidity
+
+PATH: 
+  /Users/elo/.asdf/shims:/usr/local/opt/asdf/libexec/bin:/Users/elo/.local/bin:/Users/elo/.yarn/bin:/Users/elo/.config/yarn/global/node_modules/.bin:/Users/elo/.poetry/bin:/Users/elo/.local/share/solana/install/active_release/bin:/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/elo/.local/share/solana/install/active_release/bin:$PATH:/usr/local/go/bin:/Library/Apple/usr/bin:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/Users/elo/.local/bin:/Users/elo/.yarn/bin:/Users/elo/.config/yarn/global/node_modules/.bin:/Users/elo/.poetry/bin:/opt/local/bin:/opt/local/sbin:/Users/elo/.local/bin:/Users/elo/.yarn/bin:/Users/elo/.config/yarn/global/node_modules/.bin:/Users/elo/.poetry/bin:/Users/elo/.local/share/solana/install/active_release/bin:/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/elo/.local/share/solana/install/active_release/bin:$PATH:/usr/local/go/bin:/Library/Apple/usr/bin:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/Users/elo/.cargo/bin:/Users/elo/.foundry/bin:/Users/elo/.cargo/bin:/Users/elo/.foundry/bin:/Users/elo/.foundry/bin
+
+Yarn version: 
+  1.22.19
+
+Node version: 
+  16.20.0
+
+Platform: 
+  darwin x64
+
+Trace: 
+  SyntaxError: /Users/elo/Code/evm/pics-or-it/package.json: Unexpected token } in JSON at position 565
+      at JSON.parse (<anonymous>)
+      at /Users/elo/.yarn/lib/cli.js:1629:59
+      at Generator.next (<anonymous>)
+      at step (/Users/elo/.yarn/lib/cli.js:310:30)
+      at /Users/elo/.yarn/lib/cli.js:321:13
+
+npm manifest: 
+  {
+    "name": "contracts",
+    "version": "1.0.0",
+    "main": "index.js",
+    "license": "MIT",
+    "scripts": {
+      "test": "hardhat test",
+      "compile": "hardhat compile"
+    },
+    "devDependencies": {
+      "@nomicfoundation/hardhat-chai-matchers": "^2.0.1",
+      "@nomicfoundation/hardhat-ethers": "^3.0.3",
+      "@nomicfoundation/hardhat-network-helpers": "^1.0.8",
+      "@nomicfoundation/hardhat-verify": "^1.0.3",
+      "@typechain/ethers-v6": "^0.4.0",
+      "@typechain/hardhat": "^8.0.0",
+      "hardhat": "^2.16.1",
+      "hardhat-gas-reporter": "^1.0.9",
+      "solidity-coverage": "^0.8.4",
+      "typechain": "^8.2.0"
+    },
+    "dependencies": {
+      "@nomicfoundation/hardhat-toolbox": "^3.0.0",
+      "@openzeppelin/contracts": "^4.9.2"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

@@ -1,0 +1,283 @@
+html,
+body {
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  background-color: #7ab2e7;
+  font-family: Helvetica, Arial, sans-serif;
+  text-align: center;
+}
+
+p, .bounty-title {
+  color: white;
+  font-family: 'Oxygen', sans-serif;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+a {
+  color: white;
+  text-decoration: none;
+}
+
+#app {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  padding-top: 10px;
+}
+
+#app div {
+  width: 100%;
+}
+
+#app div div {
+  height: 100%;
+}
+
+#app div div div {
+  position: relative;
+  height: auto;
+}
+
+h1,
+h2,
+h3 {
+  color: white;
+  font-family: 'Oxygen', sans-serif;
+  margin-left: 5%;
+  margin-right: 5%;
+}
+
+header h1 {
+  font-size: 3.5em;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+label {
+  display: block;
+  margin: 20px;
+  font-size: 30px;
+  font-weight: bold;
+}
+
+nav a {
+  margin: 12px;
+  text-transform: uppercase;
+  font-size: 10px;
+}
+
+button {
+  -webkit-transition-duration: 0.1s; /* Safari */
+  transition-duration: 0.1s;
+  background-color: #f4595b;
+  border-radius: 8px;
+  border-bottom: 4px solid #c24648;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  font-family: 'Oxygen', sans-serif;
+  letter-spacing: 2px;
+}
+
+button:hover {
+  background-color: #ff7375;
+  border: none;
+  border-radius: 8px;
+  border-bottom: 4px solid #c24648;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  font-family: 'Oxygen', sans-serif;
+  letter-spacing: 2px;
+}
+
+button:active {
+  background-color: #c24648;
+  border: none;
+  border-radius: 8px;
+  border-bottom: 4px solid #c24648;
+  color: #ccc;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  font-family: 'Oxygen', sans-serif;
+  letter-spacing: 2px;
+}
+
+img {
+  max-width: 90%;
+  max-height: 340px;
+  top: 5%;
+  left: 5%;
+}
+
+.myForm {
+  font-family: 'Oxygen', sans-serif;
+  font-size: 0.8em;
+  width: 50em;
+  padding: 1em;
+}
+
+.myForm * {
+  box-sizing: border-box;
+}
+
+.myForm fieldset {
+  border: none;
+  padding: 0;
+}
+
+.myForm legend,
+.myForm label {
+  padding: 0;
+  font-weight: bold;
+}
+
+.myForm label.choice {
+  font-size: 0.8em;
+  font-weight: normal;
+}
+
+.myForm input[type='text'],
+.myForm input[type='tel'],
+.myForm input[type='email'],
+.myForm input[type='datetime-local'],
+.myForm select,
+.myForm textarea {
+  display: block;
+  width: 100%;
+  border: 1px solid #ccc;
+  font-family: 'Oxygen', sans-serif;
+  font-size: 0.6em;
+  padding: 0.3em;
+}
+
+.myForm textarea {
+  height: 100px;
+}
+
+.form-center {
+  display: flex;
+  justify-content: center;
+}
+
+.vertical {
+  resize: vertical;
+}
+
+.hamburger-menu-wrap {
+  padding-top: 1em;
+  padding-right: 1em;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.menu-close-wrap {
+  padding-top: 0.5em;
+  padding-right: 1em;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.menu-wrap {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #7ab2e7;
+  z-index: 1;
+}
+
+.menu-list-wrap {
+  color: white;
+  font-family: 'Oxygen', sans-serif;
+  font-size: 1.5em;
+}
+
+.menu-list-wrap li {
+  margin: 1em;
+  cursor: pointer;
+}
+
+.bounties-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 20px;
+  padding: 20px;
+  margin: 0 auto;
+  max-width: 1200px;
+  justify-items: center; 
+  align-items: center;
+  margin-top: 3em;
+}
+
+/* Responsive layout - makes the grid list stack on top of each other instead of next to each other */
+@media screen and (max-width: 768px) {
+  .bounties-grid {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+.bounty-card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  transition: 0.3s;
+  width: 300px;
+  border-radius: 5px;
+  padding: 1em;
+}
+
+.bounty-card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+.bounty-card-title-amount-wrap, .bounty-card-amount-wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.bounty-description {
+  text-align: left;
+  margin-top: 0px;
+}
+
+.bounty-title {
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+.bounty-details-button-wrap {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.bounty-details-button {
+  padding: 10px 25px;
+}
+
+.bounty-card-amount-logo {
+  width: 40px;
+}
+
+.bounty-card-amount {
+  padding: 0px;
+  margin-right: 10px;
+  
+}
