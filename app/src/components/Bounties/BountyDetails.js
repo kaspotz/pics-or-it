@@ -11,7 +11,7 @@ function BountyDetails({ bounty }) {
       <h1>Bounty Details</h1>
       <p>Bounty ID: {id}</p>
       {claims.map((claim) => {
-        <ClaimCard key={claim.id} claim={claim} />
+        ;<ClaimCard key={claim.id} claim={claim} />
       })}
     </div>
   )

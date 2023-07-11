@@ -10,7 +10,8 @@ body {
   text-align: center;
 }
 
-p, .bounty-title {
+p,
+.bounty-title {
   color: white;
   font-family: 'Oxygen', sans-serif;
   padding-left: 20px;
@@ -222,7 +223,7 @@ img {
   padding: 20px;
   margin: 0 auto;
   max-width: 1200px;
-  justify-items: center; 
+  justify-items: center;
   align-items: center;
   margin-top: 3em;
 }
@@ -246,7 +247,8 @@ img {
   box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
 }
 
-.bounty-card-title-amount-wrap, .bounty-card-amount-wrap {
+.bounty-card-title-amount-wrap,
+.bounty-card-amount-wrap {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -279,5 +281,4 @@ img {
 .bounty-card-amount {
   padding: 0px;
   margin-right: 10px;
-  
 }

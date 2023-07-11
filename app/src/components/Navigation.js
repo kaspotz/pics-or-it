@@ -12,11 +12,6 @@ function Navigation() {
     navigate('/pics-or-it')
   }
 
-  const handleAllBounties = () => {
-    setMenu(false)
-    navigate('/bounties')
-  }
-
   const handleMyBounties = () => {
     setMenu(false)
     navigate('/my-bounties')
@@ -40,10 +35,9 @@ function Navigation() {
             <FaX onClick={() => setMenu(!menu)} color="#F4595B" size={25} />
           </span>
           <ul className="menu-list-wrap">
-            <li onClick={handleHome}>Home</li>
-            <li onClick={handleAllBounties}>All Bounties</li>
-            <li onClick={handleMyBounties}>My Bounties</li>
-            <li onClick={handleMyClaims}>My Claims</li>
+            <li onClick={handleHome}>home</li>
+            <li onClick={handleMyBounties}>my bounties</li>
+            <li onClick={handleMyClaims}>my claims</li>
           </ul>
         </div>
       )}

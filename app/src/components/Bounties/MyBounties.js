@@ -1,22 +1,51 @@
-import React from 'react'
-import { useContract } from '../../web3'
+import React, { useEffect } from 'react'
+import PropTypes from 'prop-types'
+import BountyCard from './BountyCard'
 
-function MyBounties() {
-  const { userBounties } = useContract()
+function MyBounties({
+  userBounties,
+  fetchUserBounties,
+  wallet,
+  connect,
+  disconnect,
+  connecting,
+}) {
+  useEffect(() => {
+    if (wallet) {
+      fetchUserBounties()
+    }
+  }, [wallet])
 
   return (
-    <div>
-      <h1>My Bounties</h1>
-      {userBounties.map((bounty) => (
-        <div key={bounty.id}>
-          <h3>{bounty.name}</h3>
-          <p>Description: {bounty.description}</p>
-          <p>Amount: {bounty.amount}</p>
-          {/* Render additional bounty details */}
+    <div className="bounties-grid">
+      {!wallet ? (
+        <div>
+          <h2>connect your wallet to view your bounties</h2>
+          <button
+            disabled={connecting}
+            onClick={() =>
+              wallet ? disconnect({ label: wallet.label }) : connect()
+            }
+          >
+            {connecting ? 'connecting' : wallet ? 'disconnect' : 'connect'}
+          </button>
         </div>
-      ))}
+      ) : (
+        userBounties.map((bounty) => (
+          <BountyCard key={bounty.id} bounty={bounty} />
+        ))
+      )}
     </div>
   )
+}
+
+MyBounties.propTypes = {
+  userBounties: PropTypes.array.isRequired,
+  wallet: PropTypes.object,
+  connect: PropTypes.func.isRequired,
+  disconnect: PropTypes.func.isRequired,
+  connecting: PropTypes.bool.isRequired,
+  fetchUserBounties: PropTypes.func.isRequired,
 }
 
 export default MyBounties

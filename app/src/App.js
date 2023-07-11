@@ -1,9 +1,8 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useContract } from './web3/index.js'
 import Navigation from './components/Navigation'
 import Home from './components/Home'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import AllBounties from './components/Bounties/AllBounties.js'
 import MyBounties from './components/Bounties/MyBounties.js'
 import MyClaims from './components/Claims/MyClaims.js'
 
@@ -12,15 +11,11 @@ function App() {
     wallet,
     connect,
     disconnect,
-    connecting
+    connecting,
+    userBounties,
+    userClaims,
+    fetchUserBounties,
   } = useContract()
-
-  useEffect(() => {
-    if (wallet) {
-      // fetchUserBounties()
-      // fetchUserClaims()
-    }
-  }, [wallet])
 
   return (
     <Router>
@@ -38,9 +33,23 @@ function App() {
               />
             }
           />
-          <Route path="/bounties" element={<AllBounties />} />
-          <Route path="/my-bounties" element={<MyBounties />} />
-          <Route path="/my-claims" element={<MyClaims />} />
+          <Route
+            path="/my-bounties"
+            element={
+              <MyBounties
+                userBounties={userBounties}
+                wallet={wallet}
+                connect={connect}
+                disconnect={disconnect}
+                connecting={connecting}
+                fetchUserBounties={fetchUserBounties}
+              />
+            }
+          />
+          <Route
+            path="/my-claims"
+            element={<MyClaims userClaims={userClaims} />}
+          />
         </Routes>
       </div>
     </Router>
