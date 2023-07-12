@@ -49,8 +49,6 @@ contract POIDHNFT is
 
     constructor() ERC721("Pics or it didn't happen", "POIDH") {}
 
-    // other functions are same as before...
-
     /** Create a bounty from the sender */
     function createBounty(
         string memory name,
@@ -105,6 +103,7 @@ contract POIDHNFT is
 
         claims.push(claim);
         userClaims[msg.sender].push(claimId);
+        bountyClaims[bountyId].push(claimId);
 
         _safeMint(address(this), tokenId);
         _setTokenURI(tokenId, uri);
@@ -124,6 +123,36 @@ contract POIDHNFT is
         }
 
         return bountyClaimsArray;
+    }
+
+    /** Returns all bounties for a given user */
+    function getBountiesByUser(
+        address user
+    ) public view returns (Bounty[] memory) {
+        uint256[] storage userBountyIndexes = userBounties[user];
+        Bounty[] memory userBountiesArray = new Bounty[](
+            userBountyIndexes.length
+        );
+
+        for (uint256 i = 0; i < userBountyIndexes.length; i++) {
+            userBountiesArray[i] = bounties[userBountyIndexes[i]];
+        }
+
+        return userBountiesArray;
+    }
+
+    /** Returns all claims for a given user */
+    function getClaimsByUser(
+        address user
+    ) public view returns (Claim[] memory) {
+        uint256[] storage userClaimIndexes = userClaims[user];
+        Claim[] memory userClaimsArray = new Claim[](userClaimIndexes.length);
+
+        for (uint256 i = 0; i < userClaimIndexes.length; i++) {
+            userClaimsArray[i] = claims[userClaimIndexes[i]];
+        }
+
+        return userClaimsArray;
     }
 
     /** Bounty issuer can accept a given claim on their bounty */
@@ -201,5 +230,10 @@ contract POIDHNFT is
         bytes memory
     ) public virtual override returns (bytes4) {
         return this.onERC721Received.selector;
+    }
+
+    /** Getter for the length of the bounties array */
+    function getBountiesLength() public view returns (uint256) {
+        return bounties.length;
     }
 }

@@ -79,7 +79,7 @@ button {
   transition-duration: 0.1s;
   background-color: #f4595b;
   border-radius: 8px;
-  border-bottom: 4px solid #c24648;
+  border-width: 1px;
   color: white;
   padding: 15px 32px;
   text-align: center;
@@ -88,21 +88,11 @@ button {
   font-size: 16px;
   font-family: 'Oxygen', sans-serif;
   letter-spacing: 2px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
 
 button:hover {
-  background-color: #ff7375;
-  border: none;
-  border-radius: 8px;
-  border-bottom: 4px solid #c24648;
-  color: white;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  font-family: 'Oxygen', sans-serif;
-  letter-spacing: 2px;
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
 }
 
 button:active {
@@ -271,7 +261,9 @@ img {
 }
 
 .bounty-details-button {
-  padding: 10px 25px;
+  padding: 5px 12.5px;
+  margin: 0px 10px;
+  font-size: 0.85em;
 }
 
 .bounty-card-amount-logo {
@@ -281,4 +273,79 @@ img {
 .bounty-card-amount {
   padding: 0px;
   margin-right: 10px;
+}
+
+.claim-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.claim-popup {
+  position: absolute;
+  background-color: #7ab2e7;
+  padding: 20px;
+  border-radius: 8px;
+  width: 75%;
+  height: 75%;
+  max-width: 300px;
+  max-height: 600px;
+  display: flex;
+  flex-direction: column;
+}
+
+.claim-popup h3 {
+  margin-top: 0;
+}
+
+.claim-popup button {
+  margin-top: 10px;
+}
+
+.claim-popup-content-wrap {
+  flex-grow: 1;
+}
+
+.claim-popup-buttons {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.claim-name,
+.claim-uri {
+  padding: 5px 0px;
+  color: white;
+  font-family: 'Oxygen', sans-serif;
+  font-size: 1.25em;
+  margin: 0px;
+}
+
+.process-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.upload-wrap {
+  color: white;
+  font-family: 'Oxygen', sans-serif;
+  font-size: 1em;
+  margin: 0px;
+}
+
+.upload-loader {
+  padding-bottom: 10px;
+}
+
+.claim-name-input {
+  width: 75%;
 }

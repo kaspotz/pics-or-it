@@ -15,6 +15,7 @@ function App() {
     userBounties,
     userClaims,
     fetchUserBounties,
+    fetchUserClaims,
   } = useContract()
 
   return (
@@ -48,7 +49,16 @@ function App() {
           />
           <Route
             path="/my-claims"
-            element={<MyClaims userClaims={userClaims} />}
+            element={
+              <MyClaims
+                userClaims={userClaims}
+                wallet={wallet}
+                connect={connect}
+                disconnect={disconnect}
+                connecting={connecting}
+                fetchUserClaims={fetchUserClaims}
+              />
+            }
           />
         </Routes>
       </div>

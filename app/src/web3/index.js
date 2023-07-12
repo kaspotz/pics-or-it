@@ -95,11 +95,17 @@ export const useContract = () => {
       const userClaims = await connectedContract.getClaimsByUser(
         wallet.accounts[0].address,
       )
-      const plainObject = JSON.parse(
-        JSON.stringify(userClaims, (_, v) =>
-          typeof v === 'bigint' ? v.toString() : v,
-        ),
-      )
+      const plainObject = userClaims.map((claim) => {
+        return {
+          id: Number(claim.id), // converted from BigInt to Number
+          issuer: claim.issuer, // address remains a string
+          bountyId: Number(claim.bountyId), // converted from BigInt to Number
+          bountyIssuer: claim.bountyIssuer, // address remains a string
+          name: claim.name, // string
+          tokenId: Number(claim.tokenId), // converted from BigInt to Number
+          createdAt: Number(claim.createdAt), // converted from BigInt to Number
+        }
+      })
       setUserClaims(plainObject)
     }
   }
@@ -110,6 +116,14 @@ export const useContract = () => {
       const tx = await connectedContract.createBounty(name, description, {
         value: ethers.parseEther(amount),
       })
+      await tx.wait()
+    }
+  }
+
+  const createClaim = async (bountyId, name, uri) => {
+    const connectedContract = await getConnectedContract()
+    if (connectedContract) {
+      const tx = await connectedContract.createClaim(bountyId, name, uri)
       await tx.wait()
     }
   }
@@ -133,5 +147,6 @@ export const useContract = () => {
     fetchUserClaims,
     userBalance,
     createBounty,
+    createClaim,
   }
 }
