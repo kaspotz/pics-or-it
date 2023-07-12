@@ -39,102 +39,199 @@ init({
 })
 
 export const useContract = () => {
-  const [{ wallet, connecting }, connect, disconnect] = useConnectWallet()
+  const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
 
-  const [contract, setContract] = useState(null)
-  const [userBounties, setUserBounties] = useState([])
-  const [userClaims, setUserClaims] = useState([])
-  const [userBalance, setUserBalance] = useState(0)
+  const [contract, setContract] = useState(null);
+  const [userBounties, setUserBounties] = useState([]);
+  const [userClaims, setUserClaims] = useState([]);
+  const [userBalance, setUserBalance] = useState(0);
+
+  const jsonProviderUrl = ARB_DEV_RPC; // Replace with the desired JSON provider URL
 
   useEffect(() => {
-    const provider = new ethers.JsonRpcProvider(ARB_DEV_RPC)
-    const contractAddress = CONTRACT_DEV_ADDRESS
-    const contract = new ethers.Contract(contractAddress, abi, provider)
-    setContract(contract)
-  }, [])
+    const provider = new ethers.JsonRpcProvider(ARB_DEV_RPC);
+    const contractAddress = CONTRACT_DEV_ADDRESS;
+    const contract = new ethers.Contract(contractAddress, abi, provider);
+    setContract(contract);
+  }, []);
+
+  const getReadOnlyContract = async () => {
+    const provider = new ethers.JsonRpcProvider(jsonProviderUrl);
+    const contractAddress = CONTRACT_DEV_ADDRESS;
+    return new ethers.Contract(contractAddress, abi, provider);
+  };
 
   const getConnectedContract = async () => {
-    if (!wallet || !contract) return null
-    const ethersProvider = new ethers.BrowserProvider(wallet.provider)
-    return contract.connect(await ethersProvider.getSigner())
-  }
+    if (!wallet || !contract) return null;
+    const ethersProvider = new ethers.BrowserProvider(wallet.provider);
+    return contract.connect(await ethersProvider.getSigner());
+  };
 
   const fetchUserBalance = async () => {
     if (wallet) {
-      const provider = new ethers.BrowserProvider(wallet.provider)
-      const balance = await provider.getBalance(wallet.accounts[0].address)
-      setUserBalance(balance)
+      try {
+        const provider = new ethers.BrowserProvider(wallet.provider);
+        const balance = await provider.getBalance(wallet.accounts[0].address);
+        setUserBalance(balance);
+      } catch (error) {
+        console.error('Error fetching user balance:', error);
+      }
     }
-  }
+  };
 
   const fetchUserBounties = async () => {
-    const connectedContract = await getConnectedContract()
-    if (connectedContract) {
-      const userBounties = await connectedContract.getBountiesByUser(
-        wallet.accounts[0].address,
-      )
-      const plainObject = userBounties.map((bounty) => {
-        return {
-          id: Number(bounty.id), // converted from BigInt to Number
-          issuer: bounty.issuer, // address remains a string
-          name: bounty.name, // string
-          description: bounty.description, // string
-          amount: Number(ethers.formatEther(bounty.amount)), // converted from BigInt to Number
-          claimer: bounty.claimer, // address remains a string
-          claimUri: bounty.claimUri, // string
-          createdAt: Number(bounty.createdAt), // converted from BigInt to Number
-        }
-      })
-      setUserBounties(plainObject)
+    try {
+      let connectedContract = await getConnectedContract();
+      if (!connectedContract) connectedContract = await getReadOnlyContract();
+      if (connectedContract) {
+        const userBounties = await connectedContract.getBountiesByUser(
+          wallet.accounts[0].address
+        );
+        const plainObject = userBounties.map((bounty) => ({
+          id: Number(bounty.id),
+          issuer: bounty.issuer,
+          name: bounty.name,
+          description: bounty.description,
+          amount: Number(ethers.formatEther(bounty.amount)),
+          claimer: bounty.claimer,
+          claimUri: bounty.claimUri,
+          createdAt: Number(bounty.createdAt),
+        }));
+        setUserBounties(plainObject);
+      }
+    } catch (error) {
+      console.error('Error fetching user bounties:', error);
     }
-  }
+  };
+
+  const fetchBountyDetails = async (id) => {
+    try {
+      let connectedContract = await getConnectedContract();
+      if (!connectedContract) connectedContract = await getReadOnlyContract();
+      if (connectedContract) {
+        const userBounty = await connectedContract.bounties(id);
+        const processedBounty = {
+          id: Number(userBounty.id),
+          issuer: userBounty.issuer,
+          name: userBounty.name,
+          description: userBounty.description,
+          amount: Number(ethers.formatEther(userBounty.amount)),
+          claimer: userBounty.claimer,
+          claimUri: userBounty.claimUri,
+          createdAt: Number(userBounty.createdAt),
+        };
+        return processedBounty;
+      }
+      return null;
+    } catch (error) {
+      console.error('Error fetching bounty details:', error);
+      return null;
+    }
+  };
 
   const fetchUserClaims = async () => {
-    const connectedContract = await getConnectedContract()
-    if (connectedContract) {
-      const userClaims = await connectedContract.getClaimsByUser(
-        wallet.accounts[0].address,
-      )
-      const plainObject = userClaims.map((claim) => {
-        return {
-          id: Number(claim.id), // converted from BigInt to Number
-          issuer: claim.issuer, // address remains a string
-          bountyId: Number(claim.bountyId), // converted from BigInt to Number
-          bountyIssuer: claim.bountyIssuer, // address remains a string
-          name: claim.name, // string
-          tokenId: Number(claim.tokenId), // converted from BigInt to Number
-          createdAt: Number(claim.createdAt), // converted from BigInt to Number
-        }
-      })
-      setUserClaims(plainObject)
+    try {
+      let connectedContract = await getConnectedContract();
+      if (!connectedContract) connectedContract = await getReadOnlyContract();
+      if (connectedContract) {
+        const userClaims = await connectedContract.getClaimsByUser(
+          wallet.accounts[0].address
+        );
+        const plainObject = userClaims.map((claim) => ({
+          id: Number(claim.id),
+          issuer: claim.issuer,
+          bountyId: Number(claim.bountyId),
+          bountyIssuer: claim.bountyIssuer,
+          name: claim.name,
+          tokenId: Number(claim.tokenId),
+          createdAt: Number(claim.createdAt),
+        }));
+        setUserClaims(plainObject);
+      }
+    } catch (error) {
+      console.error('Error fetching user claims:', error);
     }
-  }
+  };
 
   const createBounty = async (name, description, amount) => {
-    const connectedContract = await getConnectedContract()
-    if (connectedContract) {
-      const tx = await connectedContract.createBounty(name, description, {
-        value: ethers.parseEther(amount),
-      })
-      await tx.wait()
+    try {
+      const connectedContract = await getConnectedContract();
+      if (connectedContract) {
+        const tx = await connectedContract.createBounty(name, description, {
+          value: ethers.parseEther(amount),
+        });
+        await tx.wait();
+      }
+    } catch (error) {
+      console.error('Error creating bounty:', error);
     }
-  }
+  };
 
-  const createClaim = async (bountyId, name, uri) => {
-    const connectedContract = await getConnectedContract()
-    if (connectedContract) {
-      const tx = await connectedContract.createClaim(bountyId, name, uri)
-      await tx.wait()
+  const createClaim = async (bountyId, name, uri, description) => {
+    try {
+      const connectedContract = await getConnectedContract();
+      if (connectedContract) {
+        const tx = await connectedContract.createClaim(
+          bountyId,
+          name,
+          uri,
+          description
+        );
+        await tx.wait();
+      }
+    } catch (error) {
+      console.error('Error creating claim:', error);
     }
-  }
+  };
+
+  const getClaimsByBountyId = async (bountyId) => {
+    try {
+      let connectedContract = await getConnectedContract();
+      if (!connectedContract) connectedContract = await getReadOnlyContract();
+      if (connectedContract) {
+        const bountyClaimsArray = await connectedContract.getClaimsByBountyId(
+          bountyId
+        );
+        const processedClaims = bountyClaimsArray.map((claim) => ({
+          id: Number(claim.id),
+          issuer: claim.issuer,
+          bountyId: Number(claim.bountyId),
+          bountyIssuer: claim.bountyIssuer,
+          name: claim.name,
+          tokenId: Number(claim.tokenId),
+          createdAt: Number(claim.createdAt),
+        }));
+        return processedClaims;
+      }
+      return [];
+    } catch (error) {
+      console.error('Error fetching claims by bounty ID:', error);
+      return [];
+    }
+  };
+
+  const getTokenUri = async (tokenId) => {
+    try {
+      let connectedContract = await getConnectedContract();
+      if (!connectedContract) connectedContract = await getReadOnlyContract();
+      if (connectedContract) {
+        const tokenUri = await connectedContract.tokenURI(tokenId);
+        return tokenUri;
+      }
+      return null;
+    } catch (error) {
+      console.error('Error fetching token URI:', error);
+      return null;
+    }
+  };
 
   useEffect(() => {
     if (wallet) {
-      fetchUserBounties()
-      fetchUserClaims()
-      fetchUserBalance()
+      fetchUserBounties();
+      fetchUserClaims();
+      fetchUserBalance();
     }
-  }, [wallet])
+  }, [wallet]);
 
   return {
     wallet,
@@ -148,5 +245,8 @@ export const useContract = () => {
     userBalance,
     createBounty,
     createClaim,
-  }
-}
+    getClaimsByBountyId,
+    fetchBountyDetails,
+    getTokenUri
+  };
+};

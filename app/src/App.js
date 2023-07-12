@@ -4,7 +4,7 @@ import Navigation from './components/Navigation'
 import Home from './components/Home'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import MyBounties from './components/Bounties/MyBounties.js'
-import MyClaims from './components/Claims/MyClaims.js'
+import BountyDetails from './components/Bounties/BountyDetails.js'
 
 function App() {
   const {
@@ -13,9 +13,9 @@ function App() {
     disconnect,
     connecting,
     userBounties,
-    userClaims,
     fetchUserBounties,
-    fetchUserClaims,
+    getClaimsByBountyId,
+    getTokenUri,
   } = useContract()
 
   return (
@@ -48,16 +48,9 @@ function App() {
             }
           />
           <Route
-            path="/my-claims"
+            path="/bounties/:id"
             element={
-              <MyClaims
-                userClaims={userClaims}
-                wallet={wallet}
-                connect={connect}
-                disconnect={disconnect}
-                connecting={connecting}
-                fetchUserClaims={fetchUserClaims}
-              />
+              <BountyDetails getClaimsByBountyId={getClaimsByBountyId} getTokenUri={getTokenUri}/>
             }
           />
         </Routes>
