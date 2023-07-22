@@ -1,47 +1,51 @@
-import React, { useState, useEffect } from 'react'
-import PropTypes from 'prop-types'
-import AOS from 'aos'
-import 'aos/dist/aos.css'
-import { useContract } from '../web3'
-import { ToastContainer, toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
-import { BeatLoader } from 'react-spinners' //import the spinner
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+import { useContract } from '../web3';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { BeatLoader } from 'react-spinners'; //import the spinner
 
 function Home({ wallet, connect, disconnect, connecting }) {
-  const { userBalance, createBounty } = useContract()
-  const [bountyAmount, setBountyAmount] = useState(0)
-  const [bountyName, setBountyName] = useState('')
-  const [bountyDescription, setBountyDescription] = useState('')
-  const [loading, setLoading] = useState(false) // new state for loading status
+  const { userBalance, createBounty } = useContract();
+  const [bountyAmount, setBountyAmount] = useState(0);
+  const [bountyName, setBountyName] = useState('');
+  const [bountyDescription, setBountyDescription] = useState('');
+  const [loading, setLoading] = useState(false); // new state for loading status
 
   const handleCreateBounty = async () => {
     if (bountyName.length > 20) {
-      toast.error('Bounty name should not exceed 20 characters')
-      return
+      toast.error('Bounty name should not exceed 20 characters');
+      return;
     }
     if (bountyDescription.length > 300) {
-      toast.error('Bounty description should not exceed 300 characters')
-      return
+      toast.error('Bounty description should not exceed 300 characters');
+      return;
     }
     if (isNaN(bountyAmount) || bountyAmount <= 0) {
-      toast.error('Bounty amount should be a number greater than 0')
-      return
+      toast.error('Bounty amount should be a number greater than 0');
+      return;
     }
     if (parseFloat(bountyAmount) > parseFloat(userBalance)) {
-      toast.error('Bounty amount should not exceed your balance')
-      return
+      toast.error('Bounty amount should not exceed your balance');
+      return;
     }
 
-    setLoading(true)
-    await createBounty(bountyName, bountyDescription, bountyAmount)
-    setLoading(false)
+    setLoading(true);
+    await createBounty(bountyName, bountyDescription, bountyAmount);
+    setLoading(false);
 
-    toast.success('Bounty created successfully')
-  }
+    toast.success('Bounty created successfully');
+    // reset state attributes
+    setBountyAmount(0);
+    setBountyName('');
+    setBountyDescription('');
+  };
 
   useEffect(() => {
-    AOS.refresh()
-  }, [wallet])
+    AOS.refresh();
+  }, [wallet]);
 
   return (
     <div>
@@ -89,19 +93,19 @@ function Home({ wallet, connect, disconnect, connecting }) {
                   name="customer_name"
                   required
                   value={bountyName}
-                  onChange={(e) => setBountyName(e.target.value)}
+                  onChange={e => setBountyName(e.target.value)}
                 />
               </label>
             </p>
             <p>
               <label>
-                Arb
+                eth
                 <input
                   type="text"
                   name="bounty_eth"
                   required
                   value={bountyAmount}
-                  onChange={(e) => setBountyAmount(e.target.value)}
+                  onChange={e => setBountyAmount(e.target.value)}
                 />
               </label>
             </p>
@@ -114,7 +118,7 @@ function Home({ wallet, connect, disconnect, connecting }) {
                   name="comments"
                   maxLength="300"
                   value={bountyDescription}
-                  onChange={(e) => setBountyDescription(e.target.value)}
+                  onChange={e => setBountyDescription(e.target.value)}
                 ></textarea>
               </label>
             </p>
@@ -136,7 +140,7 @@ function Home({ wallet, connect, disconnect, connecting }) {
         </div>
       )}
     </div>
-  )
+  );
 }
 
 Home.propTypes = {
@@ -144,6 +148,6 @@ Home.propTypes = {
   connect: PropTypes.func.isRequired,
   disconnect: PropTypes.func.isRequired,
   connecting: PropTypes.bool.isRequired,
-}
+};
 
-export default Home
+export default Home;

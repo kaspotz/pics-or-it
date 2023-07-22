@@ -141,6 +141,11 @@ export const abi = [
       },
       {
         internalType: 'string',
+        name: 'description',
+        type: 'string',
+      },
+      {
+        internalType: 'string',
         name: 'uri',
         type: 'string',
       },
@@ -447,6 +452,11 @@ export const abi = [
         type: 'string',
       },
       {
+        internalType: 'string',
+        name: 'description',
+        type: 'string',
+      },
+      {
         internalType: 'uint256',
         name: 'tokenId',
         type: 'uint256',
@@ -541,6 +551,19 @@ export const abi = [
     type: 'function',
   },
   {
+    inputs: [],
+    name: 'getBountiesLength',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
     inputs: [
       {
         internalType: 'uint256',
@@ -575,6 +598,11 @@ export const abi = [
           {
             internalType: 'string',
             name: 'name',
+            type: 'string',
+          },
+          {
+            internalType: 'string',
+            name: 'description',
             type: 'string',
           },
           {
@@ -631,6 +659,11 @@ export const abi = [
           {
             internalType: 'string',
             name: 'name',
+            type: 'string',
+          },
+          {
+            internalType: 'string',
+            name: 'description',
             type: 'string',
           },
           {
@@ -863,4 +896,4 @@ export const abi = [
     stateMutability: 'view',
     type: 'function',
   },
-]
+];

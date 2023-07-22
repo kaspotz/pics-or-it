@@ -25,7 +25,7 @@ class Server {
     this.app.use(helmet()) // add Helmet
     this.app.use(
       cors({
-        origin: 'https://kaspotz.github.io/pics-or-it/',
+        origin: '*',
         optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
       })
     )

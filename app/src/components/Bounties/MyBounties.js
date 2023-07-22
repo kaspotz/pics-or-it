@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react'
-import PropTypes from 'prop-types'
-import BountyCard from './BountyCard'
+import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
+import BountyCard from './BountyCard';
 
 function MyBounties({
   userBounties,
@@ -12,9 +12,9 @@ function MyBounties({
 }) {
   useEffect(() => {
     if (wallet) {
-      fetchUserBounties()
+      fetchUserBounties();
     }
-  }, [wallet])
+  }, [wallet]);
 
   return (
     <div className="bounties-grid">
@@ -31,12 +31,12 @@ function MyBounties({
           </button>
         </div>
       ) : (
-        userBounties.map((bounty) => (
+        userBounties.map(bounty => (
           <BountyCard key={bounty.id} bounty={bounty} />
         ))
       )}
     </div>
-  )
+  );
 }
 
 MyBounties.propTypes = {
@@ -46,6 +46,6 @@ MyBounties.propTypes = {
   disconnect: PropTypes.func.isRequired,
   connecting: PropTypes.bool.isRequired,
   fetchUserBounties: PropTypes.func.isRequired,
-}
+};
 
-export default MyBounties
+export default MyBounties;

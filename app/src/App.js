@@ -1,10 +1,10 @@
-import React from 'react'
-import { useContract } from './web3/index.js'
-import Navigation from './components/Navigation'
-import Home from './components/Home'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import MyBounties from './components/Bounties/MyBounties.js'
-import BountyDetails from './components/Bounties/BountyDetails.js'
+import React from 'react';
+import { useContract } from './web3/index.js';
+import Navigation from './components/Navigation';
+import Home from './components/Home';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import MyBounties from './components/Bounties/MyBounties.js';
+import BountyDetails from './components/Bounties/BountyDetails.js';
 
 function App() {
   const {
@@ -16,7 +16,7 @@ function App() {
     fetchUserBounties,
     getClaimsByBountyId,
     getTokenUri,
-  } = useContract()
+  } = useContract();
 
   return (
     <Router>
@@ -50,13 +50,16 @@ function App() {
           <Route
             path="/bounties/:id"
             element={
-              <BountyDetails getClaimsByBountyId={getClaimsByBountyId} getTokenUri={getTokenUri}/>
+              <BountyDetails
+                getClaimsByBountyId={getClaimsByBountyId}
+                getTokenUri={getTokenUri}
+              />
             }
           />
         </Routes>
       </div>
     </Router>
-  )
+  );
 }
 
-export default App
+export default App;

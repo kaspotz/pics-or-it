@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react'
-import { ethers } from 'ethers'
-import { init, useConnectWallet } from '@web3-onboard/react'
-import injectedModule from '@web3-onboard/injected-wallets'
-import { abi } from './abi.js'
-import { ARB_RPC, ARB_DEV_RPC, CONTRACT_DEV_ADDRESS } from './constants.js'
+import { useEffect, useState } from 'react';
+import { ethers } from 'ethers';
+import { init, useConnectWallet } from '@web3-onboard/react';
+import injectedModule from '@web3-onboard/injected-wallets';
+import { abi } from './abi.js';
+import { ARB_RPC, ARB_DEV_RPC, CONTRACT_DEV_ADDRESS } from './constants.js';
 
-const injected = injectedModule()
+const injected = injectedModule();
 
 // initialize Onboard
 init({
@@ -36,7 +36,7 @@ init({
       rpcUrl: ARB_DEV_RPC,
     },
   ],
-})
+});
 
 export const useContract = () => {
   const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
@@ -87,7 +87,7 @@ export const useContract = () => {
         const userBounties = await connectedContract.getBountiesByUser(
           wallet.accounts[0].address
         );
-        const plainObject = userBounties.map((bounty) => ({
+        const plainObject = userBounties.map(bounty => ({
           id: Number(bounty.id),
           issuer: bounty.issuer,
           name: bounty.name,
@@ -104,7 +104,7 @@ export const useContract = () => {
     }
   };
 
-  const fetchBountyDetails = async (id) => {
+  const fetchBountyDetails = async id => {
     try {
       let connectedContract = await getConnectedContract();
       if (!connectedContract) connectedContract = await getReadOnlyContract();
@@ -137,12 +137,13 @@ export const useContract = () => {
         const userClaims = await connectedContract.getClaimsByUser(
           wallet.accounts[0].address
         );
-        const plainObject = userClaims.map((claim) => ({
+        const plainObject = userClaims.map(claim => ({
           id: Number(claim.id),
           issuer: claim.issuer,
           bountyId: Number(claim.bountyId),
           bountyIssuer: claim.bountyIssuer,
           name: claim.name,
+          description: claim.description,
           tokenId: Number(claim.tokenId),
           createdAt: Number(claim.createdAt),
         }));
@@ -184,7 +185,7 @@ export const useContract = () => {
     }
   };
 
-  const getClaimsByBountyId = async (bountyId) => {
+  const getClaimsByBountyId = async bountyId => {
     try {
       let connectedContract = await getConnectedContract();
       if (!connectedContract) connectedContract = await getReadOnlyContract();
@@ -192,12 +193,13 @@ export const useContract = () => {
         const bountyClaimsArray = await connectedContract.getClaimsByBountyId(
           bountyId
         );
-        const processedClaims = bountyClaimsArray.map((claim) => ({
+        const processedClaims = bountyClaimsArray.map(claim => ({
           id: Number(claim.id),
           issuer: claim.issuer,
           bountyId: Number(claim.bountyId),
           bountyIssuer: claim.bountyIssuer,
           name: claim.name,
+          description: claim.description,
           tokenId: Number(claim.tokenId),
           createdAt: Number(claim.createdAt),
         }));
@@ -210,7 +212,7 @@ export const useContract = () => {
     }
   };
 
-  const getTokenUri = async (tokenId) => {
+  const getTokenUri = async tokenId => {
     try {
       let connectedContract = await getConnectedContract();
       if (!connectedContract) connectedContract = await getReadOnlyContract();
@@ -247,6 +249,6 @@ export const useContract = () => {
     createClaim,
     getClaimsByBountyId,
     fetchBountyDetails,
-    getTokenUri
+    getTokenUri,
   };
 };

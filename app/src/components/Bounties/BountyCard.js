@@ -1,29 +1,29 @@
-import React, { useState } from 'react'
-import PropTypes from 'prop-types'
-import { Link } from 'react-router-dom'
-import arbitrumLogo from '../../assets/arbitrum.png'
-import CreateClaim from '../Claims/CreateClaim'
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+import arbitrumLogo from '../../assets/arbitrum.png';
+import CreateClaim from '../Claims/CreateClaim';
 
 function BountyCard({ bounty }) {
-  const { id, name, description, amount } = bounty
+  const { id, name, description, amount } = bounty;
 
   const truncatedDescription =
     description.length > 50
       ? `${description.substr(0, 10)}...${description.substr(
           description.length - 20,
-          description.length,
+          description.length
         )}`
-      : description
+      : description;
 
-  const [showCreateClaim, setShowCreateClaim] = useState(false)
+  const [showCreateClaim, setShowCreateClaim] = useState(false);
 
   const handleClaimClick = () => {
-    setShowCreateClaim(true)
-  }
+    setShowCreateClaim(true);
+  };
 
   const handleCloseCreateClaim = () => {
-    setShowCreateClaim(false)
-  }
+    setShowCreateClaim(false);
+  };
 
   return (
     <div className="bounty-card">
@@ -57,7 +57,7 @@ function BountyCard({ bounty }) {
         <CreateClaim bountyId={id} onClose={handleCloseCreateClaim} />
       )}
     </div>
-  )
+  );
 }
 
 BountyCard.propTypes = {
@@ -67,6 +67,6 @@ BountyCard.propTypes = {
     description: PropTypes.string.isRequired,
     amount: PropTypes.number.isRequired,
   }).isRequired,
-}
+};
 
-export default BountyCard
+export default BountyCard;

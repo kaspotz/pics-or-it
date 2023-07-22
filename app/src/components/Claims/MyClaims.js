@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react'
-import PropTypes from 'prop-types'
-import { useContract } from '../../web3'
+import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { useContract } from '../../web3';
 
 function MyClaims({
   fetchUserClaims,
@@ -9,13 +9,13 @@ function MyClaims({
   disconnect,
   connecting,
 }) {
-  const { userClaims } = useContract()
+  const { userClaims } = useContract();
 
   useEffect(() => {
     if (wallet) {
-      fetchUserClaims()
+      fetchUserClaims();
     }
-  }, [wallet])
+  }, [wallet]);
 
   return (
     <div>
@@ -33,7 +33,7 @@ function MyClaims({
           </button>
         </div>
       ) : (
-        userClaims.map((claim) => (
+        userClaims.map(claim => (
           <div key={claim.id}>
             <h3>{claim.name}</h3>
             <p>Issuer: {claim.issuer}</p>
@@ -45,7 +45,7 @@ function MyClaims({
         ))
       )}
     </div>
-  )
+  );
 }
 
 MyClaims.propTypes = {
@@ -54,6 +54,6 @@ MyClaims.propTypes = {
   connect: PropTypes.func.isRequired,
   disconnect: PropTypes.func.isRequired,
   connecting: PropTypes.bool.isRequired,
-}
+};
 
-export default MyClaims
+export default MyClaims;

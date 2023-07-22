@@ -20,7 +20,7 @@ const bounties = [
     claimUri: 'https://example.com/claim2',
     createdAt: 1628270578,
   },
-]
+];
 
 // Fake Claims data
 const claims = [
@@ -42,6 +42,6 @@ const claims = [
     tokenId: 1001,
     createdAt: 1628270702,
   },
-]
+];
 
-export { bounties, claims }
+export { bounties, claims };

@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 function ClaimCard({ claim, getTokenUri }) {
-  const { name, issuer, tokenId } = claim;
+  console.log(claim);
+  const { name, issuer, tokenId, description } = claim;
   const [isLoading, setIsLoading] = useState(true);
   const [imageSrc, setImageSrc] = useState('');
 
@@ -31,13 +32,15 @@ function ClaimCard({ claim, getTokenUri }) {
         <p>Loading...</p>
       ) : (
         <>
-          <img src={imageSrc} alt={name} className="claim-image" />
-          <div className="claim-info">
-            <h3>{name}</h3>
-            <p>Issuer: {issuer}</p>
-            <details>
-              <summary>Token ID: {tokenId}</summary>
-              <p>{tokenId}</p>
+          <div className="claim-card-image">
+            <img src={imageSrc} alt={name} className="claim-image" />
+          </div>
+          <div className="claim-card-info">
+            <h3 className="claim-card-title">{name}</h3>
+            <p className="claim-card-issuer">Issuer: {issuer}</p>
+            <details className="claim-card-details">
+              <summary>description</summary>
+              <p>{description}</p>
             </details>
           </div>
         </>
@@ -52,6 +55,7 @@ ClaimCard.propTypes = {
     name: PropTypes.string.isRequired,
     issuer: PropTypes.string.isRequired,
     tokenId: PropTypes.number.isRequired,
+    description: PropTypes.string.isRequired,
   }).isRequired,
   getTokenUri: PropTypes.func.isRequired,
 };

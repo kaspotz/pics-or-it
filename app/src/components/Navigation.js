@@ -1,26 +1,26 @@
-import React, { useState } from 'react'
-import { FaBars } from 'react-icons/fa'
-import { FaX } from 'react-icons/fa6'
-import { useNavigate } from 'react-router-dom'
+import React, { useState } from 'react';
+import { FaBars } from 'react-icons/fa';
+import { FaX } from 'react-icons/fa6';
+import { useNavigate } from 'react-router-dom';
 
 function Navigation() {
-  const [menu, setMenu] = useState(false)
-  const navigate = useNavigate()
+  const [menu, setMenu] = useState(false);
+  const navigate = useNavigate();
 
   const handleHome = () => {
-    setMenu(false)
-    navigate('/pics-or-it')
-  }
+    setMenu(false);
+    navigate('/pics-or-it');
+  };
 
   const handleMyBounties = () => {
-    setMenu(false)
-    navigate('/my-bounties')
-  }
+    setMenu(false);
+    navigate('/my-bounties');
+  };
 
   const handleMyClaims = () => {
-    setMenu(false)
-    navigate('/my-claims')
-  }
+    setMenu(false);
+    navigate('/my-claims');
+  };
 
   return (
     <div>
@@ -42,7 +42,7 @@ function Navigation() {
         </div>
       )}
     </div>
-  )
+  );
 }
 
-export default Navigation
+export default Navigation;

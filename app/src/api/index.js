@@ -1,43 +1,31 @@
-import axios from 'axios'
+import axios from 'axios';
 
-const apiUrl = 'http://localhost:3000' // Change this to your production URL if needed
+const apiUrl = 'http://localhost:3001'; // Change this to your production URL as needed
 
-export const uploadFile = async (file) => {
+export const uploadFile = async file => {
   try {
-    const formData = new FormData()
-    formData.append('image', file)
+    const formData = new FormData();
+    formData.append('image', file);
 
-    const response = await axios.post(`${apiUrl}/uploadFile`, formData)
-    return response.data
+    const response = await axios.post(`${apiUrl}/uploadFile`, formData);
+    return response.data;
   } catch (error) {
-    console.error(error)
-    throw error
+    console.error(error);
+    return undefined;
   }
-}
+};
 
-export const uploadMetadata = async (metadata) => {
-  try {
-    const response = await axios.post(`${apiUrl}/uploadMetadata`, {
-      metadata,
-    })
-    return response.data
-  } catch (error) {
-    console.error(error)
-    throw error
-  }
-}
-
-export const uploadMalformedMetadata = async (metadata) => {
+export const uploadMetadata = async metadata => {
   try {
     const response = await axios.post(`${apiUrl}/uploadMetadata`, {
       metadata,
-    })
-    return response.data
+    });
+    return response.data;
   } catch (error) {
-    console.error(error)
-    throw error
+    console.error(error);
+    throw error;
   }
-}
+};
 
 export const buildMetadata = (imageURI, name, description) => {
   const metadata = {
@@ -46,9 +34,9 @@ export const buildMetadata = (imageURI, name, description) => {
     image: imageURI,
     name: name,
     attributes: [],
-  }
+  };
 
-  return metadata
-}
+  return metadata;
+};
 
-export default buildMetadata
+export default buildMetadata;

@@ -39,6 +39,7 @@ contract POIDHNFT is
         uint256 bountyId;
         address bountyIssuer;
         string name;
+        string description; // new field
         uint256 tokenId;
         uint256 createdAt;
     }
@@ -77,7 +78,8 @@ contract POIDHNFT is
     function createClaim(
         uint256 bountyId,
         string memory name,
-        string memory uri
+        string memory uri,
+        string memory description
     ) public {
         require(bountyId < bounties.length, "Bounty does not exist");
         require(
@@ -97,6 +99,7 @@ contract POIDHNFT is
             bountyId,
             bounties[bountyId].issuer,
             name,
+            description, // new field
             tokenId,
             block.timestamp
         );
