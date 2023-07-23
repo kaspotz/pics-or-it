@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import { ToastContainer, toast } from 'react-toastify';
 
-function ClaimCard({ claim, getTokenUri }) {
-  console.log(claim);
+function ClaimCard({ bountyId, claim, getTokenUri, isOwner, acceptClaim }) {
   const { name, issuer, tokenId, description } = claim;
   const [isLoading, setIsLoading] = useState(true);
   const [imageSrc, setImageSrc] = useState('');
@@ -26,8 +26,18 @@ function ClaimCard({ claim, getTokenUri }) {
     fetchTokenUri();
   }, [getTokenUri, tokenId]);
 
+  const handleAcceptClaim = async () => {
+    try {
+      await acceptClaim(bountyId, claim.id);
+      toast.success('Claim accepted!');
+    } catch (error) {
+      toast.error('Error accepting claim');
+    }
+  };
+
   return (
     <div className="claim-card">
+      <ToastContainer />
       {isLoading ? (
         <p>Loading...</p>
       ) : (
@@ -36,11 +46,24 @@ function ClaimCard({ claim, getTokenUri }) {
             <img src={imageSrc} alt={name} className="claim-image" />
           </div>
           <div className="claim-card-info">
-            <h3 className="claim-card-title">{name}</h3>
-            <p className="claim-card-issuer">Issuer: {issuer}</p>
+            <div className="claim-card-title-wrap">
+              <div className="claim-card-title">{name}</div>
+              {isOwner && (
+                <button
+                  className="claim-card-button"
+                  onClick={handleAcceptClaim}
+                >
+                  accept
+                </button>
+              )}
+            </div>
+            <details className="claim-card-issuer">
+              <summary className="summary">issuer</summary>
+              <div className="summary-body">{issuer}</div>
+            </details>
             <details className="claim-card-details">
-              <summary>description</summary>
-              <p>{description}</p>
+              <summary className="summary">description</summary>
+              <div className="summary-body">{description}</div>
             </details>
           </div>
         </>
@@ -58,6 +81,9 @@ ClaimCard.propTypes = {
     description: PropTypes.string.isRequired,
   }).isRequired,
   getTokenUri: PropTypes.func.isRequired,
+  isOwner: PropTypes.bool.isRequired,
+  acceptClaim: PropTypes.func.isRequired,
+  bountyId: PropTypes.string.isRequired,
 };
 
 export default ClaimCard;

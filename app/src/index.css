@@ -383,7 +383,6 @@ img {
   transition: 0.3s;
   width: 300px;
   border-radius: 5px;
-  padding: 1em;
 }
 
 .claim-card:hover {
@@ -396,22 +395,34 @@ img {
 }
 
 .claim-card-info {
-  margin-top: 10px;
+  margin-top: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding-bottom: 0.75em;
+  padding-left: 0.75em;
+  padding-right: 0.75em;
 }
 
 .claim-image {
   max-width: 100%;
   height: auto;
-  border-radius: 5px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
 }
 
 .claim-card-title {
   font-size: 1.5em;
   font-weight: bold;
+  color: white;
+  font-family: 'Oxygen', sans-serif;
+  margin: 10px 0px;
 }
 
 .claim-card-issuer {
-  font-size: 0.9em;
+  color: white;
+  font-size: 0.85em;
 }
 
 .claim-card-details {
@@ -419,4 +430,60 @@ img {
   font-size: 0.85em;
   color: white;
   font-family: 'Oxygen', sans-serif;
+}
+
+.bounty-card-details {
+  margin-top: 10px;
+  font-size: 1em;
+  color: white;
+  font-family: 'Oxygen', sans-serif;
+}
+
+summary::marker {
+  color: #f4595b;
+}
+
+summary::-webkit-details-marker {
+  color: #f4595b;
+}
+
+.summary {
+  text-align: left;
+}
+
+.summary-body {
+  font-size: 0.85em;
+  max-width: 100%;
+}
+
+.bounty-details-left {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.bounty-details {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 50%;
+}
+
+@media screen and (max-width: 768px) {
+  .bounty-details {
+    flex-direction: column;
+  }
+}
+
+.claim-card-button {
+  padding: 5px 12.5px;
+  font-size: 0.8em;
+}
+
+.claim-card-title-wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
 }

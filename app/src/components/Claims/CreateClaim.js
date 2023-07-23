@@ -19,8 +19,15 @@ function CreateClaim({ onClose, bountyId }) {
 
   const handleUpload = async acceptedFiles => {
     if (acceptedFiles.length === 0) return;
+    const fileName = acceptedFiles[0].name;
+
+    if (fileName.length > 30) {
+      toast.error('The name should be a maximum of 30 characters');
+      return;
+    }
+
     setFile(acceptedFiles[0]);
-    setFormData({ ...formData, name: acceptedFiles[0].name });
+    setFormData({ ...formData, name: fileName });
     toast.info('File uploaded');
   };
 
@@ -29,6 +36,16 @@ function CreateClaim({ onClose, bountyId }) {
 
     if (!formData.name || !formData.description) {
       toast.error('Please fill out all fields');
+      return;
+    }
+
+    if (formData.name.length > 30) {
+      toast.error('The name should be a maximum of 30 characters');
+      return;
+    }
+
+    if (formData.description.length > 200) {
+      toast.error('The description should be a maximum of 200 characters');
       return;
     }
 

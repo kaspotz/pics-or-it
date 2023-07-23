@@ -227,6 +227,14 @@ export const useContract = () => {
     }
   };
 
+  const acceptClaim = async (bountyId, claimId) => {
+    const connectedContract = await getConnectedContract();
+    if (connectedContract) {
+      const tx = await connectedContract.acceptClaim(bountyId, claimId);
+      await tx.wait();
+    }
+  };
+
   useEffect(() => {
     if (wallet) {
       fetchUserBounties();
@@ -250,5 +258,6 @@ export const useContract = () => {
     getClaimsByBountyId,
     fetchBountyDetails,
     getTokenUri,
+    acceptClaim,
   };
 };

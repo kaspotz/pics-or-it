@@ -16,6 +16,8 @@ function App() {
     fetchUserBounties,
     getClaimsByBountyId,
     getTokenUri,
+    fetchBountyDetails,
+    acceptClaim,
   } = useContract();
 
   return (
@@ -51,8 +53,11 @@ function App() {
             path="/bounties/:id"
             element={
               <BountyDetails
+                wallet={wallet}
                 getClaimsByBountyId={getClaimsByBountyId}
                 getTokenUri={getTokenUri}
+                fetchBountyDetails={fetchBountyDetails}
+                acceptClaim={acceptClaim}
               />
             }
           />
