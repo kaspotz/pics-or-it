@@ -17,11 +17,6 @@ function Navigation() {
     navigate('/my-bounties');
   };
 
-  const handleMyClaims = () => {
-    setMenu(false);
-    navigate('/my-claims');
-  };
-
   return (
     <div>
       <span className="hamburger-menu-wrap">
@@ -37,7 +32,6 @@ function Navigation() {
           <ul className="menu-list-wrap">
             <li onClick={handleHome}>home</li>
             <li onClick={handleMyBounties}>my bounties</li>
-            <li onClick={handleMyClaims}>my claims</li>
           </ul>
         </div>
       )}

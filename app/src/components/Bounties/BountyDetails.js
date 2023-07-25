@@ -3,12 +3,16 @@ import ClaimCard from '../Claims/ClaimCard';
 import { useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { ethers } from 'ethers';
+import CreateClaim from '../Claims/CreateClaim';
 
 function BountyDetails({
   getTokenUri,
   getClaimsByBountyId,
   fetchBountyDetails,
   wallet,
+  connect,
+  disconnect,
+  connecting,
   acceptClaim,
 }) {
   const { id } = useParams();
@@ -17,6 +21,15 @@ function BountyDetails({
   const [userClaims, setUserClaims] = useState([]);
   const [bountyDetails, setBountyDetails] = useState({});
   const [isOwner, setIsOwner] = useState(false);
+  const [showCreateClaim, setShowCreateClaim] = useState(false);
+
+  const handleClaimClick = () => {
+    setShowCreateClaim(true);
+  };
+
+  const handleCloseCreateClaim = () => {
+    setShowCreateClaim(false);
+  };
 
   useEffect(() => {
     (async () => {
@@ -45,7 +58,7 @@ function BountyDetails({
   return (
     <div className="bounty-details-wrap">
       <div className="bounty-details-left">
-        <h1>Bounty Details</h1>
+        <h1>bounty details</h1>
         <div className="bounty-details">
           <details className="bounty-card-details">
             <summary className="bounty-summary">name</summary>
@@ -61,6 +74,22 @@ function BountyDetails({
           </details>
         </div>
       </div>
+      {!wallet ? (
+        <div className="bounty-details-connect-claim-button-wrap">
+          <button
+            disabled={connecting}
+            onClick={() =>
+              wallet ? disconnect({ label: wallet.label }) : connect()
+            }
+          >
+            {connecting ? 'connecting' : wallet ? 'disconnect' : 'connect'}
+          </button>
+        </div>
+      ) : (
+        <div className="bounty-details-connect-claim-button-wrap">
+          <button onClick={handleClaimClick}>Claim</button>
+        </div>
+      )}
       <div className="bounties-grid bounty-details-right">
         {loading ? (
           <div>Loading...</div>
@@ -77,6 +106,9 @@ function BountyDetails({
           ))
         )}
       </div>
+      {showCreateClaim && (
+        <CreateClaim bountyId={id} onClose={handleCloseCreateClaim} />
+      )}
     </div>
   );
 }
@@ -87,6 +119,9 @@ BountyDetails.propTypes = {
   fetchBountyDetails: PropTypes.func.isRequired,
   wallet: PropTypes.object,
   acceptClaim: PropTypes.func.isRequired,
+  connect: PropTypes.func.isRequired,
+  disconnect: PropTypes.func.isRequired,
+  connecting: PropTypes.bool.isRequired,
 };
 
 export default BountyDetails;

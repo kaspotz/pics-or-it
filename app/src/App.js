@@ -54,6 +54,9 @@ function App() {
             element={
               <BountyDetails
                 wallet={wallet}
+                connect={connect}
+                disconnect={disconnect}
+                connecting={connecting}
                 getClaimsByBountyId={getClaimsByBountyId}
                 getTokenUri={getTokenUri}
                 fetchBountyDetails={fetchBountyDetails}

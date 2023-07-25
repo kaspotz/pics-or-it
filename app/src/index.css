@@ -487,3 +487,8 @@ summary::-webkit-details-marker {
   align-items: center;
   width: 100%;
 }
+
+.bounty-details-connect-claim-button-wrap {
+  margin-top: 2em;
+  width: 100%;
+}
