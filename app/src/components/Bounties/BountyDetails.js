@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { ethers } from 'ethers';
 import CreateClaim from '../Claims/CreateClaim';
+import { ToastContainer, toast } from 'react-toastify';
 
 function BountyDetails({
   getTokenUri,
@@ -24,6 +25,13 @@ function BountyDetails({
   const [showCreateClaim, setShowCreateClaim] = useState(false);
 
   const handleClaimClick = () => {
+    if (
+      ethers.getAddress(bountyDetails.claimer) !==
+      ethers.getAddress('0x0000000000000000000000000000')
+    ) {
+      toast.info('This bounty has already been claimed.');
+      return;
+    }
     setShowCreateClaim(true);
   };
 
@@ -57,6 +65,7 @@ function BountyDetails({
 
   return (
     <div className="bounty-details-wrap">
+      <ToastContainer />
       <div className="bounty-details-left">
         <h1>bounty details</h1>
         <div className="bounty-details">

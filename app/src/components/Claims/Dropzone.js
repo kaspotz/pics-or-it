@@ -12,7 +12,7 @@ function Dropzone({ onDrop }) {
 
       const fileSizeInKb = file.size / 1024;
       if (fileSizeInKb > 500) {
-        toast.error('File size must be less than 300kb.');
+        toast.error('File size must be less than 500kb.');
         return;
       }
 

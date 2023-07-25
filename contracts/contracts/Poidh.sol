@@ -305,8 +305,14 @@ contract POIDHNFT is
      * @param end the index to stop fetching bounties at
      * @return result an array of Bounties from start to end index
      */
-    function getBounties(uint start, uint end) public view returns (Bounty[] memory) {
-        require(start <= end, "Start index must be less than or equal to end index");
+    function getBounties(
+        uint start,
+        uint end
+    ) public view returns (Bounty[] memory) {
+        require(
+            start <= end,
+            "Start index must be less than or equal to end index"
+        );
         require(end < bounties.length, "End index out of bounds");
 
         // Calculate the size of the array to return
@@ -315,13 +321,12 @@ contract POIDHNFT is
         Bounty[] memory result = new Bounty[](size);
 
         // Loop from start to end index and populate the result array
-        for(uint i = 0; i < size; i++) {
+        for (uint i = 0; i < size; i++) {
             result[i] = bounties[start + i];
         }
 
         return result;
     }
-
 
     /* === OVERRIDES === */
     // The following functions are overrides required by Solidity.
