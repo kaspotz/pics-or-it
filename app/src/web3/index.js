@@ -185,6 +185,16 @@ export const useContract = () => {
     }
   };
 
+  const cancelBounty = async bountyId => {
+    const connectedContract = await getConnectedContract();
+    if (connectedContract) {
+      const tx = await connectedContract.cancelBounty(bountyId);
+      await tx.wait();
+    } else {
+      throw new Error('Error cancelling bounty');
+    }
+  };
+
   const getClaimsByBountyId = async bountyId => {
     try {
       let connectedContract = await getConnectedContract();
@@ -259,5 +269,6 @@ export const useContract = () => {
     fetchBountyDetails,
     getTokenUri,
     acceptClaim,
+    cancelBounty,
   };
 };

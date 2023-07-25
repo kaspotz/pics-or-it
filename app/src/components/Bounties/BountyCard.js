@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import arbitrumLogo from '../../assets/arbitrum.png';
@@ -6,8 +6,20 @@ import CreateClaim from '../Claims/CreateClaim';
 import { ethers } from 'ethers';
 import { ToastContainer, toast } from 'react-toastify';
 
-function BountyCard({ bounty }) {
-  const { id, name, description, amount, claimer } = bounty;
+function BountyCard({ bounty, cancelBounty, wallet }) {
+  const { id, name, description, amount, claimer, issuer } = bounty;
+  const [showCancel, setShowCancel] = useState(false);
+
+  useEffect(() => {
+    if (wallet) {
+      if (
+        ethers.getAddress(wallet.accounts[0].address) ===
+        ethers.getAddress(issuer)
+      ) {
+        setShowCancel(true);
+      }
+    }
+  }, [wallet]);
 
   const truncatedDescription =
     description.length > 50
@@ -28,6 +40,15 @@ function BountyCard({ bounty }) {
       return;
     }
     setShowCreateClaim(true);
+  };
+
+  const handleCancelClick = async () => {
+    try {
+      await cancelBounty(id);
+      toast.success('Bounty cancelled!');
+    } catch (error) {
+      toast.error(`Error cancelling bounty: ${error.message}`);
+    }
   };
 
   const handleCloseCreateClaim = () => {
@@ -62,6 +83,15 @@ function BountyCard({ bounty }) {
             details
           </button>
         </Link>
+        {showCancel && (
+          <button
+            type="button"
+            className="bounty-details-button"
+            onClick={handleCancelClick}
+          >
+            cancel
+          </button>
+        )}
       </div>
       {showCreateClaim && (
         <CreateClaim bountyId={id} onClose={handleCloseCreateClaim} />
@@ -77,7 +107,10 @@ BountyCard.propTypes = {
     description: PropTypes.string.isRequired,
     amount: PropTypes.number.isRequired,
     claimer: PropTypes.string.isRequired,
+    issuer: PropTypes.string.isRequired,
   }).isRequired,
+  cancelBounty: PropTypes.func.isRequired,
+  wallet: PropTypes.object,
 };
 
 export default BountyCard;

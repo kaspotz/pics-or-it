@@ -5,6 +5,7 @@ import BountyCard from './BountyCard';
 function MyBounties({
   userBounties,
   fetchUserBounties,
+  cancelBounty,
   wallet,
   connect,
   disconnect,
@@ -32,7 +33,12 @@ function MyBounties({
         </div>
       ) : (
         userBounties.map(bounty => (
-          <BountyCard key={bounty.id} bounty={bounty} />
+          <BountyCard
+            key={bounty.id}
+            bounty={bounty}
+            wallet={wallet}
+            cancelBounty={cancelBounty}
+          />
         ))
       )}
     </div>
@@ -46,6 +52,7 @@ MyBounties.propTypes = {
   disconnect: PropTypes.func.isRequired,
   connecting: PropTypes.bool.isRequired,
   fetchUserBounties: PropTypes.func.isRequired,
+  cancelBounty: PropTypes.func.isRequired,
 };
 
 export default MyBounties;

@@ -18,6 +18,7 @@ function App() {
     getTokenUri,
     fetchBountyDetails,
     acceptClaim,
+    cancelBounty,
   } = useContract();
 
   return (
@@ -46,6 +47,7 @@ function App() {
                 disconnect={disconnect}
                 connecting={connecting}
                 fetchUserBounties={fetchUserBounties}
+                cancelBounty={cancelBounty}
               />
             }
           />
