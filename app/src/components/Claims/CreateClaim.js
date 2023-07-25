@@ -21,11 +21,6 @@ function CreateClaim({ onClose, bountyId }) {
     if (acceptedFiles.length === 0) return;
     const fileName = acceptedFiles[0].name;
 
-    if (fileName.length > 30) {
-      toast.error('The name should be a maximum of 30 characters');
-      return;
-    }
-
     setFile(acceptedFiles[0]);
     setFormData({ ...formData, name: fileName });
     toast.info('File uploaded');

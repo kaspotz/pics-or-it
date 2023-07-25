@@ -117,7 +117,7 @@ export const useContract = () => {
           description: userBounty.description,
           amount: Number(ethers.formatEther(userBounty.amount)),
           claimer: userBounty.claimer,
-          claimUri: userBounty.claimUri,
+          claimId: userBounty.claimId,
           createdAt: Number(userBounty.createdAt),
         };
         return processedBounty;

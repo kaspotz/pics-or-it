@@ -25,8 +25,8 @@ contract POIDHNFT is
         string description;
         uint256 amount;
         address claimer;
-        string claimUri;
         uint256 createdAt;
+        uint256 claimId;
     }
 
     Bounty[] public bounties;
@@ -70,7 +70,6 @@ contract POIDHNFT is
         uint256 bountyId,
         uint256 claimId,
         address claimIssuer,
-        string claimUri,
         address bountyIssuer
     );
     event BountyCancelled(uint256 bountyId, address issuer);
@@ -97,8 +96,8 @@ contract POIDHNFT is
             description,
             msg.value,
             address(0),
-            "",
-            block.timestamp
+            block.timestamp,
+            0
         );
         bounties.push(bounty);
 
@@ -117,11 +116,11 @@ contract POIDHNFT is
 
     /**
      * @dev Allows the sender to cancel a bounty with a given id
-     * @param _id the id of the bounty to be canceled
+     * @param id the id of the bounty to be canceled
      */
-    function cancelBounty(uint _id) external {
-        require(_id < bounties.length, "Bounty does not exist");
-        Bounty storage bounty = bounties[_id];
+    function cancelBounty(uint id) external {
+        require(id < bounties.length, "Bounty does not exist");
+        Bounty storage bounty = bounties[id];
         require(
             msg.sender == bounty.issuer,
             "Only the bounty issuer can cancel the bounty"
@@ -130,10 +129,11 @@ contract POIDHNFT is
 
         uint refundAmount = bounty.amount;
         bounty.amount = 0; // Zero out the bounty before transferring
+        bounty.claimer = address(0); // Zero out the claimer before transferring
 
         payable(bounty.issuer).transfer(refundAmount);
 
-        emit BountyCancelled(_id, bounty.issuer);
+        emit BountyCancelled(id, bounty.issuer);
     }
 
     /**
@@ -217,7 +217,7 @@ contract POIDHNFT is
 
         // Close out the bounty
         bounty.claimer = claimIssuer;
-        bounty.claimUri = tokenURI(tokenId);
+        bounty.claimId = claimId;
 
         // Store the claim issuer and bounty amount for use after external calls
         address payable pendingPayee = payable(claimIssuer);
@@ -233,7 +233,6 @@ contract POIDHNFT is
             bountyId,
             claimId,
             claimIssuer,
-            bounty.claimUri,
             bounty.issuer
         );
     }

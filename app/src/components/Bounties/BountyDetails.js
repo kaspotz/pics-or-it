@@ -27,7 +27,7 @@ function BountyDetails({
   const handleClaimClick = () => {
     if (
       ethers.getAddress(bountyDetails.claimer) !==
-      ethers.getAddress('0x0000000000000000000000000000')
+      ethers.getAddress('0x0000000000000000000000000000000000000000')
     ) {
       toast.info('This bounty has already been claimed.');
       return;
@@ -48,6 +48,7 @@ function BountyDetails({
       setLoading(false);
     })();
   }, [id]);
+  
 
   useEffect(() => {
     if (wallet && bountyDetails.name) {
