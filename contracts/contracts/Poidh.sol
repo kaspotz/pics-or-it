@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.17;
+pragma solidity 0.8.19;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
@@ -48,10 +48,41 @@ contract POIDHNFT is
     mapping(address => uint256[]) public userClaims;
     mapping(uint256 => uint256[]) public bountyClaims;
 
-    constructor() ERC721("Pics or it didn't happen", "POIDH") {}
+    event BountyCreated(
+        uint256 bountyId,
+        address indexed issuer,
+        string name,
+        string description,
+        uint256 amount,
+        uint256 createdAt
+    );
+    event ClaimCreated(
+        uint256 claimId,
+        address indexed issuer,
+        uint256 bountyId,
+        address bountyIssuer,
+        string name,
+        string description,
+        uint256 tokenId,
+        uint256 createdAt
+    );
+    event ClaimAccepted(
+        uint256 bountyId,
+        uint256 claimId,
+        address claimIssuer,
+        string claimUri,
+        address bountyIssuer
+    );
+    event BountyCancelled(uint256 bountyId, address issuer);
 
-    /** Create a bounty from the sender */
-    function createBounty(
+    constructor() ERC721("pics or it didn't happen", "POIDH") {}
+
+    /* === WRITE FUNCTIONS === */
+    /**
+     * @dev Allows the sender to create a bounty with a given name and description
+     * @param name the name of the bounty
+     * @param description the description of the bounty
+     */ function createBounty(
         string memory name,
         string memory description
     ) public payable {
@@ -73,8 +104,21 @@ contract POIDHNFT is
 
         // Store the bounty index in the user's array
         userBounties[msg.sender].push(bountyId);
+
+        emit BountyCreated(
+            bountyId,
+            msg.sender,
+            name,
+            description,
+            msg.value,
+            block.timestamp
+        );
     }
 
+    /**
+     * @dev Allows the sender to cancel a bounty with a given id
+     * @param _id the id of the bounty to be canceled
+     */
     function cancelBounty(uint _id) external {
         require(_id < bounties.length, "Bounty does not exist");
         Bounty storage bounty = bounties[_id];
@@ -88,8 +132,17 @@ contract POIDHNFT is
         bounty.amount = 0; // Zero out the bounty before transferring
 
         payable(bounty.issuer).transfer(refundAmount);
+
+        emit BountyCancelled(_id, bounty.issuer);
     }
 
+    /**
+     * @dev Allows the sender to create a claim on a given bounty
+     * @param bountyId the id of the bounty being claimed
+     * @param name the name of the claim
+     * @param uri the URI of the claim
+     * @param description the description of the claim
+     */
     function createClaim(
         uint256 bountyId,
         string memory name,
@@ -123,57 +176,26 @@ contract POIDHNFT is
         userClaims[msg.sender].push(claimId);
         bountyClaims[bountyId].push(claimId);
 
-        _safeMint(address(this), tokenId);
+        _mint(address(this), tokenId);
         _setTokenURI(tokenId, uri);
-    }
 
-    /** Returns all claims for a given bountyId */
-    function getClaimsByBountyId(
-        uint256 bountyId
-    ) public view returns (Claim[] memory) {
-        uint256[] storage bountyClaimIndexes = bountyClaims[bountyId];
-        Claim[] memory bountyClaimsArray = new Claim[](
-            bountyClaimIndexes.length
+        emit ClaimCreated(
+            claimId,
+            msg.sender,
+            bountyId,
+            bounties[bountyId].issuer,
+            name,
+            description,
+            tokenId,
+            block.timestamp
         );
-
-        for (uint256 i = 0; i < bountyClaimIndexes.length; i++) {
-            bountyClaimsArray[i] = claims[bountyClaimIndexes[i]];
-        }
-
-        return bountyClaimsArray;
     }
 
-    /** Returns all bounties for a given user */
-    function getBountiesByUser(
-        address user
-    ) public view returns (Bounty[] memory) {
-        uint256[] storage userBountyIndexes = userBounties[user];
-        Bounty[] memory userBountiesArray = new Bounty[](
-            userBountyIndexes.length
-        );
-
-        for (uint256 i = 0; i < userBountyIndexes.length; i++) {
-            userBountiesArray[i] = bounties[userBountyIndexes[i]];
-        }
-
-        return userBountiesArray;
-    }
-
-    /** Returns all claims for a given user */
-    function getClaimsByUser(
-        address user
-    ) public view returns (Claim[] memory) {
-        uint256[] storage userClaimIndexes = userClaims[user];
-        Claim[] memory userClaimsArray = new Claim[](userClaimIndexes.length);
-
-        for (uint256 i = 0; i < userClaimIndexes.length; i++) {
-            userClaimsArray[i] = claims[userClaimIndexes[i]];
-        }
-
-        return userClaimsArray;
-    }
-
-    /** Bounty issuer can accept a given claim on their bounty */
+    /**
+     * @dev Allows the sender to accept a claim on their bounty
+     * @param bountyId the id of the bounty being claimed
+     * @param claimId the id of the claim being accepted
+     */
     function acceptClaim(uint256 bountyId, uint256 claimId) public {
         require(bountyId < bounties.length, "Bounty does not exist");
         require(claimId < claims.length, "Claim does not exist");
@@ -206,8 +228,102 @@ contract POIDHNFT is
 
         // Finally, transfer the bounty amount to the claim issuer
         pendingPayee.transfer(pendingPayment);
+
+        emit ClaimAccepted(
+            bountyId,
+            claimId,
+            claimIssuer,
+            bounty.claimUri,
+            bounty.issuer
+        );
     }
 
+    /* === GETTER FUNCTIONS === */
+    /** 
+        @dev Returns all claims associated with a bounty
+        @param bountyId the id of the bounty to fetch claims for 
+    */
+    function getClaimsByBountyId(
+        uint256 bountyId
+    ) public view returns (Claim[] memory) {
+        uint256[] storage bountyClaimIndexes = bountyClaims[bountyId];
+        Claim[] memory bountyClaimsArray = new Claim[](
+            bountyClaimIndexes.length
+        );
+
+        for (uint256 i = 0; i < bountyClaimIndexes.length; i++) {
+            bountyClaimsArray[i] = claims[bountyClaimIndexes[i]];
+        }
+
+        return bountyClaimsArray;
+    }
+
+    /** 
+        @dev Returns all bounties for a given user 
+        @param user the address of the user to fetch bounties for
+    */
+    function getBountiesByUser(
+        address user
+    ) public view returns (Bounty[] memory) {
+        uint256[] storage userBountyIndexes = userBounties[user];
+        Bounty[] memory userBountiesArray = new Bounty[](
+            userBountyIndexes.length
+        );
+
+        for (uint256 i = 0; i < userBountyIndexes.length; i++) {
+            userBountiesArray[i] = bounties[userBountyIndexes[i]];
+        }
+
+        return userBountiesArray;
+    }
+
+    /** 
+        @dev Returns all claims for a given user 
+        @param user the address of the user to fetch claims for
+    */
+    function getClaimsByUser(
+        address user
+    ) public view returns (Claim[] memory) {
+        uint256[] storage userClaimIndexes = userClaims[user];
+        Claim[] memory userClaimsArray = new Claim[](userClaimIndexes.length);
+
+        for (uint256 i = 0; i < userClaimIndexes.length; i++) {
+            userClaimsArray[i] = claims[userClaimIndexes[i]];
+        }
+
+        return userClaimsArray;
+    }
+
+    /** Getter for the length of the bounties array */
+    function getBountiesLength() public view returns (uint256) {
+        return bounties.length;
+    }
+
+    /**
+     * @dev Returns an array of Bounties from start to end index
+     * @param start the index to start fetching bounties from
+     * @param end the index to stop fetching bounties at
+     * @return result an array of Bounties from start to end index
+     */
+    function getBounties(uint start, uint end) public view returns (Bounty[] memory) {
+        require(start <= end, "Start index must be less than or equal to end index");
+        require(end < bounties.length, "End index out of bounds");
+
+        // Calculate the size of the array to return
+        uint size = end - start + 1;
+        // Initialize an array of Bounties with the calculated size
+        Bounty[] memory result = new Bounty[](size);
+
+        // Loop from start to end index and populate the result array
+        for(uint i = 0; i < size; i++) {
+            result[i] = bounties[start + i];
+        }
+
+        return result;
+    }
+
+
+    /* === OVERRIDES === */
     // The following functions are overrides required by Solidity.
     function _beforeTokenTransfer(
         address from,
@@ -248,10 +364,5 @@ contract POIDHNFT is
         bytes memory
     ) public virtual override returns (bytes4) {
         return this.onERC721Received.selector;
-    }
-
-    /** Getter for the length of the bounties array */
-    function getBountiesLength() public view returns (uint256) {
-        return bounties.length;
     }
 }
