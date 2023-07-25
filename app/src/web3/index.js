@@ -94,7 +94,7 @@ export const useContract = () => {
           description: bounty.description,
           amount: Number(ethers.formatEther(bounty.amount)),
           claimer: bounty.claimer,
-          claimUri: bounty.claimUri,
+          claimId: bounty.claimId,
           createdAt: Number(bounty.createdAt),
         }));
         setUserBounties(plainObject);

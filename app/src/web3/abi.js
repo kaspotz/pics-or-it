@@ -175,7 +175,7 @@ export const abi = [
     inputs: [
       {
         internalType: 'uint256',
-        name: '_id',
+        name: 'id',
         type: 'uint256',
       },
     ],
@@ -204,12 +204,6 @@ export const abi = [
         internalType: 'address',
         name: 'claimIssuer',
         type: 'address',
-      },
-      {
-        indexed: false,
-        internalType: 'string',
-        name: 'claimUri',
-        type: 'string',
       },
       {
         indexed: false,
@@ -546,13 +540,13 @@ export const abi = [
         type: 'address',
       },
       {
-        internalType: 'string',
-        name: 'claimUri',
-        type: 'string',
+        internalType: 'uint256',
+        name: 'createdAt',
+        type: 'uint256',
       },
       {
         internalType: 'uint256',
-        name: 'createdAt',
+        name: 'claimId',
         type: 'uint256',
       },
     ],
@@ -704,13 +698,13 @@ export const abi = [
             type: 'address',
           },
           {
-            internalType: 'string',
-            name: 'claimUri',
-            type: 'string',
+            internalType: 'uint256',
+            name: 'createdAt',
+            type: 'uint256',
           },
           {
             internalType: 'uint256',
-            name: 'createdAt',
+            name: 'claimId',
             type: 'uint256',
           },
         ],
@@ -765,13 +759,13 @@ export const abi = [
             type: 'address',
           },
           {
-            internalType: 'string',
-            name: 'claimUri',
-            type: 'string',
+            internalType: 'uint256',
+            name: 'createdAt',
+            type: 'uint256',
           },
           {
             internalType: 'uint256',
-            name: 'createdAt',
+            name: 'claimId',
             type: 'uint256',
           },
         ],

@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import BountyCard from './BountyCard';
 import { toast, ToastContainer } from 'react-toastify';
@@ -23,6 +23,16 @@ function MyBounties({
     },
     [wallet, fetchUserBounties]
   );
+
+  // set up polling every 2 seconds
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      refreshBounties(false);
+    }, 2000); // every 2 seconds
+
+    // cleanup function on component unmount
+    return () => clearInterval(intervalId);
+  }, [refreshBounties]);
 
   return (
     <div className="bounties-grid">

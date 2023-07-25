@@ -2,10 +2,21 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { ToastContainer, toast } from 'react-toastify';
 
-function ClaimCard({ bountyId, claim, getTokenUri, isOwner, acceptClaim }) {
+function ClaimCard({
+  bountyId,
+  claim,
+  getTokenUri,
+  isOwner,
+  acceptClaim,
+  bountyDetails,
+}) {
   const { name, issuer, tokenId, description } = claim;
   const [isLoading, setIsLoading] = useState(true);
   const [imageSrc, setImageSrc] = useState('');
+
+  const isClaimAccepted =
+    Number(bountyDetails.claimId) === claim.id &&
+    bountyDetails.claimer !== '0x0000000000000000000000000000000000000000';
 
   useEffect(() => {
     const fetchTokenUri = async () => {
@@ -36,7 +47,7 @@ function ClaimCard({ bountyId, claim, getTokenUri, isOwner, acceptClaim }) {
   };
 
   return (
-    <div className="claim-card">
+    <div className={`claim-card ${isClaimAccepted ? 'accepted-claim' : ''}`}>
       <ToastContainer />
       {isLoading ? (
         <p>Loading...</p>
@@ -48,13 +59,19 @@ function ClaimCard({ bountyId, claim, getTokenUri, isOwner, acceptClaim }) {
           <div className="claim-card-info">
             <div className="claim-card-title-wrap">
               <div className="claim-card-title">{name}</div>
-              {isOwner && (
+              {isOwner ? (
                 <button
                   className="claim-card-button"
                   onClick={handleAcceptClaim}
                 >
-                  accept
+                  {isClaimAccepted ? 'accepted' : 'accept'}
                 </button>
+              ) : (
+                isClaimAccepted && (
+                  <button className="claim-card-button" disabled>
+                    accepted
+                  </button>
+                )
               )}
             </div>
             <details className="claim-card-issuer">
@@ -84,6 +101,7 @@ ClaimCard.propTypes = {
   isOwner: PropTypes.bool.isRequired,
   acceptClaim: PropTypes.func.isRequired,
   bountyId: PropTypes.string.isRequired,
+  bountyDetails: PropTypes.object.isRequired,
 };
 
 export default ClaimCard;

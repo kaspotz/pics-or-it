@@ -229,12 +229,7 @@ contract POIDHNFT is
         // Finally, transfer the bounty amount to the claim issuer
         pendingPayee.transfer(pendingPayment);
 
-        emit ClaimAccepted(
-            bountyId,
-            claimId,
-            claimIssuer,
-            bounty.issuer
-        );
+        emit ClaimAccepted(bountyId, claimId, claimIssuer, bounty.issuer);
     }
 
     /* === GETTER FUNCTIONS === */
