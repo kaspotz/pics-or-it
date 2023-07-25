@@ -118,12 +118,12 @@ function BountyDetails({
         </div>
       ) : (
         <div className="bounty-details-connect-claim-button-wrap">
-          <button onClick={handleClaimClick}>Claim</button>
+          <button onClick={handleClaimClick}>claim</button>
         </div>
       )}
       <div className="bounties-grid bounty-details-right">
         {loading ? (
-          <div>Loading...</div>
+          <div>loading...</div>
         ) : (
           userClaims.map(claim => (
             <ClaimCard
