@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import BountyCard from './BountyCard';
+import { toast, ToastContainer } from 'react-toastify';
 
 function MyBounties({
   userBounties,
@@ -11,14 +12,21 @@ function MyBounties({
   disconnect,
   connecting,
 }) {
-  useEffect(() => {
-    if (wallet) {
-      fetchUserBounties();
-    }
-  }, [wallet]);
+  const refreshBounties = useCallback(
+    toToast => {
+      if (wallet) {
+        fetchUserBounties();
+        if (toToast) {
+          toast.success('Bounty cancelled successfully!');
+        }
+      }
+    },
+    [wallet, fetchUserBounties]
+  );
 
   return (
     <div className="bounties-grid">
+      <ToastContainer />
       {!wallet ? (
         <div>
           <h2>connect your wallet to view your bounties</h2>
@@ -32,14 +40,17 @@ function MyBounties({
           </button>
         </div>
       ) : (
-        userBounties.map(bounty => (
-          <BountyCard
-            key={bounty.id}
-            bounty={bounty}
-            wallet={wallet}
-            cancelBounty={cancelBounty}
-          />
-        ))
+        userBounties
+          .filter(bounty => bounty.amount > 0)
+          .map(bounty => (
+            <BountyCard
+              key={bounty.id}
+              bounty={bounty}
+              wallet={wallet}
+              cancelBounty={cancelBounty}
+              refreshBounties={refreshBounties}
+            />
+          ))
       )}
     </div>
   );

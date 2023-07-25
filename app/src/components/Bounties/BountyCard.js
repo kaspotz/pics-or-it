@@ -5,10 +5,13 @@ import arbitrumLogo from '../../assets/arbitrum.png';
 import CreateClaim from '../Claims/CreateClaim';
 import { ethers } from 'ethers';
 import { ToastContainer, toast } from 'react-toastify';
+import { BeatLoader } from 'react-spinners';
 
-function BountyCard({ bounty, cancelBounty, wallet }) {
+function BountyCard({ bounty, cancelBounty, wallet, refreshBounties }) {
   const { id, name, description, amount, claimer, issuer } = bounty;
   const [showCancel, setShowCancel] = useState(false);
+  const [cancelLoading, setCancelLoading] = useState(false);
+  const [showCreateClaim, setShowCreateClaim] = useState(false);
 
   useEffect(() => {
     if (wallet) {
@@ -29,12 +32,10 @@ function BountyCard({ bounty, cancelBounty, wallet }) {
         )}`
       : description;
 
-  const [showCreateClaim, setShowCreateClaim] = useState(false);
-
   const handleClaimClick = () => {
     if (
       ethers.getAddress(claimer) !==
-      ethers.getAddress('0x0000000000000000000000000000')
+      ethers.getAddress('0x0000000000000000000000000000000000000000')
     ) {
       toast.info('This bounty has already been claimed.');
       return;
@@ -44,8 +45,10 @@ function BountyCard({ bounty, cancelBounty, wallet }) {
 
   const handleCancelClick = async () => {
     try {
+      setCancelLoading(true);
       await cancelBounty(id);
-      toast.success('Bounty cancelled!');
+      setCancelLoading(false);
+      refreshBounties(true);
     } catch (error) {
       toast.error(`Error cancelling bounty: ${error.message}`);
     }
@@ -89,7 +92,11 @@ function BountyCard({ bounty, cancelBounty, wallet }) {
             className="bounty-details-button"
             onClick={handleCancelClick}
           >
-            cancel
+            {cancelLoading ? (
+              <BeatLoader color="white" loading={cancelLoading} size={5} />
+            ) : (
+              'Cancel'
+            )}
           </button>
         )}
       </div>
@@ -111,6 +118,7 @@ BountyCard.propTypes = {
   }).isRequired,
   cancelBounty: PropTypes.func.isRequired,
   wallet: PropTypes.object,
+  refreshBounties: PropTypes.func.isRequired,
 };
 
 export default BountyCard;
