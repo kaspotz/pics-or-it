@@ -49,17 +49,45 @@ describe("POIDHNFT", function () {
     });
   });
 
+  describe("cancelBounty", function () {
+    beforeEach(async function () {
+      await poidhNFT.createBounty("Bounty 1", "This is a bounty", { value: ethers.parseEther("1") });
+    });
+
+    it("Should cancel a bounty and refund the bounty amount to the bounty issuer", async function () {
+      const initialBalance = Number(ethers.formatEther(await ethers.provider.getBalance(owner.address))).toFixed(0);
+      await poidhNFT.cancelBounty(0);
+      const finalBalance = Number(ethers.formatEther(await ethers.provider.getBalance(owner.address))).toFixed(0);
+      
+      expect(Number(finalBalance) - Number(initialBalance)).to.equal(1);
+    });
+    
+
+    it("Should revert if the bounty does not exist", async function () {
+      await expect(poidhNFT.cancelBounty(1)).to.be.revertedWith("Bounty does not exist");
+    });
+
+    it("Should revert if the bounty has been claimed", async function () {
+      await poidhNFT.connect(addr1).createClaim(0, "Claim 1", "URI", "This is a claim description");
+      await poidhNFT.acceptClaim(0, 0);
+      await expect(poidhNFT.cancelBounty(0)).to.be.revertedWith("Bounty already claimed");
+    });
+
+    it("Should revert if the bounty issuer is not the caller", async function () {
+      const poidhNFTFromAddr1 = poidhNFT.connect(addr1);
+      await expect(poidhNFTFromAddr1.cancelBounty(0)).to.be.revertedWith("Only the bounty issuer can cancel the bounty");
+    });
+  });
+
   describe("acceptClaim", function () {
     beforeEach(async function () {
       await poidhNFT.createBounty("Bounty 1", "This is a bounty", { value: ethers.parseEther("1") });
-      await poidhNFT.connect(addr1).createClaim(0, "Claim 1", "URI",  "random descripton");
+      await poidhNFT.connect(addr1).createClaim(0, "Claim 1", "URI", "random descripton");
     });
 
     it("Should accept a claim and transfer the bounty amount to the claim issuer", async function () {
       const initialBalance = await ethers.provider.getBalance(addr1.address);
-
       await poidhNFT.acceptClaim(0, 0);
-
       const finalBalance = await ethers.provider.getBalance(addr1.address);
       expect(finalBalance - initialBalance).to.equal(ethers.parseEther("1"));
     });

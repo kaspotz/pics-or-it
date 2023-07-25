@@ -75,6 +75,21 @@ contract POIDHNFT is
         userBounties[msg.sender].push(bountyId);
     }
 
+    function cancelBounty(uint _id) external {
+        require(_id < bounties.length, "Bounty does not exist");
+        Bounty storage bounty = bounties[_id];
+        require(
+            msg.sender == bounty.issuer,
+            "Only the bounty issuer can cancel the bounty"
+        );
+        require(bounty.claimer == address(0), "Bounty already claimed");
+
+        uint refundAmount = bounty.amount;
+        bounty.amount = 0; // Zero out the bounty before transferring
+
+        payable(bounty.issuer).transfer(refundAmount);
+    }
+
     function createClaim(
         uint256 bountyId,
         string memory name,
