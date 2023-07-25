@@ -38,21 +38,21 @@ describe("POIDHNFT", function () {
     });
 
     it("Should create a claim for a bounty with correct id", async function () {
-      await poidhNFT.createClaim(0, "Claim 1", "URI");
+      await poidhNFT.createClaim(0, "Claim 1", "URI", "This is a claim description");
       const claim = await poidhNFT.claims(0);
       expect(claim.id).to.equal(0); // new test for ID
       expect(claim.bountyId).to.equal(0);
     });
 
     it("Should revert if the bounty does not exist", async function () {
-      await expect(poidhNFT.createClaim(1, "Claim 1", "URI")).to.be.revertedWith("Bounty does not exist");
+      await expect(poidhNFT.createClaim(1, "Claim 1", "URI", "random descripton")).to.be.revertedWith("Bounty does not exist");
     });
   });
 
   describe("acceptClaim", function () {
     beforeEach(async function () {
       await poidhNFT.createBounty("Bounty 1", "This is a bounty", { value: ethers.parseEther("1") });
-      await poidhNFT.connect(addr1).createClaim(0, "Claim 1", "URI");
+      await poidhNFT.connect(addr1).createClaim(0, "Claim 1", "URI",  "random descripton");
     });
 
     it("Should accept a claim and transfer the bounty amount to the claim issuer", async function () {
