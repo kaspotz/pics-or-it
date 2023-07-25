@@ -9,6 +9,13 @@ function Dropzone({ onDrop }) {
     onDrop: acceptedFiles => {
       // one file only
       const file = acceptedFiles[0];
+
+      const fileSizeInKb = file.size / 1024;
+      if (fileSizeInKb > 500) {
+        toast.error('File size must be less than 300kb.');
+        return;
+      }
+
       const reader = new FileReader();
 
       // FileReader read as url, returns a base64 encoded version of the image
