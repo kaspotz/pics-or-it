@@ -2,7 +2,12 @@ import React from 'react';
 import { useContract } from './web3/index.js';
 import Navigation from './components/Navigation';
 import Home from './components/Home';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from 'react-router-dom';
 import MyBounties from './components/Bounties/MyBounties.js';
 import BountyDetails from './components/Bounties/BountyDetails.js';
 
@@ -26,9 +31,8 @@ function App() {
       <div>
         <Navigation />
         <Routes>
-          <Route path="/" element={<Navigate to="/pics-or-it" replace />} />
           <Route
-            path="/pics-or-it"
+            path="/"
             element={
               <Home
                 wallet={wallet}
