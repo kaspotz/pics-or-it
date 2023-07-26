@@ -94,7 +94,7 @@ function BountyCard({ bounty, cancelBounty, wallet, refreshBounties }) {
             {cancelLoading ? (
               <BeatLoader color="white" loading={cancelLoading} size={5} />
             ) : (
-              'Cancel'
+              'cancel'
             )}
           </button>
         )}
