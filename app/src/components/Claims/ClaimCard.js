@@ -46,6 +46,19 @@ function ClaimCard({
     }
   };
 
+  const truncatedName =
+    name.length > 30
+      ? `${name.substr(0, 20)}...${name.substr(name.length - 10, name.length)}`
+      : name;
+
+  const truncatedDescription =
+    description.length > 100
+      ? `${description.substr(0, 80)}...${description.substr(
+          description.length - 20,
+          description.length
+        )}`
+      : description;
+
   return (
     <div className={`claim-card ${isClaimAccepted ? 'accepted-claim' : ''}`}>
       <ToastContainer />
@@ -58,7 +71,7 @@ function ClaimCard({
           </div>
           <div className="claim-card-info">
             <div className="claim-card-title-wrap">
-              <div className="claim-card-title">{name}</div>
+              <div className="claim-card-title">{truncatedName}</div>
               {isOwner ? (
                 <button
                   className="claim-card-button"
@@ -80,7 +93,7 @@ function ClaimCard({
             </details>
             <details className="claim-card-details">
               <summary className="summary">description</summary>
-              <div className="summary-body">{description}</div>
+              <div className="summary-body">{truncatedDescription}</div>
             </details>
           </div>
         </>
