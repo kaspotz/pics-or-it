@@ -218,6 +218,14 @@ img {
   margin-top: 3em;
 }
 
+.my-bounties-wrap {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 /* Responsive layout - makes the grid list stack on top of each other instead of next to each other */
 @media screen and (max-width: 768px) {
   .bounties-grid {

@@ -35,7 +35,7 @@ function MyBounties({
   }, [refreshBounties]);
 
   return (
-    <div className="bounties-grid">
+    <div className='my-bounties-wrap'>
       {!wallet ? (
         <div>
           <h2>connect your wallet to view your bounties</h2>
@@ -49,19 +49,23 @@ function MyBounties({
           </button>
         </div>
       ) : (
-        userBounties
-          .filter(bounty => bounty.amount > 0)
-          .map(bounty => (
-            <BountyCard
-              key={bounty.id}
-              bounty={bounty}
-              wallet={wallet}
-              cancelBounty={cancelBounty}
-              refreshBounties={refreshBounties}
-            />
-          ))
+        <>
+          <div className="bounties-grid">
+            {userBounties
+              .filter(bounty => bounty.amount > 0)
+              .map(bounty => (
+                <BountyCard
+                  key={bounty.id}
+                  bounty={bounty}
+                  wallet={wallet}
+                  cancelBounty={cancelBounty}
+                  refreshBounties={refreshBounties}
+                />
+              ))}
+          </div>
+          <ToastContainer />
+        </>
       )}
-      <ToastContainer />
     </div>
   );
 }
