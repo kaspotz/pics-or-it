@@ -1,47 +1,24 @@
 {
-  "name": "poidh",
-  "version": "0.1.0",
-  "homepage": "https://kaspotz.github.io/pics-or-it",
+  "name": "pics-or-it",
+  "version": "0.0.1",
+  "description": "Pics or it Code",
+  "main": "index.js",
+  "repository": "https://github.com/Mjavala/pics-or-it.git",
+  "author": "k <mja>",
+  "license": "MIT",
   "private": true,
-  "dependencies": {
-    "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "@web3-onboard/core": "^2.19.2",
-    "@web3-onboard/injected-wallets": "^2.9.0",
-    "@web3-onboard/walletconnect": "^2.3.8",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-scripts": "5.0.1",
-    "web-vitals": "^2.1.4"
-  },
+  "workspaces": [
+    "app",
+    "server",
+    "contracts"
+  ],
   "scripts": {
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "devDependencies": {
-    "gh-pages": "^5.0.0"
+    "app:dev": "yarn workspace app start",
+    "server:dev": "yarn workspace server start",
+    "server:test": "yarn workspace server test",
+    "contract:compile": "yarn workspace contracts compile",
+    "contract:test": "yarn workspace contracts test",
+    "lint": "yarn workspaces run lint",
+    "format": "yarn workspaces run format"
   }
 }

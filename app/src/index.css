@@ -1,0 +1,501 @@
+html,
+body {
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  background-color: #7ab2e7;
+  font-family: Helvetica, Arial, sans-serif;
+  text-align: center;
+}
+
+p,
+.bounty-title,
+.process-string {
+  color: white;
+  font-family: 'Oxygen', sans-serif;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+a {
+  color: white;
+  text-decoration: none;
+}
+
+#app {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  padding-top: 10px;
+}
+
+#app div {
+  width: 100%;
+}
+
+#app div div {
+  height: 100%;
+}
+
+#app div div div {
+  position: relative;
+  height: auto;
+}
+
+h1,
+h2,
+h3 {
+  color: white;
+  font-family: 'Oxygen', sans-serif;
+  margin-left: 5%;
+  margin-right: 5%;
+}
+
+header h1 {
+  font-size: 3.5em;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+label {
+  display: block;
+  margin: 20px;
+  font-size: 30px;
+  font-weight: bold;
+}
+
+nav a {
+  margin: 12px;
+  text-transform: uppercase;
+  font-size: 10px;
+}
+
+button {
+  -webkit-transition-duration: 0.1s; /* Safari */
+  transition-duration: 0.1s;
+  background-color: #f4595b;
+  border-radius: 8px;
+  border-width: 1px;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  font-family: 'Oxygen', sans-serif;
+  letter-spacing: 2px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+button:hover {
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+button:active {
+  background-color: #c24648;
+  border: none;
+  border-radius: 8px;
+  border-bottom: 4px solid #c24648;
+  color: #ccc;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  font-family: 'Oxygen', sans-serif;
+  letter-spacing: 2px;
+}
+
+img {
+  max-width: 90%;
+  max-height: 340px;
+  top: 5%;
+  left: 5%;
+}
+
+.myForm {
+  font-family: 'Oxygen', sans-serif;
+  font-size: 0.8em;
+  width: 50em;
+  padding: 1em;
+}
+
+.myForm * {
+  box-sizing: border-box;
+}
+
+.myForm fieldset {
+  border: none;
+  padding: 0;
+}
+
+.myForm legend,
+.myForm label {
+  padding: 0;
+  font-weight: bold;
+}
+
+.myForm label.choice {
+  font-size: 0.8em;
+  font-weight: normal;
+}
+
+.myForm input[type='text'],
+.myForm input[type='tel'],
+.myForm input[type='email'],
+.myForm input[type='datetime-local'],
+.myForm select,
+.myForm textarea {
+  display: block;
+  width: 100%;
+  border: 1px solid #ccc;
+  font-family: 'Oxygen', sans-serif;
+  font-size: 0.6em;
+  padding: 0.3em;
+}
+
+.myForm textarea {
+  height: 100px;
+}
+
+.form-center {
+  display: flex;
+  justify-content: center;
+}
+
+.vertical {
+  resize: vertical;
+}
+
+.hamburger-menu-wrap {
+  padding-top: 1em;
+  padding-right: 1em;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.menu-close-wrap {
+  padding-top: 0.5em;
+  padding-right: 1em;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.menu-wrap {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #7ab2e7;
+  z-index: 1;
+}
+
+.menu-list-wrap {
+  color: white;
+  font-family: 'Oxygen', sans-serif;
+  font-size: 1.5em;
+}
+
+.menu-list-wrap li {
+  margin: 1em;
+  cursor: pointer;
+}
+
+.bounties-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 20px;
+  padding: 20px;
+  margin: 0 auto;
+  max-width: 1200px;
+  justify-items: center;
+  align-items: center;
+  margin-top: 3em;
+}
+
+/* Responsive layout - makes the grid list stack on top of each other instead of next to each other */
+@media screen and (max-width: 768px) {
+  .bounties-grid {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+.bounty-card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  transition: 0.3s;
+  width: 300px;
+  border-radius: 5px;
+  padding: 1em;
+}
+
+.bounty-card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+.bounty-card-title-amount-wrap,
+.bounty-card-amount-wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.bounty-description {
+  text-align: left;
+  margin-top: 0px;
+}
+
+.bounty-title {
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+.bounty-details-button-wrap {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.bounty-details-button {
+  padding: 5px 12.5px;
+  margin: 0px 10px;
+  font-size: 0.85em;
+}
+
+.bounty-card-amount-logo {
+  width: 40px;
+}
+
+.bounty-card-amount {
+  padding: 0px;
+  margin-right: 10px;
+}
+
+.claim-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.claim-popup {
+  position: absolute;
+  background-color: #7ab2e7;
+  padding: 20px;
+  border-radius: 8px;
+  width: 75%;
+  height: 75%;
+  max-width: 300px;
+  max-height: 600px;
+  display: flex;
+  flex-direction: column;
+}
+
+.claim-popup h3 {
+  margin-top: 0;
+}
+
+.claim-popup button {
+  margin-top: 10px;
+}
+
+.claim-popup-content-wrap {
+  flex-grow: 1;
+  padding-bottom: 10px;
+}
+
+.claim-popup-buttons {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.claim-name,
+.claim-uri,
+.claim-description {
+  padding: 10px 0px;
+  color: white;
+  font-family: 'Oxygen', sans-serif;
+  font-size: 1.25em;
+  margin: 0px;
+}
+
+.process-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.upload-wrap {
+  color: white;
+  font-family: 'Oxygen', sans-serif;
+  font-size: 1em;
+  margin: 0px;
+}
+
+.upload-loader {
+  padding-bottom: 10px;
+}
+
+.claim-name-input,
+.claim-description-input {
+  width: 75%;
+}
+
+.dropzone {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  border-width: 2px;
+  border-radius: 4px;
+  border-color: #f4595b;
+  border-style: dashed;
+  background-color: #7ab2e7;
+  outline: none;
+  transition: border 0.24s ease-in-out;
+  height: 100%;
+}
+
+.create-claim-close {
+  display: flex;
+  width: 100%;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+.claim-card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  transition: 0.3s;
+  width: 300px;
+  border-radius: 5px;
+}
+
+.claim-card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+.claim-card-image {
+  width: 100%;
+  height: auto;
+}
+
+.claim-card-info {
+  margin-top: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding-bottom: 0.75em;
+  padding-left: 0.75em;
+  padding-right: 0.75em;
+}
+
+.claim-image {
+  max-width: 100%;
+  height: auto;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.claim-card-title {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: white;
+  font-family: 'Oxygen', sans-serif;
+  margin: 10px 0px;
+}
+
+.claim-card-issuer {
+  color: white;
+  font-size: 0.85em;
+}
+
+.claim-card-details {
+  margin-top: 10px;
+  font-size: 0.85em;
+  color: white;
+  font-family: 'Oxygen', sans-serif;
+}
+
+.bounty-card-details {
+  margin-top: 10px;
+  font-size: 1em;
+  color: white;
+  font-family: 'Oxygen', sans-serif;
+}
+
+summary::marker {
+  color: #f4595b;
+}
+
+summary::-webkit-details-marker {
+  color: #f4595b;
+}
+
+.summary {
+  text-align: left;
+}
+
+.summary-body {
+  font-size: 0.85em;
+  max-width: 100%;
+}
+
+.bounty-details-left {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.bounty-details {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 50%;
+}
+
+@media screen and (max-width: 768px) {
+  .bounty-details {
+    flex-direction: column;
+  }
+}
+
+.claim-card-button {
+  padding: 5px 12.5px;
+  font-size: 0.8em;
+}
+
+.claim-card-title-wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.bounty-details-connect-claim-button-wrap {
+  margin-top: 4em;
+  margin-bottom: 2em;
+  width: 100%;
+}
+
+.accepted-claim {
+  border: 3px solid #f4595b;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
