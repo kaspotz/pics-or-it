@@ -470,6 +470,10 @@ summary::-webkit-details-marker {
   width: 50%;
 }
 
+.bounty-summary {
+  max-width: 50%;
+}
+
 @media screen and (max-width: 768px) {
   .bounty-details {
     flex-direction: column;

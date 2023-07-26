@@ -132,7 +132,7 @@ function Home({ wallet, connect, disconnect, connecting }) {
                 {loading ? (
                   <BeatLoader color="white" loading={loading} size={7} />
                 ) : (
-                  'Create bounty'
+                  'create bounty'
                 )}
               </button>
             </p>
