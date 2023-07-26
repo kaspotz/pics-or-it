@@ -6,7 +6,6 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-  Navigate,
 } from 'react-router-dom';
 import MyBounties from './components/Bounties/MyBounties.js';
 import BountyDetails from './components/Bounties/BountyDetails.js';
