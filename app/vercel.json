@@ -1,12 +1,12 @@
 {
-    "rewrites": [
-		{
-			"source": "/bounties/(.*)",
-			"destination": "/index.html"
-		},
-		{
-		"source": "/",
-		"destination": "/pics-or-it"
-		}
-	]
+  "rewrites": [
+    {
+      "source": "/app/bounties/*",
+      "destination": "/app/index.html"
+    },
+    {
+      "source": "/app/",
+      "destination": "/app/pics-or-it"
+    }
+  ]
 }
