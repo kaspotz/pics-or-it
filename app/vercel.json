@@ -1,12 +1,8 @@
 {
   "rewrites": [
     {
-      "source": "/app/bounties/(.*)",
-      "destination": "/app/index.html"
-    },
-    {
-      "source": "/app/",
-      "destination": "/app/pics-or-it"
+      "source": "/bounties/:id",
+      "destination": "/index.html"
     }
   ]
 }
