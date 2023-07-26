@@ -3,6 +3,10 @@
 		{
 			"source": "/bounties/(.*)",
 			"destination": "/index.html"
+		},
+		{
+		"source": "/",
+		"destination": "/pics-or-it"
 		}
 	]
 }
