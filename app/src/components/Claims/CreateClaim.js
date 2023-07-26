@@ -34,8 +34,8 @@ function CreateClaim({ onClose, bountyId }) {
       return;
     }
 
-    if (formData.name.length > 30) {
-      toast.error('The name should be a maximum of 30 characters');
+    if (formData.name.length > 40) {
+      toast.error('The name should be a maximum of 40 characters');
       return;
     }
 

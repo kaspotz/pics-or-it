@@ -15,8 +15,8 @@ function Home({ wallet, connect, disconnect, connecting }) {
   const [loading, setLoading] = useState(false); // new state for loading status
 
   const handleCreateBounty = async () => {
-    if (bountyName.length > 20) {
-      toast.error('Bounty name should not exceed 20 characters');
+    if (bountyName.length > 40) {
+      toast.error('Bounty name should not exceed 40 characters');
       return;
     }
     if (bountyDescription.length > 300) {
@@ -132,7 +132,7 @@ function Home({ wallet, connect, disconnect, connecting }) {
                 {loading ? (
                   <BeatLoader color="white" loading={loading} size={7} />
                 ) : (
-                  'Create bounty'
+                  'create bounty'
                 )}
               </button>
             </p>
