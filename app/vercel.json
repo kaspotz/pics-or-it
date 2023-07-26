@@ -1,7 +1,7 @@
 {
     "rewrites": [
 		{
-			"source": "/bounties/*",
+			"source": "/bounties/(.*)",
 			"destination": "/index.html"
 		}
 	]
