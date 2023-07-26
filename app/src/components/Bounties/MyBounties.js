@@ -36,7 +36,6 @@ function MyBounties({
 
   return (
     <div className="bounties-grid">
-      <ToastContainer />
       {!wallet ? (
         <div>
           <h2>connect your wallet to view your bounties</h2>
@@ -62,6 +61,7 @@ function MyBounties({
             />
           ))
       )}
+      <ToastContainer />
     </div>
   );
 }

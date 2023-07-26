@@ -32,11 +32,6 @@ function BountyCard({ bounty, cancelBounty, wallet, refreshBounties }) {
         )}`
       : description;
 
-  const truncatedName =
-    name.length > 30
-      ? `${name.substr(0, 10)}...${name.substr(name.length - 20, name.length)}`
-      : name;
-
   const handleClaimClick = () => {
     if (
       ethers.getAddress(claimer) !==
@@ -65,9 +60,8 @@ function BountyCard({ bounty, cancelBounty, wallet, refreshBounties }) {
 
   return (
     <div className="bounty-card">
-      <ToastContainer />
       <div className="bounty-card-title-amount-wrap">
-        <div className="bounty-title">{truncatedName}</div>
+        <div className="bounty-title">{name}</div>
         <div className="bounty-card-amount-wrap">
           <img
             className="bounty-card-amount-logo"
@@ -108,6 +102,7 @@ function BountyCard({ bounty, cancelBounty, wallet, refreshBounties }) {
       {showCreateClaim && (
         <CreateClaim bountyId={id} onClose={handleCloseCreateClaim} />
       )}
+      <ToastContainer />
     </div>
   );
 }

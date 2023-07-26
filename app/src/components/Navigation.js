@@ -9,7 +9,7 @@ function Navigation() {
 
   const handleHome = () => {
     setMenu(false);
-    navigate('/pics-or-it');
+    navigate('/');
   };
 
   const handleMyBounties = () => {

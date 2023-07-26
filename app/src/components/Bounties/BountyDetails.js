@@ -47,7 +47,6 @@ function BountyDetails({
 
       // sort claims by priority and created time
       claims.sort((a, b) => {
-        console.log(a, b, bountyDetails.claimId);
         // if a's id is the same as the bounty's claim id, a gets priority
         if (a.id === Number(bountyDetails.claimId)) return -1;
         // if b's id is the same as the bounty's claim id, b gets priority
@@ -73,13 +72,10 @@ function BountyDetails({
 
   useEffect(() => {
     if (wallet && bountyDetails.name) {
-      console.log(ethers.getAddress(wallet.accounts[0].address));
-      console.log(ethers.getAddress(bountyDetails.issuer));
       if (
         ethers.getAddress(wallet.accounts[0].address) ===
         ethers.getAddress(bountyDetails.issuer)
       ) {
-        console.log('here');
         setIsOwner(true);
       }
     }
@@ -87,7 +83,6 @@ function BountyDetails({
 
   return (
     <div className="bounty-details-wrap">
-      <ToastContainer />
       <div className="bounty-details-left">
         <h1>bounty details</h1>
         <div className="bounty-details">
@@ -97,7 +92,9 @@ function BountyDetails({
           </details>
           <details className="bounty-card-details">
             <summary className="bounty-summary">description</summary>
-            <div className="summary-body">{bountyDetails.description}</div>
+            <div className="summary-body bounty-summary-description">
+              {bountyDetails.description}
+            </div>
           </details>
           <details className="bounty-card-details">
             <summary className="bounty-summary">reward</summary>
@@ -141,6 +138,7 @@ function BountyDetails({
       {showCreateClaim && (
         <CreateClaim bountyId={id} onClose={handleCloseCreateClaim} />
       )}
+      <ToastContainer />
     </div>
   );
 }

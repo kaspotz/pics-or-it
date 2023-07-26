@@ -215,7 +215,6 @@ img {
   margin: 0 auto;
   max-width: 1200px;
   justify-items: center;
-  align-items: center;
   margin-top: 3em;
 }
 
@@ -251,8 +250,9 @@ img {
 }
 
 .bounty-title {
-  font-size: 1.5em;
+  font-size: 1em;
   font-weight: bold;
+  text-align: left;
 }
 
 .bounty-details-button-wrap {
@@ -470,13 +470,16 @@ summary::-webkit-details-marker {
   width: 50%;
 }
 
-.bounty-summary {
-  max-width: 50%;
+.bounty-summary-description {
+  max-width: 200px;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
 @media screen and (max-width: 768px) {
   .bounty-details {
     flex-direction: column;
+    width: 100%;
   }
 }
 
