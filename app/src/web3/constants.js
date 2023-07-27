@@ -13,4 +13,4 @@ export const PROVIDER_URL =
 export const CONTRACT =
   process.env.NODE_ENV === 'development'
     ? CONTRACT_DEV_ADDRESS
-    : CONTRACT_ADDRESS;
+    : CONTRACT_DEV_ADDRESS;
