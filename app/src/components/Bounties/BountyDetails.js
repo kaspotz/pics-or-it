@@ -40,18 +40,13 @@ function BountyDetails({
   };
 
   useEffect(() => {
-    // Declare an async function
     const fetchClaimsAndDetails = async () => {
       const claims = await getClaimsByBountyId(id);
       const bountyDetails = await fetchBountyDetails(id);
 
-      // sort claims by priority and created time
       claims.sort((a, b) => {
-        // if a's id is the same as the bounty's claim id, a gets priority
         if (a.id === Number(bountyDetails.claimId)) return -1;
-        // if b's id is the same as the bounty's claim id, b gets priority
         if (b.id === Number(bountyDetails.claimId)) return 1;
-        // if neither are the bounty's claim id, sort by created time
         return b.createdAt - a.createdAt;
       });
 
@@ -60,13 +55,10 @@ function BountyDetails({
       setLoading(false);
     };
 
-    // Call it right away
     fetchClaimsAndDetails();
 
-    // And every 2 seconds
     const intervalId = setInterval(fetchClaimsAndDetails, 2000);
 
-    // Clean up after ourselves by clearing the interval when the component unmounts
     return () => clearInterval(intervalId);
   }, [id]);
 
@@ -86,20 +78,9 @@ function BountyDetails({
       <div className="bounty-details-left">
         <h1>bounty details</h1>
         <div className="bounty-details">
-          <details className="bounty-card-details">
-            <summary className="bounty-summary">name</summary>
-            <div className="summary-body">{bountyDetails.name}</div>
-          </details>
-          <details className="bounty-card-details">
-            <summary className="bounty-summary">description</summary>
-            <div className="summary-body bounty-summary-description">
-              {bountyDetails.description}
-            </div>
-          </details>
-          <details className="bounty-card-details">
-            <summary className="bounty-summary">reward</summary>
-            <div className="summary-body">{bountyDetails.amount} eth</div>
-          </details>
+          <h2 className="bounty-details-title">{bountyDetails.name}</h2>
+          <p className="summary-body">{bountyDetails.description}</p>
+          <h3>{bountyDetails.amount} eth</h3>
         </div>
       </div>
       {!wallet ? (

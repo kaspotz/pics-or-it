@@ -445,6 +445,7 @@ img {
   font-size: 1em;
   color: white;
   font-family: 'Oxygen', sans-serif;
+  width: 33%;
 }
 
 summary::marker {
@@ -460,8 +461,8 @@ summary::-webkit-details-marker {
 }
 
 .summary-body {
-  font-size: 0.85em;
-  max-width: 100%;
+  max-width: 66%;
+  margin: 5px auto;
 }
 
 .bounty-details-left {
@@ -473,20 +474,14 @@ summary::-webkit-details-marker {
 
 .bounty-details {
   display: flex;
-  justify-content: space-around;
+  justify-content: flex-start;
   align-items: center;
-  width: 50%;
-}
-
-.bounty-summary-description {
-  max-width: 200px;
-  margin-top: 5px;
-  margin-bottom: 5px;
+  width: 75%;
+  flex-direction: column;
 }
 
 @media screen and (max-width: 768px) {
   .bounty-details {
-    flex-direction: column;
     width: 100%;
   }
 }
@@ -513,4 +508,8 @@ summary::-webkit-details-marker {
   border: 3px solid #f4595b;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
+}
+
+.bounty-details-title {
+  margin: 10px 0px;
 }

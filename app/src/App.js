@@ -22,7 +22,7 @@ function App() {
   } = useContract();
 
   return (
-    <Router basename='/'>
+    <Router basename="/">
       <div>
         <Navigation />
         <Routes>

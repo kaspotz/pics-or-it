@@ -35,7 +35,7 @@ function MyBounties({
   }, [refreshBounties]);
 
   return (
-    <div className='my-bounties-wrap'>
+    <div className="my-bounties-wrap">
       {!wallet ? (
         <div>
           <h2>connect your wallet to view your bounties</h2>
