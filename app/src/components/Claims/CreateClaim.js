@@ -75,7 +75,7 @@ function CreateClaim({ onClose, bountyId }) {
           return;
         }
         setStatus({ loading: true, processString: 'creating claim...' });
-        console.log(formData.description)
+        console.log(formData.description);
         await createClaim(
           Number(bountyId),
           formData.name,

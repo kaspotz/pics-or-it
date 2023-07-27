@@ -8,7 +8,6 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Royalty.sol";
 
-
 contract POIDHNFT is
     ERC721,
     ERC721Enumerable,
@@ -81,11 +80,14 @@ contract POIDHNFT is
     event BountyCancelled(uint256 bountyId, address issuer);
 
     /**
-        * @dev Constructor function
-        * @param _treasury the address of the treasury wallet
-        * @param _feeNumerator the fee numerator for the royalty (1000 ~ 10%)
+     * @dev Constructor function
+     * @param _treasury the address of the treasury wallet
+     * @param _feeNumerator the fee numerator for the royalty (1000 ~ 10%)
      */
-    constructor(address _treasury, uint96 _feeNumerator) ERC721("pics or it didn't happen", "POIDH") {
+    constructor(
+        address _treasury,
+        uint96 _feeNumerator
+    ) ERC721("pics or it didn't happen", "POIDH") {
         treasury = _treasury;
         _setDefaultRoyalty(_treasury, _feeNumerator);
     }
