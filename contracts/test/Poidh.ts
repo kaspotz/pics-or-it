@@ -6,15 +6,16 @@ describe("POIDHNFT", function () {
   let owner: any;
   let addr1: any;
   let addr2: any;
+  let treasury: any;
   let addrs: any;
 
   beforeEach(async function () {
-    [owner, addr1, addr2, ...addrs] = await ethers.getSigners();
+    [owner, addr1, addr2, treasury, ...addrs] = await ethers.getSigners();
 
     const poidhNFTFactory = await ethers.getContractFactory("POIDHNFT");
-    poidhNFT = await poidhNFTFactory.deploy();
+    poidhNFT = await poidhNFTFactory.deploy(treasury.address);
   });
-
+  
   describe("createBounty", function () {
     it("Should create a bounty with the correct id and amount", async function () {
       await poidhNFT.createBounty(
@@ -89,7 +90,7 @@ describe("POIDHNFT", function () {
       const initialBalance = await ethers.provider.getBalance(addr1.address);
       await poidhNFT.acceptClaim(0, 0);
       const finalBalance = await ethers.provider.getBalance(addr1.address);
-      expect(finalBalance - initialBalance).to.equal(ethers.parseEther("1"));
+      expect(finalBalance - initialBalance).to.equal(ethers.parseEther("0.975"));
     });
 
     it("Should revert if the bounty does not exist", async function () {

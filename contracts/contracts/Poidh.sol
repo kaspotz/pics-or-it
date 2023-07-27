@@ -17,6 +17,8 @@ contract POIDHNFT is
 
     Counters.Counter private _tokenIdCounter;
 
+    address public treasury;
+
     /** Bounty Logic */
     struct Bounty {
         uint256 id;
@@ -70,11 +72,14 @@ contract POIDHNFT is
         uint256 bountyId,
         uint256 claimId,
         address claimIssuer,
-        address bountyIssuer
+        address bountyIssuer,
+        uint256 fee
     );
     event BountyCancelled(uint256 bountyId, address issuer);
 
-    constructor() ERC721("pics or it didn't happen", "POIDH") {}
+    constructor(address _treasury) ERC721("pics or it didn't happen", "POIDH") {
+        treasury = _treasury;
+    }
 
     /* === WRITE FUNCTIONS === */
     /**
@@ -219,9 +224,18 @@ contract POIDHNFT is
         bounty.claimer = claimIssuer;
         bounty.claimId = claimId;
 
+        // Calculate the fee (2.5% of bountyAmount)
+        uint256 fee = (bountyAmount * 25) / 1000;
+
+        // Subtract the fee from the bountyAmount
+        uint256 payout = bountyAmount - fee;
+
         // Store the claim issuer and bounty amount for use after external calls
         address payable pendingPayee = payable(claimIssuer);
-        uint256 pendingPayment = bountyAmount;
+        uint256 pendingPayment = payout;
+
+        // Store the treasury address for use after external calls
+        address payable t = payable(treasury); // replace 'treasury_address_here' with your actual treasury address
 
         // Transfer the claim NFT to the bounty issuer
         _safeTransfer(address(this), msg.sender, tokenId, "");
@@ -229,7 +243,10 @@ contract POIDHNFT is
         // Finally, transfer the bounty amount to the claim issuer
         pendingPayee.transfer(pendingPayment);
 
-        emit ClaimAccepted(bountyId, claimId, claimIssuer, bounty.issuer);
+        // Transfer the fee to the treasury wallet
+        t.transfer(fee);
+
+        emit ClaimAccepted(bountyId, claimId, claimIssuer, bounty.issuer, fee); // update event parameters to include the fee
     }
 
     /* === GETTER FUNCTIONS === */
