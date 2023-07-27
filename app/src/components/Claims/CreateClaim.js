@@ -40,7 +40,7 @@ function CreateClaim({ onClose, bountyId }) {
     }
 
     if (formData.description.length > 300) {
-      toast.error('The description should be a maximum of 200 characters');
+      toast.error('The description should be a maximum of 300 characters');
       return;
     }
 
