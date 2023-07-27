@@ -9,6 +9,7 @@ function ClaimCard({
   isOwner,
   acceptClaim,
   bountyDetails,
+  isClaimed,
 }) {
   const { name, issuer, tokenId, description } = claim;
   const [isLoading, setIsLoading] = useState(true);
@@ -72,12 +73,12 @@ function ClaimCard({
           <div className="claim-card-info">
             <div className="claim-card-title-wrap">
               <div className="claim-card-title">{truncatedName}</div>
-              {isOwner ? (
+              {isOwner && !isClaimed ? (
                 <button
                   className="claim-card-button"
                   onClick={handleAcceptClaim}
                 >
-                  {isClaimAccepted ? 'accepted' : 'accept'}
+                  accept
                 </button>
               ) : (
                 isClaimAccepted && (
@@ -115,6 +116,7 @@ ClaimCard.propTypes = {
   acceptClaim: PropTypes.func.isRequired,
   bountyId: PropTypes.string.isRequired,
   bountyDetails: PropTypes.object.isRequired,
+  isClaimed: PropTypes.bool.isRequired,
 };
 
 export default ClaimCard;

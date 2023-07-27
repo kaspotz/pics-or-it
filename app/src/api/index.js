@@ -1,6 +1,9 @@
 import axios from 'axios';
 
-const apiUrl = 'http://localhost:3001'; // Change this to your production URL as needed
+// eslint-disable-next-line no-unused-vars
+const devApiUrl = 'http://localhost:3001'; // Change this to your production URL as needed
+const apiUrl =
+  'https://us-central1-plated-hangout-393021.cloudfunctions.net/poidh';
 
 export const uploadFile = async file => {
   try {

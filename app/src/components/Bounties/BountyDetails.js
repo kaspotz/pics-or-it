@@ -23,6 +23,18 @@ function BountyDetails({
   const [bountyDetails, setBountyDetails] = useState({});
   const [isOwner, setIsOwner] = useState(false);
   const [showCreateClaim, setShowCreateClaim] = useState(false);
+  const [isClaimed, setIsClaimed] = useState(false);
+
+  useEffect(() => {
+    if (bountyDetails.claimer) {
+      if (
+        ethers.getAddress(bountyDetails.claimer) !==
+        ethers.getAddress('0x0000000000000000000000000000000000000000')
+      ) {
+        setIsClaimed(true);
+      }
+    }
+  }, [bountyDetails]);
 
   const handleClaimClick = () => {
     if (
@@ -83,22 +95,23 @@ function BountyDetails({
           <h3>{bountyDetails.amount} eth</h3>
         </div>
       </div>
-      {!wallet ? (
-        <div className="bounty-details-connect-claim-button-wrap">
-          <button
-            disabled={connecting}
-            onClick={() =>
-              wallet ? disconnect({ label: wallet.label }) : connect()
-            }
-          >
-            {connecting ? 'connecting' : wallet ? 'disconnect' : 'connect'}
-          </button>
-        </div>
-      ) : (
-        <div className="bounty-details-connect-claim-button-wrap">
-          <button onClick={handleClaimClick}>claim</button>
-        </div>
-      )}
+      {!isClaimed &&
+        (!wallet ? (
+          <div className="bounty-details-connect-claim-button-wrap">
+            <button
+              disabled={connecting}
+              onClick={() =>
+                wallet ? disconnect({ label: wallet.label }) : connect()
+              }
+            >
+              {connecting ? 'connecting' : wallet ? 'disconnect' : 'connect'}
+            </button>
+          </div>
+        ) : (
+          <div className="bounty-details-connect-claim-button-wrap">
+            <button onClick={handleClaimClick}>claim</button>
+          </div>
+        ))}
       <div className="bounties-grid bounty-details-right">
         {loading ? (
           <div>loading...</div>
@@ -112,6 +125,7 @@ function BountyDetails({
               getTokenUri={getTokenUri}
               isOwner={isOwner}
               acceptClaim={acceptClaim}
+              isClaimed={isClaimed}
             />
           ))
         )}

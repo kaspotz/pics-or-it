@@ -23,7 +23,7 @@ function CreateClaim({ onClose, bountyId }) {
 
     setFile(acceptedFiles[0]);
     setFormData({ ...formData, name: fileName });
-    toast.info('File uploaded');
+    toast.info('File upload initiated');
   };
 
   const handleSubmit = async event => {
@@ -53,6 +53,7 @@ function CreateClaim({ onClose, bountyId }) {
     const res = await uploadFile(file);
     if (!res) {
       toast.error('Error uploading image to IPFS');
+      onClose();
       return;
     }
     setImageUri(`${gateway}${res.IpfsHash}`);
@@ -70,11 +71,12 @@ function CreateClaim({ onClose, bountyId }) {
         const resMetadata = await uploadMetadata(metadata);
         if (!resMetadata) {
           toast.error('Error uploading metadata to IPFS');
+          onClose();
           return;
         }
         setStatus({ loading: true, processString: 'creating claim...' });
         await createClaim(
-          bountyId,
+          Number(bountyId),
           formData.name,
           `${gateway}${resMetadata.IpfsHash}`,
           formData.description
@@ -163,7 +165,7 @@ function CreateClaim({ onClose, bountyId }) {
 
 CreateClaim.propTypes = {
   onClose: PropTypes.func.isRequired,
-  bountyId: PropTypes.number.isRequired,
+  bountyId: PropTypes.string.isRequired,
 };
 
 export default CreateClaim;
