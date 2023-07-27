@@ -13,9 +13,6 @@
   ],
   "scripts": {
     "app:dev": "yarn workspace app start",
-    "server:dev": "yarn workspace server start",
-    "server:test": "yarn workspace server test",
-    "server:build": "yarn workspace server build",
     "contract:compile": "yarn workspace contracts compile",
     "contract:test": "yarn workspace contracts test",
     "lint": "yarn workspaces run lint",

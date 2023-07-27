@@ -6,12 +6,15 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Royalty.sol";
+
 
 contract POIDHNFT is
     ERC721,
     ERC721Enumerable,
     ERC721URIStorage,
-    IERC721Receiver
+    IERC721Receiver,
+    ERC721Royalty
 {
     using Counters for Counters.Counter;
 
@@ -77,8 +80,14 @@ contract POIDHNFT is
     );
     event BountyCancelled(uint256 bountyId, address issuer);
 
-    constructor(address _treasury) ERC721("pics or it didn't happen", "POIDH") {
+    /**
+        * @dev Constructor function
+        * @param _treasury the address of the treasury wallet
+        * @param _feeNumerator the fee numerator for the royalty (1000 ~ 10%)
+     */
+    constructor(address _treasury, uint96 _feeNumerator) ERC721("pics or it didn't happen", "POIDH") {
         treasury = _treasury;
+        _setDefaultRoyalty(_treasury, _feeNumerator);
     }
 
     /* === WRITE FUNCTIONS === */
@@ -352,7 +361,7 @@ contract POIDHNFT is
 
     function _burn(
         uint256 tokenId
-    ) internal override(ERC721, ERC721URIStorage) {
+    ) internal override(ERC721, ERC721URIStorage, ERC721Royalty) {
         super._burn(tokenId);
     }
 
@@ -367,7 +376,7 @@ contract POIDHNFT is
     )
         public
         view
-        override(ERC721, ERC721Enumerable, ERC721URIStorage)
+        override(ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Royalty)
         returns (bool)
     {
         return super.supportsInterface(interfaceId);
