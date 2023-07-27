@@ -9,7 +9,6 @@
   "private": true,
   "workspaces": [
     "app",
-    "server",
     "contracts"
   ],
   "scripts": {
