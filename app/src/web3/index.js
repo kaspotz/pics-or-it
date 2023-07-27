@@ -3,9 +3,8 @@ import { ethers } from 'ethers';
 import { init, useConnectWallet } from '@web3-onboard/react';
 import injectedModule from '@web3-onboard/injected-wallets';
 import { abi } from './abi.js';
-import { ARB_RPC, ARB_DEV_RPC, CONTRACT_DEV_ADDRESS } from './constants.js';
+import { ARB_RPC, ARB_DEV_RPC, PROVIDER_URL, CONTRACT } from './constants.js';
 import { useSetChain } from '@web3-onboard/react';
-
 
 const injected = injectedModule();
 
@@ -48,16 +47,16 @@ export const useContract = () => {
   const [userClaims, setUserClaims] = useState([]);
   const [userBalance, setUserBalance] = useState(0);
 
-  const jsonProviderUrl = ARB_DEV_RPC; // Replace with the desired JSON provider URL
+  const jsonProviderUrl = PROVIDER_URL; // Replace with the desired JSON provider URL
 
-  const [{ settingChain }, setChain, connectedChain] = useSetChain();
+  const [{ settingChain }, setChain] = useSetChain();
 
   useEffect(() => {
     // Setting chain to 'Arbitrum'
     if (wallet) {
       if (!settingChain) {
         setChain({
-          chainId: '0x66eed',  // Chain ID for Arbitrum
+          chainId: '0x66eed', // Chain ID for Arbitrum
         }).catch(error => {
           console.error('Error setting chain:', error);
         });
@@ -66,19 +65,15 @@ export const useContract = () => {
   }, [wallet, settingChain]);
 
   useEffect(() => {
-    console.log('Connected chain:', connectedChain)
-  }, [connectedChain]);
-
-  useEffect(() => {
     const provider = new ethers.JsonRpcProvider(ARB_DEV_RPC);
-    const contractAddress = CONTRACT_DEV_ADDRESS;
+    const contractAddress = CONTRACT;
     const contract = new ethers.Contract(contractAddress, abi, provider);
     setContract(contract);
   }, []);
 
   const getReadOnlyContract = async () => {
     const provider = new ethers.JsonRpcProvider(jsonProviderUrl);
-    const contractAddress = CONTRACT_DEV_ADDRESS;
+    const contractAddress = CONTRACT;
     return new ethers.Contract(contractAddress, abi, provider);
   };
 
