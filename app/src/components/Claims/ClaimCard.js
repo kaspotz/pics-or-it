@@ -82,7 +82,7 @@ function ClaimCard({
             </div>
             <details className="claim-card-issuer">
               <summary className="summary">issuer</summary>
-              <div className="summary-body">{issuer}</div>
+              <div className="summary-body summary-issuer">{issuer}</div>
             </details>
             <details className="claim-card-details">
               <summary className="summary">description</summary>
