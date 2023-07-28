@@ -6,7 +6,7 @@ export const ARB_DEV_RPC =
 
 export const CONTRACT_ADDRESS = '0xc0ffee254729296a45a3885639AC7E10F9d54979';
 export const CONTRACT_DEV_ADDRESS =
-  '0xFB821E38554ac6f6Bc748c967eb21fd5C73DFDF6';
+  '0xD7d54bfEB61eb3C1ad06a7036EB001ac585747D0';
 
 export const PROVIDER_URL =
   process.env.NODE_ENV === 'development' ? ARB_DEV_RPC : ARB_DEV_RPC;
