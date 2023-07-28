@@ -145,7 +145,6 @@ contract POIDHNFT is
 
         uint refundAmount = bounty.amount;
         bounty.amount = 0; // Zero out the bounty before transferring
-        bounty.claimer = address(0); // Zero out the claimer before transferring
 
         payable(bounty.issuer).transfer(refundAmount);
 
@@ -226,6 +225,7 @@ contract POIDHNFT is
             bounty.amount <= address(this).balance,
             "Bounty amount is greater than contract balance"
         );
+        require(bounty.amount > 0, "Bounty has been cancelled");
 
         address claimIssuer = claims[claimId].issuer;
         uint256 bountyAmount = bounty.amount;
