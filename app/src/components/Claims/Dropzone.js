@@ -30,10 +30,20 @@ function Dropzone({ onDrop }) {
         img.onload = () => {
           const { naturalWidth: width, naturalHeight: height } = img;
 
+          if (width < 300 || height < 300) {
+            toast.error(
+              'Image dimensions must be at least 300px by 300px. Please upload a larger image.'
+            );
+            onDrop(acceptedFiles);
+            setFileDropped(true);
+            return;
+          }
+
           if (width !== height) {
             toast.error(
               "Uploaded dimensions aren't equal (width !== height). Image must be a square."
             );
+            return;
           } else {
             onDrop(acceptedFiles);
             setFileDropped(true);
