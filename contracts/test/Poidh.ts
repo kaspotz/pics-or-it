@@ -13,7 +13,7 @@ describe("POIDHNFT", function () {
     [owner, addr1, addr2, treasury, ...addrs] = await ethers.getSigners();
 
     const poidhNFTFactory = await ethers.getContractFactory("POIDHNFT");
-    poidhNFT = await poidhNFTFactory.deploy(treasury.address);
+    poidhNFT = await poidhNFTFactory.deploy(treasury.address, 500);
   });
   
   describe("createBounty", function () {

@@ -146,7 +146,8 @@ contract POIDHNFT is
         uint refundAmount = bounty.amount;
         bounty.amount = 0; // Zero out the bounty before transferring
 
-        payable(bounty.issuer).transfer(refundAmount);
+        (bool success, ) = bounty.issuer.call{value: refundAmount}("");
+        require(success, "Transfer failed.");
 
         emit BountyCancelled(id, bounty.issuer);
     }
@@ -252,10 +253,11 @@ contract POIDHNFT is
         _safeTransfer(address(this), msg.sender, tokenId, "");
 
         // Finally, transfer the bounty amount to the claim issuer
-        pendingPayee.transfer(pendingPayment);
+        (bool s1, ) = pendingPayee.call{value: pendingPayment}("");
+        require(s1, "Transfer failed.");
 
-        // Transfer the fee to the treasury wallet
-        t.transfer(fee);
+        (bool s2, ) = t.call{value: fee}("");
+        require(s2, "Transfer failed.");
 
         emit ClaimAccepted(bountyId, claimId, claimIssuer, bounty.issuer, fee); // update event parameters to include the fee
     }
@@ -268,7 +270,7 @@ contract POIDHNFT is
     function getClaimsByBountyId(
         uint256 bountyId
     ) public view returns (Claim[] memory) {
-        uint256[] storage bountyClaimIndexes = bountyClaims[bountyId];
+        uint256[] memory bountyClaimIndexes = bountyClaims[bountyId];
         Claim[] memory bountyClaimsArray = new Claim[](
             bountyClaimIndexes.length
         );
