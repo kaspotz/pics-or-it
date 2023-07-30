@@ -3,7 +3,7 @@ import { ethers } from 'ethers';
 import { init, useConnectWallet } from '@web3-onboard/react';
 import injectedModule from '@web3-onboard/injected-wallets';
 import { abi } from './abi.js';
-import { ARB_RPC, ARB_DEV_RPC, PROVIDER_URL, CONTRACT } from './constants.js';
+import { ARB_DEV_RPC, PROVIDER_URL, CONTRACT } from './constants.js';
 import { useSetChain } from '@web3-onboard/react';
 
 const injected = injectedModule();
@@ -28,13 +28,13 @@ init({
       id: '0xa4b1',
       token: 'ETH',
       label: 'Arbitrum',
-      rpcUrl: ARB_RPC,
+      rpcUrl: 'https://arbitrum-goerli.publicnode.com/',
     },
     {
       id: '0x66eed',
       token: 'ETH',
       label: 'Arbitrum Goerli',
-      rpcUrl: ARB_DEV_RPC,
+      rpcUrl: 'https://arbitrum-one.publicnode.com',
     },
   ],
 });
