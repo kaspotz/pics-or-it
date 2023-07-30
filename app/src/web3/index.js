@@ -28,13 +28,13 @@ init({
       id: '0xa4b1',
       token: 'ETH',
       label: 'Arbitrum',
-      rpcUrl: 'https://arbitrum-goerli.publicnode.com/',
+      rpcUrl: 'https://arbitrum-one.publicnode.com',
     },
     {
       id: '0x66eed',
       token: 'ETH',
       label: 'Arbitrum Goerli',
-      rpcUrl: 'https://arbitrum-one.publicnode.com',
+      rpcUrl: 'https://arbitrum-goerli.publicnode.com/',
     },
   ],
 });
