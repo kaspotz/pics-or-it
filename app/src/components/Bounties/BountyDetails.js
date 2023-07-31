@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { ethers } from 'ethers';
 import CreateClaim from '../Claims/CreateClaim';
 import { ToastContainer, toast } from 'react-toastify';
+import { BsArrowRightCircle } from 'react-icons/bs';
 
 function BountyDetails({
   getTokenUri,
@@ -17,7 +18,6 @@ function BountyDetails({
   acceptClaim,
 }) {
   const { id } = useParams();
-
   const [loading, setLoading] = useState(true);
   const [userClaims, setUserClaims] = useState([]);
   const [bountyDetails, setBountyDetails] = useState({});
@@ -51,12 +51,28 @@ function BountyDetails({
     setShowCreateClaim(false);
   };
 
+  const copyToClipboard = () => {
+    if (!navigator.clipboard) {
+      // Clipboard API not supported
+      return;
+    }
+    navigator.clipboard.writeText(`https://poidh.xyz/bounties/${id}`).then(
+      () => {
+        toast.success('Bounty link copied to clipboard!');
+      },
+      err => {
+        console.error('Failed to copy text: ', err);
+        toast.error('Failed to copy bounty link to clipboard.');
+      }
+    );
+  };
+
   useEffect(() => {
     const fetchClaimsAndDetails = async () => {
       const claims = await getClaimsByBountyId(id);
       const bountyDetails = await fetchBountyDetails(id);
 
-      console.log(claims, bountyDetails)
+      console.log(claims, bountyDetails);
 
       claims.sort((a, b) => {
         if (a.id === Number(bountyDetails.claimId)) return -1;
@@ -95,6 +111,10 @@ function BountyDetails({
           <h2 className="bounty-details-title">{bountyDetails.name}</h2>
           <p className="summary-body">{bountyDetails.description}</p>
           <h3>{bountyDetails.amount} eth</h3>
+          <div className="share-bounty-wrap" onClick={copyToClipboard}>
+            <p>share bounty</p>
+            <BsArrowRightCircle size={20} color="#F4595B" />
+          </div>
         </div>
       </div>
       {!isClaimed &&

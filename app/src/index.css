@@ -520,3 +520,14 @@ summary::-webkit-details-marker {
 .bounty-details-title {
   margin: 10px 0px;
 }
+
+.share-bounty-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.share-bounty-wrap p {
+  padding: 5px;
+}

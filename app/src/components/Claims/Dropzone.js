@@ -41,7 +41,7 @@ function Dropzone({ onDrop }) {
 
           if (width !== height) {
             toast.error(
-              "Image must be a square. Resize here: squareanimage.com",
+              'Image must be a square. Resize here: squareanimage.com',
               {
                 autoClose: 10000,
               }
