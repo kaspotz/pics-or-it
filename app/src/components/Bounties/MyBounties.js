@@ -24,11 +24,10 @@ function MyBounties({
     [wallet, fetchUserBounties]
   );
 
-  // set up polling every 2 seconds
   useEffect(() => {
     const intervalId = setInterval(() => {
       refreshBounties(false);
-    }, 2000); // every 2 seconds
+    }, 3000);
 
     // cleanup function on component unmount
     return () => clearInterval(intervalId);

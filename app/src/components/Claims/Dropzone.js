@@ -11,8 +11,8 @@ function Dropzone({ onDrop }) {
       const file = acceptedFiles[0];
 
       const fileSizeInKb = file.size / 1024;
-      if (fileSizeInKb > 500) {
-        toast.error('File size must be less than 500kb.');
+      if (fileSizeInKb > 1000) {
+        toast.error('File size must be less than 1MB.');
         return;
       }
 
@@ -41,7 +41,10 @@ function Dropzone({ onDrop }) {
 
           if (width !== height) {
             toast.error(
-              "Uploaded dimensions aren't equal (width !== height). Image must be a square."
+              "Image must be a square. Resize here: squareanimage.com",
+              {
+                autoClose: 10000,
+              }
             );
             return;
           } else {
