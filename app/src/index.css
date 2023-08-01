@@ -466,6 +466,7 @@ summary::-webkit-details-marker {
   margin: 5px 2px;
   text-align: left;
   font-size: 0.9em;
+  word-wrap: break-word;
 }
 
 .summary-issuer {

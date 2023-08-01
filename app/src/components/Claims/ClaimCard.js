@@ -11,7 +11,6 @@ function ClaimCard({
   bountyDetails,
   isClaimed,
 }) {
-  console.log(claim);
   const { name, issuer, tokenId, description } = claim;
   const [isLoading, setIsLoading] = useState(true);
   const [imageSrc, setImageSrc] = useState('');
