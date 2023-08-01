@@ -55,11 +55,11 @@ export const useContract = () => {
   const [{ settingChain }, setChain] = useSetChain();
 
   useEffect(() => {
-    // Setting chain to 'Arbitrum'
     if (wallet) {
       if (!settingChain) {
         setChain({
-          chainId: '0x66eed', // Chain ID for Arbitrum
+          chainId:
+            process.env.NODE_ENV === 'development' ? '0x66eed' : '0xa4b1',
         }).catch(error => {
           console.error('Error setting chain:', error);
         });

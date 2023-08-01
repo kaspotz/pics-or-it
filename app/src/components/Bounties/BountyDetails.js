@@ -62,7 +62,10 @@ function BountyDetails({
       },
       err => {
         console.error('Failed to copy text: ', err);
-        toast.error(`Failed to copy bounty link to clipboard. Link: poidh.xyz/bounties/${id}`, { autoClose: false });
+        toast.error(
+          `Failed to copy bounty link to clipboard. Link: poidh.xyz/bounties/${id}`,
+          { autoClose: false }
+        );
       }
     );
   };
