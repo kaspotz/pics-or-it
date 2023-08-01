@@ -148,7 +148,7 @@ function CreateClaim({ onClose, bountyId }) {
                 </div>
 
                 <div className="claim-popup-buttons">
-                  <button type="submit">Submit Claim</button>
+                  <button type="submit">submit claim</button>
                 </div>
               </div>
             </form>
