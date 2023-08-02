@@ -19,7 +19,7 @@ function Navigation() {
 
    const handleFaq = () => {
     setMenu(false);
-    navigate('https://enormous-dew-43b.notion.site/3dd435b542394c80bb7507e866acba2f');
+    window.location.href = "https://enormous-dew-43b.notion.site/3dd435b542394c80bb7507e866acba2f";
   };
 
   return (
