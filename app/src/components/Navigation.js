@@ -17,6 +17,11 @@ function Navigation() {
     navigate('/my-bounties');
   };
 
+   const handleFaq = () => {
+    setMenu(false);
+    navigate('https://enormous-dew-43b.notion.site/3dd435b542394c80bb7507e866acba2f');
+  };
+
   return (
     <div>
       <span className="hamburger-menu-wrap">
@@ -32,7 +37,7 @@ function Navigation() {
           <ul className="menu-list-wrap">
             <li onClick={handleHome}>home</li>
             <li onClick={handleMyBounties}>my bounties</li>
-            <li onClick="window.open('https://enormous-dew-43b.notion.site/3dd435b542394c80bb7507e866acba2f')">faq</li>
+            <li onClick={handleFaq}>faq</li>
           </ul>
         </div>
       )}
