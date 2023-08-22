@@ -50,7 +50,7 @@ function Home({ wallet, connect, disconnect, connecting }) {
   return (
     <div>
       <ToastContainer />
-      <h1 data-aos="fade-in">pics or it didnt happen</h1>
+      <h1 data-aos="fade-in">pics or it didn&#39;t happen</h1>
       <header data-aos="fade-in">
         <h1>📸🧾</h1>
       </header>
