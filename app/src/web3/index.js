@@ -5,12 +5,23 @@ import injectedModule from '@web3-onboard/injected-wallets';
 import { abi } from './abi.js';
 import { ARB_DEV_RPC, PROVIDER_URL, CONTRACT } from './constants.js';
 import { useSetChain } from '@web3-onboard/react';
+import walletConnectModule from '@web3-onboard/walletconnect'
+
 
 const injected = injectedModule();
 
+const wcV2InitOptions = {
+  projectId: 'abc123...',
+  requiredChains: [42161, 421613],
+  dappUrl: 'https://pics-or-it.com/',
+}
+
+const walletConnect = walletConnectModule(wcV2InitOptions)
+
+
 // initialize Onboard
 init({
-  wallets: [injected],
+  wallets: [injected, walletConnect],
   connect: {
     autoConnectLastWallet: true,
   },
@@ -53,16 +64,19 @@ export const useContract = () => {
   const jsonProviderUrl = PROVIDER_URL; // Replace with the desired JSON provider URL
 
   const [{ settingChain }, setChain] = useSetChain();
+  const [setChainAttempts, setSetChainAttempts] = useState(false);
 
   useEffect(() => {
     if (wallet) {
-      if (!settingChain) {
+      if (!settingChain && !setChainAttempts) {
         setChain({
           chainId:
             process.env.NODE_ENV === 'development' ? '0x66eed' : '0xa4b1',
         }).catch(error => {
           console.error('Error setting chain:', error);
         });
+
+        setSetChainAttempts(true);
       }
     }
   }, [wallet, settingChain]);
