@@ -11,7 +11,7 @@ import walletConnectModule from '@web3-onboard/walletconnect'
 const injected = injectedModule();
 
 const wcV2InitOptions = {
-  projectId: 'abc123...',
+  projectId: '63d0f8d6472e57ec0c5ee760de5412f0',
   requiredChains: [42161, 421613],
   dappUrl: 'https://pics-or-it.com/',
 }
