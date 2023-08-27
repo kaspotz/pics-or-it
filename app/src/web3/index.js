@@ -12,7 +12,7 @@ const injected = injectedModule();
 
 const wcV2InitOptions = {
   projectId: '63d0f8d6472e57ec0c5ee760de5412f0',
-  requiredChains: [42161, 421613],
+  requiredChains: [42161],
   dappUrl: 'https://pics-or-it.com/',
 }
 
