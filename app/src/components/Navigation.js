@@ -22,6 +22,11 @@ function Navigation() {
     window.open('https://info.poidh.xyz/', '_blank');
   };
 
+   const handleSocial = () => {
+    setMenu(false);
+    window.open('https://www.discove.xyz/?a=new&h=1&q=Poidh.xyz&t=Poidh.xyz+Bounty+Tracker', '_blank');
+  };
+
   return (
     <div>
       <span className="hamburger-menu-wrap">
@@ -38,6 +43,7 @@ function Navigation() {
             <li onClick={handleHome}>home</li>
             <li onClick={handleMyBounties}>my bounties</li>
             <li onClick={handleFaq}>faq</li>
+            <li onClick={handleSocial}>social</li>
           </ul>
         </div>
       )}
