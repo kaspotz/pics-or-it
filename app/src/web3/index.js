@@ -63,7 +63,7 @@ export const useContract = () => {
 
   const jsonProviderUrl = PROVIDER_URL; // Replace with the desired JSON provider URL
 
-  const [{ settingChain }, setChain] = useSetChain();
+  const [{ settingChain, connectedChain }, setChain] = useSetChain();
   const [setChainAttempts, setSetChainAttempts] = useState(false);
 
   useEffect(() => {
@@ -95,7 +95,7 @@ export const useContract = () => {
   };
 
   const getConnectedContract = async () => {
-    if (!wallet || !contract) return null;
+    if (!wallet || !contract || !isCorrectChain()) return null;
     const ethersProvider = new ethers.BrowserProvider(wallet.provider);
     return contract.connect(await ethersProvider.getSigner());
   };
@@ -277,6 +277,10 @@ export const useContract = () => {
       await tx.wait();
     }
   };
+
+  const isCorrectChain = () => {
+    return process.env.NODE_ENV === 'development' ? '0x66eed' == connectedChain.id : '0xa4b1' == connectedChain.id
+  }
 
   useEffect(() => {
     if (wallet) {
