@@ -16,6 +16,7 @@ function CreateClaim({ onClose, bountyId }) {
   const [formData, setFormData] = useState({ name: '', description: '' });
   const { createClaim } = useContract();
   const [imageUri, setImageUri] = useState('');
+  const [activeTab, setActiveTab] = useState('create');
 
   const handleUpload = async acceptedFiles => {
     if (acceptedFiles.length === 0) return;
@@ -34,7 +35,6 @@ function CreateClaim({ onClose, bountyId }) {
       return;
     }
 
-    console.log(formData.name.length);
     if (formData.name.length > 40) {
       toast.error('The name should be a maximum of 40 characters');
       return;
@@ -50,7 +50,12 @@ function CreateClaim({ onClose, bountyId }) {
       return;
     }
 
-    setStatus({ loading: true, processString: 'uploading image to IPFS...' });
+    setStatus({
+      loading: true,
+      processString: 'setting up preview of claim NFT...',
+    });
+    setActiveTab('preview');
+    /*
     const res = await uploadFile(file);
     if (!res) {
       toast.error('Error uploading image to IPFS');
@@ -58,6 +63,7 @@ function CreateClaim({ onClose, bountyId }) {
       return;
     }
     setImageUri(`${gateway}${res.IpfsHash}`);
+    */
   };
 
   useEffect(() => {
@@ -96,7 +102,6 @@ function CreateClaim({ onClose, bountyId }) {
     <div className="claim-popup-overlay">
       <ToastContainer />
       <div className="claim-popup">
-        <h2>submit claim</h2>
         {status.loading ? (
           <div className="process-wrap">
             <SyncLoader
@@ -148,18 +153,37 @@ function CreateClaim({ onClose, bountyId }) {
                 </div>
 
                 <div className="claim-popup-buttons">
-                  <button type="submit">submit claim</button>
+                  <button type="submit">view preview</button>
                 </div>
               </div>
             </form>
           </>
         )}
-        <FaX
-          className="create-claim-close"
-          color="#F4595B"
-          size={25}
-          onClick={onClose}
-        />
+        <div className="create-claim-menu-wrap">
+          <div
+            className={`create-claim-tab ${
+              activeTab === 'create' ? 'create-claim-active' : ''
+            }`}
+            onClick={() => setActiveTab('create')}
+          >
+            create
+          </div>
+
+          <div
+            className={`create-claim-tab ${
+              activeTab === 'preview' ? 'create-claim-active' : ''
+            }`}
+            onClick={() => setActiveTab('preview')}
+          >
+            preview
+          </div>
+          <FaX
+            className="create-claim-close"
+            color="#F4595B"
+            size={20}
+            onClick={onClose}
+          />
+        </div>
       </div>
     </div>
   );

@@ -5,8 +5,7 @@ import injectedModule from '@web3-onboard/injected-wallets';
 import { abi } from './abi.js';
 import { ARB_DEV_RPC, PROVIDER_URL, CONTRACT } from './constants.js';
 import { useSetChain } from '@web3-onboard/react';
-import walletConnectModule from '@web3-onboard/walletconnect'
-
+import walletConnectModule from '@web3-onboard/walletconnect';
 
 const injected = injectedModule();
 
@@ -14,10 +13,9 @@ const wcV2InitOptions = {
   projectId: '63d0f8d6472e57ec0c5ee760de5412f0',
   requiredChains: [42161],
   dappUrl: 'https://pics-or-it.com/',
-}
+};
 
-const walletConnect = walletConnectModule(wcV2InitOptions)
-
+const walletConnect = walletConnectModule(wcV2InitOptions);
 
 // initialize Onboard
 init({
@@ -279,8 +277,10 @@ export const useContract = () => {
   };
 
   const isCorrectChain = () => {
-    return process.env.NODE_ENV === 'development' ? '0x66eed' == connectedChain.id : '0xa4b1' == connectedChain.id
-  }
+    return process.env.NODE_ENV === 'development'
+      ? '0x66eed' == connectedChain.id
+      : '0xa4b1' == connectedChain.id;
+  };
 
   useEffect(() => {
     if (wallet) {
