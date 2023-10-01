@@ -5,7 +5,8 @@ import { useContract } from '../../web3';
 import { SyncLoader } from 'react-spinners';
 import Dropzone from './Dropzone';
 import { FaX } from 'react-icons/fa6';
-import { uploadFile, uploadMetadata, buildMetadata } from '../../api';
+import { uploadMetadata, buildMetadata } from '../../api';
+import PreviewClaim from './PreviewClaim';
 import { ToastContainer, toast } from 'react-toastify';
 
 const gateway = 'https://beige-impossible-dragon-883.mypinata.cloud/ipfs/';
@@ -112,6 +113,8 @@ function CreateClaim({ onClose, bountyId }) {
             />
             <div className="process-string">{status.processString}</div>
           </div>
+        ) : activeTab === 'preview' ? (
+          <PreviewClaim />
         ) : (
           <>
             <Dropzone onDrop={handleUpload} />
