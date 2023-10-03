@@ -12,8 +12,7 @@ function Dropzone({ onDrop }) {
 
       const fileSizeInKb = file.size / 1024;
       if (fileSizeInKb > 1000) {
-        toast.error('File size must be less than 1MB.');
-        return;
+        toast.info('Compressing file: must be 1MB or less.');
       }
 
       const reader = new FileReader();
@@ -30,9 +29,9 @@ function Dropzone({ onDrop }) {
         img.onload = () => {
           const { naturalWidth: width, naturalHeight: height } = img;
 
-          if (width < 300 || height < 300) {
+          if (width < 300) {
             toast.error(
-              'Image dimensions must be at least 300px by 300px. Please upload a larger image.'
+              'Image width must be at least 300px. Please upload a larger image.'
             );
             onDrop(acceptedFiles);
             setFileDropped(true);
@@ -40,17 +39,16 @@ function Dropzone({ onDrop }) {
           }
 
           if (width !== height) {
-            toast.error(
-              'Image must be a square. Resize here: squareanimage.com',
+            toast.info(
+              'Recommend cropping image to a square in the preview section.',
               {
-                autoClose: 10000,
+                autoClose: 100000,
               }
             );
-            return;
-          } else {
-            onDrop(acceptedFiles);
-            setFileDropped(true);
           }
+
+          onDrop(acceptedFiles);
+          setFileDropped(true);
         };
       };
     },

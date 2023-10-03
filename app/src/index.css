@@ -561,3 +561,11 @@ summary::-webkit-details-marker {
 .share-bounty-wrap p {
   padding: 5px;
 }
+
+.preview-actions-wrap {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 100%;
+  margin-top: 3em;
+}

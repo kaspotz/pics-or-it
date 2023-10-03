@@ -65,6 +65,24 @@ function CreateClaim({ onClose, bountyId }) {
     }
     setImageUri(`${gateway}${res.IpfsHash}`);
     */
+    setStatus({
+      loading: false,
+      processString: '',
+    });
+  };
+
+  const attemptNavigatePreview = () => {
+    if (!formData.name || !formData.description) {
+      toast.error('Please fill out all fields');
+      return;
+    }
+
+    if (!file) {
+      toast.error('Please upload a file');
+      return;
+    }
+
+    setActiveTab('preview');
   };
 
   useEffect(() => {
@@ -114,7 +132,11 @@ function CreateClaim({ onClose, bountyId }) {
             <div className="process-string">{status.processString}</div>
           </div>
         ) : activeTab === 'preview' ? (
-          <PreviewClaim />
+          <PreviewClaim
+            file={file}
+            name={formData.name}
+            description={formData.description}
+          />
         ) : (
           <>
             <Dropzone onDrop={handleUpload} />
@@ -176,7 +198,7 @@ function CreateClaim({ onClose, bountyId }) {
             className={`create-claim-tab ${
               activeTab === 'preview' ? 'create-claim-active' : ''
             }`}
-            onClick={() => setActiveTab('preview')}
+            onClick={() => attemptNavigatePreview('preview')}
           >
             preview
           </div>
