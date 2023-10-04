@@ -33,8 +33,6 @@ function Dropzone({ onDrop }) {
             toast.error(
               'Image width must be at least 300px. Please upload a larger image.'
             );
-            onDrop(acceptedFiles);
-            setFileDropped(true);
             return;
           }
 
@@ -45,10 +43,13 @@ function Dropzone({ onDrop }) {
                 autoClose: 100000,
               }
             );
-          }
 
-          onDrop(acceptedFiles);
-          setFileDropped(true);
+            onDrop(acceptedFiles, false);
+            setFileDropped(true);
+          } else {
+            onDrop(acceptedFiles, true);
+            setFileDropped(true);
+          }
         };
       };
     },

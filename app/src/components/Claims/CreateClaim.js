@@ -18,14 +18,15 @@ function CreateClaim({ onClose, bountyId }) {
   const { createClaim } = useContract();
   const [imageUri, setImageUri] = useState('');
   const [activeTab, setActiveTab] = useState('create');
+  const [showSubmit, setShowSubmit] = useState(false);
 
-  const handleUpload = async acceptedFiles => {
+  const handleUpload = async (acceptedFiles, showSubmit) => {
     if (acceptedFiles.length === 0) return;
     const fileName = acceptedFiles[0].name;
 
     setFile(acceptedFiles[0]);
     setFormData({ ...formData, name: fileName });
-    toast.info('File upload initiated');
+    if (showSubmit) setShowSubmit(true);
   };
 
   const handleSubmit = async event => {
@@ -136,6 +137,7 @@ function CreateClaim({ onClose, bountyId }) {
             file={file}
             name={formData.name}
             description={formData.description}
+            showSubmit={showSubmit}
           />
         ) : (
           <>

@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-function PreviewClaim({ file, name, description }) {
+function PreviewClaim({ file, name, description, showSubmit }) {
+  // eslint-disable-next-line no-unused-vars
+  const [submitOrCrop, setSubmitOrCrop] = useState(showSubmit);
+
   const truncatedName =
     name.length > 30
       ? `${name.substr(0, 10)}...${name.substr(name.length - 10, name.length)}`
@@ -34,12 +37,15 @@ function PreviewClaim({ file, name, description }) {
         </div>
       </div>
       <div className="preview-actions-wrap">
-        <div className="claim-popup-buttons">
-          <button type="submit">crop</button>
-        </div>
-        <div className="claim-popup-buttons">
-          <button type="submit">submit</button>
-        </div>
+        {submitOrCrop ? (
+          <div className="claim-popup-buttons">
+            <button type="submit">submit</button>
+          </div>
+        ) : (
+          <div className="claim-popup-buttons">
+            <button type="submit">crop</button>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -49,6 +55,7 @@ PreviewClaim.propTypes = {
   file: PropTypes.instanceOf(File).isRequired,
   name: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
+  showSubmit: PropTypes.bool.isRequired,
 };
 
 export default PreviewClaim;
