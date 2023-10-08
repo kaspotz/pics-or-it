@@ -1,14 +1,23 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import CropZone from '../CropZone';
 
 function PreviewClaim({ file, name, description, showSubmit }) {
   // eslint-disable-next-line no-unused-vars
   const [submitOrCrop, setSubmitOrCrop] = useState(showSubmit);
+  const [showCrop, setShowCrop] = useState(false);
 
   const truncatedName =
     name.length > 30
       ? `${name.substr(0, 10)}...${name.substr(name.length - 10, name.length)}`
       : name;
+
+  const handleOnImageCropped = (croppedImage) => {
+    console.log(croppedImage);
+  }
+
+  // console.log('lolololol', URL.createObjectURL(file))
+
 
   return (
     <div>
@@ -43,10 +52,11 @@ function PreviewClaim({ file, name, description, showSubmit }) {
           </div>
         ) : (
           <div className="claim-popup-buttons">
-            <button type="submit">crop</button>
+            <button onClick={setShowCrop}>crop</button>
           </div>
         )}
       </div>
+      {showCrop && <CropZone image={file} onImageCropped={handleOnImageCropped} />}
     </div>
   );
 }

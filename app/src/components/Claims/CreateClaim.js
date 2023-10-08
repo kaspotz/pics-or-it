@@ -212,6 +212,7 @@ function CreateClaim({ onClose, bountyId }) {
           />
         </div>
       </div>
+      
     </div>
   );
 }
