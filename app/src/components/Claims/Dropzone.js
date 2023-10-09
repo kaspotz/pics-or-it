@@ -37,13 +37,6 @@ function Dropzone({ onDrop }) {
           }
 
           if (width !== height) {
-            toast.info(
-              'Recommend cropping image to a square in the preview section.',
-              {
-                autoClose: 100000,
-              }
-            );
-
             onDrop(acceptedFiles, false);
             setFileDropped(true);
           } else {

@@ -6,28 +6,23 @@ function PreviewClaim({ file, name, description, showSubmit }) {
   // eslint-disable-next-line no-unused-vars
   const [submitOrCrop, setSubmitOrCrop] = useState(showSubmit);
   const [showCrop, setShowCrop] = useState(false);
+  const [croppedImage, setCroppedImage] = useState(URL.createObjectURL(file));
 
   const truncatedName =
     name.length > 30
       ? `${name.substr(0, 10)}...${name.substr(name.length - 10, name.length)}`
       : name;
 
-  const handleOnImageCropped = (croppedImage) => {
-    console.log(croppedImage);
-  }
-
-  // console.log('lolololol', URL.createObjectURL(file))
-
+  const handleOnImageCropped = croppedImage => {
+    setCroppedImage(croppedImage);
+    setShowCrop(false);
+  };
 
   return (
     <div>
       <div className="claim-card">
         <div className="claim-card-image">
-          <img
-            src={URL.createObjectURL(file)}
-            alt={name}
-            className="claim-image"
-          />
+          <img src={croppedImage} alt={name} className="claim-image" />
         </div>
         <div className="claim-card-info">
           <div className="claim-card-title-wrap">
@@ -56,7 +51,9 @@ function PreviewClaim({ file, name, description, showSubmit }) {
           </div>
         )}
       </div>
-      {showCrop && <CropZone image={file} onImageCropped={handleOnImageCropped} />}
+      {showCrop && (
+        <CropZone image={file} onImageCropped={handleOnImageCropped} />
+      )}
     </div>
   );
 }

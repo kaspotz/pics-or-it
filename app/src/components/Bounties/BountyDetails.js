@@ -75,8 +75,6 @@ function BountyDetails({
       const claims = await getClaimsByBountyId(id);
       const bountyDetails = await fetchBountyDetails(id);
 
-      console.log(claims, bountyDetails);
-
       claims.sort((a, b) => {
         if (a.id === Number(bountyDetails.claimId)) return -1;
         if (b.id === Number(bountyDetails.claimId)) return 1;

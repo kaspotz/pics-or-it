@@ -3,7 +3,7 @@ import { ethers } from 'ethers';
 import { init, useConnectWallet } from '@web3-onboard/react';
 import injectedModule from '@web3-onboard/injected-wallets';
 import { abi } from './abi.js';
-import { ARB_DEV_RPC, PROVIDER_URL, CONTRACT } from './constants.js';
+import { PROVIDER_URL, CONTRACT } from './constants.js';
 import { useSetChain } from '@web3-onboard/react';
 import walletConnectModule from '@web3-onboard/walletconnect';
 
@@ -80,7 +80,7 @@ export const useContract = () => {
   }, [wallet, settingChain]);
 
   useEffect(() => {
-    const provider = new ethers.JsonRpcProvider(ARB_DEV_RPC);
+    const provider = new ethers.JsonRpcProvider(PROVIDER_URL);
     const contractAddress = CONTRACT;
     const contract = new ethers.Contract(contractAddress, abi, provider);
     setContract(contract);
@@ -282,14 +282,6 @@ export const useContract = () => {
       : '0xa4b1' == connectedChain.id;
   };
 
-  useEffect(() => {
-    if (wallet) {
-      fetchUserBounties();
-      fetchUserClaims();
-      fetchUserBalance();
-    }
-  }, [wallet]);
-
   return {
     wallet,
     userBounties,
@@ -299,6 +291,7 @@ export const useContract = () => {
     connecting,
     fetchUserBounties,
     fetchUserClaims,
+    fetchUserBalance,
     userBalance,
     createBounty,
     createClaim,

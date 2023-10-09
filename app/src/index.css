@@ -578,5 +578,18 @@ summary::-webkit-details-marker {
   left: 0;
   z-index: 1000;
   background-color: rgba(36, 36, 36, 0.75);
-  
+}
+
+.crop-inner-wrap {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.crop-finish-button {
+  position: relative;
+  z-index: 10000;
 }
