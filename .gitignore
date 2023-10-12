@@ -3,3 +3,5 @@
 node_modules
 test_2.png
 test.png
+
+.env

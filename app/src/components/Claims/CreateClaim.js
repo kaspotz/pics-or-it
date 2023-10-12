@@ -10,6 +10,7 @@ import PreviewClaim from './PreviewClaim';
 import { ToastContainer, toast } from 'react-toastify';
 import { uploadFile } from '../../api';
 import imageCompression from 'browser-image-compression';
+import { createImage } from '../CropZone';
 
 const gateway = 'https://beige-impossible-dragon-883.mypinata.cloud/ipfs/';
 
@@ -31,7 +32,14 @@ function CreateClaim({ onClose, bountyId }) {
     if (showSubmit) setShowSubmit(true);
   };
 
-  const handleSubmit = async () => {
+  async function fetchBlobFromUrl(blobUrl) {
+    const response = await fetch(blobUrl);
+    const blob = await response.blob();
+    return blob;
+  }
+
+
+  const handleSubmit = async (croppedImage) => {
     if (!formData.name || !formData.description) {
       toast.error('Please fill out all fields');
       return;
@@ -52,11 +60,13 @@ function CreateClaim({ onClose, bountyId }) {
       return;
     }
 
+    const blob = await fetchBlobFromUrl(croppedImage);
+    let image = new File([blob], formData.name, {lastModified: Date.now(), type: blob.type});
     setActiveTab('create');
 
     let compressedFile = null;
 
-    if (file.size > 1000000) {
+    if (image.size > 500000) {
       setStatus({
         loading: true,
         processString: 'compressing image...',
@@ -67,7 +77,8 @@ function CreateClaim({ onClose, bountyId }) {
         useWebWorker: true,
       };
       try {
-        compressedFile = await imageCompression(file, options);
+        console.log('here at image compression...', image, typeof image)
+        compressedFile = await imageCompression(image, options);
         console.log(
           'compressedFile instanceof Blob',
           compressedFile instanceof Blob
@@ -76,6 +87,7 @@ function CreateClaim({ onClose, bountyId }) {
           `compressedFile size ${compressedFile.size / 1024 / 1024} MB`
         ); // smaller than maxSizeMB
       } catch (error) {
+        console.log(error)
         toast.error('error compressing file: ', error);
       }
     }
@@ -85,7 +97,7 @@ function CreateClaim({ onClose, bountyId }) {
     });
 
     try {
-      const res = await uploadFile(compressedFile ? compressedFile : file);
+      const res = await uploadFile(compressedFile ? compressedFile : image);
       if (!res) {
         toast.error('Error uploading image to IPFS');
         onClose();

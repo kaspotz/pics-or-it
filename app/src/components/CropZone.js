@@ -56,7 +56,7 @@ CropZone.propTypes = {
   onImageCropped: PropTypes.func.isRequired,
 };
 
-const createImage = url =>
+export const createImage = url =>
   new Promise((resolve, reject) => {
     const image = new Image();
     image.addEventListener('load', () => resolve(image));
@@ -84,7 +84,6 @@ async function getCroppedImg(imageSrc, pixelCrop, rotation = 0) {
   // Implementation from your provided code
 
   const image = await createImage(imageSrc);
-  console.log('image', image);
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
 
@@ -99,9 +98,6 @@ async function getCroppedImg(imageSrc, pixelCrop, rotation = 0) {
     image.height,
     rotation
   );
-
-  console.log('bBoxWidth', bBoxHeight, bBoxWidth);
-
   // Set canvas size to match the bounding box
   canvas.width = bBoxWidth;
   canvas.height = bBoxHeight;
@@ -113,8 +109,6 @@ async function getCroppedImg(imageSrc, pixelCrop, rotation = 0) {
 
   // Draw rotated image
   ctx.drawImage(image, 0, 0);
-
-  console.log(pixelCrop);
   // Crop to provided pixel crop area
   const croppedCanvas = cropImageToCanvas(canvas, pixelCrop);
 
@@ -122,7 +116,7 @@ async function getCroppedImg(imageSrc, pixelCrop, rotation = 0) {
   return new Promise(resolve => {
     croppedCanvas.toBlob(blob => {
       resolve(URL.createObjectURL(blob));
-    }, 'image/jpeg');
+    }, 'image/png', 1);
   });
 }
 
@@ -144,9 +138,6 @@ function cropImageToCanvas(canvas, pixelCrop) {
     pixelCrop.width,
     pixelCrop.height
   );
-
-  console.log('croppedCanvas', croppedCanvas);
-
   return croppedCanvas;
 }
 
