@@ -8,6 +8,8 @@ import { FaX } from 'react-icons/fa6';
 import { uploadMetadata, buildMetadata } from '../../api';
 import PreviewClaim from './PreviewClaim';
 import { ToastContainer, toast } from 'react-toastify';
+import { uploadFile } from '../../api';
+import imageCompression from 'browser-image-compression';
 
 const gateway = 'https://beige-impossible-dragon-883.mypinata.cloud/ipfs/';
 
@@ -29,9 +31,7 @@ function CreateClaim({ onClose, bountyId }) {
     if (showSubmit) setShowSubmit(true);
   };
 
-  const handleSubmit = async event => {
-    event.preventDefault();
-
+  const handleSubmit = async () => {
     if (!formData.name || !formData.description) {
       toast.error('Please fill out all fields');
       return;
@@ -52,24 +52,51 @@ function CreateClaim({ onClose, bountyId }) {
       return;
     }
 
+    setActiveTab('create');
+
+    let compressedFile = null;
+
+    if (file.size > 1000000) {
+      setStatus({
+        loading: true,
+        processString: 'compressing image...',
+      });
+      const options = {
+        maxSizeMB: 0.5,
+        maxWidthOrHeight: 1920,
+        useWebWorker: true,
+      };
+      try {
+        compressedFile = await imageCompression(file, options);
+        console.log(
+          'compressedFile instanceof Blob',
+          compressedFile instanceof Blob
+        ); // true
+        console.log(
+          `compressedFile size ${compressedFile.size / 1024 / 1024} MB`
+        ); // smaller than maxSizeMB
+      } catch (error) {
+        toast.error('error compressing file: ', error);
+      }
+    }
     setStatus({
       loading: true,
-      processString: 'setting up preview of claim NFT...',
+      processString: 'uploading image to IPFS...',
     });
-    setActiveTab('preview');
-    /*
-    const res = await uploadFile(file);
-    if (!res) {
-      toast.error('Error uploading image to IPFS');
+
+    try {
+      const res = await uploadFile(compressedFile ? compressedFile : file);
+      if (!res) {
+        toast.error('Error uploading image to IPFS');
+        onClose();
+        return;
+      }
+      setImageUri(`${gateway}${res.IpfsHash}`);
+    } catch (error) {
+      toast.error('Error uploading image to IPFS: ', error);
       onClose();
       return;
     }
-    setImageUri(`${gateway}${res.IpfsHash}`);
-    */
-    setStatus({
-      loading: false,
-      processString: '',
-    });
   };
 
   const attemptNavigatePreview = () => {
@@ -138,11 +165,12 @@ function CreateClaim({ onClose, bountyId }) {
             name={formData.name}
             description={formData.description}
             showSubmit={showSubmit}
+            handleSubmit={handleSubmit}
           />
         ) : (
           <>
             <Dropzone onDrop={handleUpload} />
-            <form onSubmit={handleSubmit}>
+            <form>
               <div className="claim-popup-content-wrap">
                 <div className="claim-popup-content-wrap">
                   <label className="claim-name" htmlFor="claim-name">
@@ -180,7 +208,7 @@ function CreateClaim({ onClose, bountyId }) {
                 </div>
 
                 <div className="claim-popup-buttons">
-                  <button type="submit">view preview</button>
+                  <button onClick={attemptNavigatePreview}>view preview</button>
                 </div>
               </div>
             </form>

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import CropZone from '../CropZone';
 
-function PreviewClaim({ file, name, description, showSubmit }) {
+function PreviewClaim({ file, name, description, showSubmit, handleSubmit }) {
   // eslint-disable-next-line no-unused-vars
   const [submitOrCrop, setSubmitOrCrop] = useState(showSubmit);
   const [showCrop, setShowCrop] = useState(false);
@@ -15,7 +15,9 @@ function PreviewClaim({ file, name, description, showSubmit }) {
 
   const handleOnImageCropped = croppedImage => {
     setCroppedImage(croppedImage);
+    setSubmitOrCrop(true);
     setShowCrop(false);
+    handleSubmit();
   };
 
   return (
@@ -43,7 +45,9 @@ function PreviewClaim({ file, name, description, showSubmit }) {
       <div className="preview-actions-wrap">
         {submitOrCrop ? (
           <div className="claim-popup-buttons">
-            <button type="submit">submit</button>
+            <button onClick={handleSubmit} type="submit">
+              submit
+            </button>
           </div>
         ) : (
           <div className="claim-popup-buttons">
@@ -63,6 +67,7 @@ PreviewClaim.propTypes = {
   name: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   showSubmit: PropTypes.bool.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
 };
 
 export default PreviewClaim;
