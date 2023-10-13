@@ -44,7 +44,10 @@ function PreviewClaim({ file, name, description, showSubmit, handleSubmit }) {
       <div className="preview-actions-wrap">
         {submitOrCrop ? (
           <div className="claim-popup-buttons">
-            <button onClick={async() => await handleSubmit(croppedImage)} type="submit">
+            <button
+              onClick={async () => await handleSubmit(croppedImage)}
+              type="submit"
+            >
               submit
             </button>
           </div>

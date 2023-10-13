@@ -38,8 +38,7 @@ function CreateClaim({ onClose, bountyId }) {
     return blob;
   }
 
-
-  const handleSubmit = async (croppedImage) => {
+  const handleSubmit = async croppedImage => {
     if (!formData.name || !formData.description) {
       toast.error('Please fill out all fields');
       return;
@@ -61,7 +60,10 @@ function CreateClaim({ onClose, bountyId }) {
     }
 
     const blob = await fetchBlobFromUrl(croppedImage);
-    let image = new File([blob], formData.name, {lastModified: Date.now(), type: blob.type});
+    let image = new File([blob], formData.name, {
+      lastModified: Date.now(),
+      type: blob.type,
+    });
     setActiveTab('create');
 
     let compressedFile = null;

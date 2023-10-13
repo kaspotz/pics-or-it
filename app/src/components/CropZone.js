@@ -114,9 +114,13 @@ async function getCroppedImg(imageSrc, pixelCrop, rotation = 0) {
 
   // Return cropped image as a blob
   return new Promise(resolve => {
-    croppedCanvas.toBlob(blob => {
-      resolve(URL.createObjectURL(blob));
-    }, 'image/png', 1);
+    croppedCanvas.toBlob(
+      blob => {
+        resolve(URL.createObjectURL(blob));
+      },
+      'image/png',
+      1
+    );
   });
 }
 
