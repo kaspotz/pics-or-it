@@ -13,6 +13,7 @@ function App() {
     disconnect,
     connecting,
     userBounties,
+    userBalance,
     fetchUserBounties,
     getClaimsByBountyId,
     getTokenUri,
@@ -44,6 +45,7 @@ function App() {
                 connect={connect}
                 disconnect={disconnect}
                 connecting={connecting}
+                userBalance={userBalance}
               />
             }
           />

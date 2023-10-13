@@ -7,8 +7,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { BeatLoader } from 'react-spinners'; //import the spinner
 
-function Home({ wallet, connect, disconnect, connecting }) {
-  const { userBalance, createBounty } = useContract();
+function Home({ wallet, connect, disconnect, connecting, userBalance }) {
+  const { createBounty } = useContract();
   const [bountyAmount, setBountyAmount] = useState(0);
   const [bountyName, setBountyName] = useState('');
   const [bountyDescription, setBountyDescription] = useState('');
@@ -28,7 +28,12 @@ function Home({ wallet, connect, disconnect, connecting }) {
       return;
     }
 
-    console.log(parseFloat(bountyAmount), parseFloat(userBalance), 'wallet', wallet);
+    console.log(
+      parseFloat(bountyAmount),
+      parseFloat(userBalance),
+      'wallet',
+      wallet
+    );
     if (parseFloat(bountyAmount) > parseFloat(userBalance)) {
       toast.error('Bounty amount should not exceed your balance');
       return;
@@ -150,6 +155,7 @@ Home.propTypes = {
   connect: PropTypes.func.isRequired,
   disconnect: PropTypes.func.isRequired,
   connecting: PropTypes.bool.isRequired,
+  userBalance: PropTypes.string,
 };
 
 export default Home;

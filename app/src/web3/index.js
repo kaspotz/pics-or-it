@@ -103,6 +103,7 @@ export const useContract = () => {
       try {
         const provider = new ethers.BrowserProvider(wallet.provider);
         const balance = await provider.getBalance(wallet.accounts[0].address);
+        console.log('balance', balance);
         setUserBalance(balance);
       } catch (error) {
         console.error('Error fetching user balance:', error);

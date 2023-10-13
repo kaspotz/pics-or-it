@@ -30,14 +30,17 @@ function Navigation() {
     );
   };
 
-   const handleGithub = () => {
+  const handleGithub = () => {
     setMenu(false);
     window.open('https://github.com/kaspotz/pics-or-it', '_blank');
   };
 
-   const handleArbiscan = () => {
+  const handleArbiscan = () => {
     setMenu(false);
-    window.open('https://arbiscan.io/address/0xdffe8a4a4103f968ffd61fd082d08c41dcf9b940', '_blank');
+    window.open(
+      'https://arbiscan.io/address/0xdffe8a4a4103f968ffd61fd082d08c41dcf9b940',
+      '_blank'
+    );
   };
 
   return (
