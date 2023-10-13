@@ -53,7 +53,7 @@ function PreviewClaim({ file, name, description, showSubmit, handleSubmit }) {
           </div>
         ) : (
           <div className="claim-popup-buttons">
-            <button onClick={setShowCrop}>crop</button>
+            <button onClick={setShowCrop}>image must be square click to crop</button>
           </div>
         )}
       </div>
