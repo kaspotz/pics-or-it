@@ -15,6 +15,7 @@
     "app:dev": "yarn workspace app start",
     "contract:compile": "yarn workspace contracts compile",
     "contract:test": "yarn workspace contracts test",
+    "server:dev": "cd server && yarn start",
     "lint": "yarn workspaces run lint",
     "format": "yarn workspaces run format"
   }

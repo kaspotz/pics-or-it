@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useContract } from './web3/index.js';
 import Navigation from './components/Navigation';
 import Home from './components/Home';
@@ -19,7 +19,17 @@ function App() {
     fetchBountyDetails,
     acceptClaim,
     cancelBounty,
+    fetchUserClaims,
+    fetchUserBalance,
   } = useContract();
+
+  useEffect(() => {
+    if (wallet) {
+      fetchUserBounties();
+      fetchUserClaims();
+      fetchUserBalance();
+    }
+  }, [wallet]);
 
   return (
     <Router basename="/">

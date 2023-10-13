@@ -3,10 +3,9 @@ import { ethers } from 'ethers';
 import { init, useConnectWallet } from '@web3-onboard/react';
 import injectedModule from '@web3-onboard/injected-wallets';
 import { abi } from './abi.js';
-import { ARB_DEV_RPC, PROVIDER_URL, CONTRACT } from './constants.js';
+import { PROVIDER_URL, CONTRACT } from './constants.js';
 import { useSetChain } from '@web3-onboard/react';
-import walletConnectModule from '@web3-onboard/walletconnect'
-
+import walletConnectModule from '@web3-onboard/walletconnect';
 
 const injected = injectedModule();
 
@@ -14,10 +13,9 @@ const wcV2InitOptions = {
   projectId: '63d0f8d6472e57ec0c5ee760de5412f0',
   requiredChains: [42161],
   dappUrl: 'https://pics-or-it.com/',
-}
+};
 
-const walletConnect = walletConnectModule(wcV2InitOptions)
-
+const walletConnect = walletConnectModule(wcV2InitOptions);
 
 // initialize Onboard
 init({
@@ -82,7 +80,7 @@ export const useContract = () => {
   }, [wallet, settingChain]);
 
   useEffect(() => {
-    const provider = new ethers.JsonRpcProvider(ARB_DEV_RPC);
+    const provider = new ethers.JsonRpcProvider(PROVIDER_URL);
     const contractAddress = CONTRACT;
     const contract = new ethers.Contract(contractAddress, abi, provider);
     setContract(contract);
@@ -279,16 +277,10 @@ export const useContract = () => {
   };
 
   const isCorrectChain = () => {
-    return process.env.NODE_ENV === 'development' ? '0x66eed' == connectedChain.id : '0xa4b1' == connectedChain.id
-  }
-
-  useEffect(() => {
-    if (wallet) {
-      fetchUserBounties();
-      fetchUserClaims();
-      fetchUserBalance();
-    }
-  }, [wallet]);
+    return process.env.NODE_ENV === 'development'
+      ? '0x66eed' == connectedChain.id
+      : '0xa4b1' == connectedChain.id;
+  };
 
   return {
     wallet,
@@ -299,6 +291,7 @@ export const useContract = () => {
     connecting,
     fetchUserBounties,
     fetchUserClaims,
+    fetchUserBalance,
     userBalance,
     createBounty,
     createClaim,

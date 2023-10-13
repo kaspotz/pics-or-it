@@ -49,7 +49,7 @@ function ClaimCard({
 
   const truncatedName =
     name.length > 30
-      ? `${name.substr(0, 20)}...${name.substr(name.length - 10, name.length)}`
+      ? `${name.substr(0, 10)}...${name.substr(name.length - 10, name.length)}`
       : name;
 
   return (

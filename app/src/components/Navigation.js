@@ -17,14 +17,17 @@ function Navigation() {
     navigate('/my-bounties');
   };
 
-   const handleFaq = () => {
+  const handleFaq = () => {
     setMenu(false);
     window.open('https://info.poidh.xyz/', '_blank');
   };
 
-   const handleSocial = () => {
+  const handleSocial = () => {
     setMenu(false);
-    window.open('https://www.discove.xyz/?a=new&h=1&q=Poidh.xyz&t=Poidh.xyz+Bounty+Tracker', '_blank');
+    window.open(
+      'https://www.discove.xyz/?a=new&h=1&q=Poidh.xyz&t=Poidh.xyz+Bounty+Tracker',
+      '_blank'
+    );
   };
 
    const handleGithub = () => {

@@ -5,8 +5,12 @@ import { useContract } from '../../web3';
 import { SyncLoader } from 'react-spinners';
 import Dropzone from './Dropzone';
 import { FaX } from 'react-icons/fa6';
-import { uploadFile, uploadMetadata, buildMetadata } from '../../api';
+import { uploadMetadata, buildMetadata } from '../../api';
+import PreviewClaim from './PreviewClaim';
 import { ToastContainer, toast } from 'react-toastify';
+import { uploadFile } from '../../api';
+import imageCompression from 'browser-image-compression';
+import { createImage } from '../CropZone';
 
 const gateway = 'https://beige-impossible-dragon-883.mypinata.cloud/ipfs/';
 
@@ -16,25 +20,31 @@ function CreateClaim({ onClose, bountyId }) {
   const [formData, setFormData] = useState({ name: '', description: '' });
   const { createClaim } = useContract();
   const [imageUri, setImageUri] = useState('');
+  const [activeTab, setActiveTab] = useState('create');
+  const [showSubmit, setShowSubmit] = useState(false);
 
-  const handleUpload = async acceptedFiles => {
+  const handleUpload = async (acceptedFiles, showSubmit) => {
     if (acceptedFiles.length === 0) return;
     const fileName = acceptedFiles[0].name;
 
     setFile(acceptedFiles[0]);
     setFormData({ ...formData, name: fileName });
-    toast.info('File upload initiated');
+    if (showSubmit) setShowSubmit(true);
   };
 
-  const handleSubmit = async event => {
-    event.preventDefault();
+  async function fetchBlobFromUrl(blobUrl) {
+    const response = await fetch(blobUrl);
+    const blob = await response.blob();
+    return blob;
+  }
 
+
+  const handleSubmit = async (croppedImage) => {
     if (!formData.name || !formData.description) {
       toast.error('Please fill out all fields');
       return;
     }
 
-    console.log(formData.name.length);
     if (formData.name.length > 40) {
       toast.error('The name should be a maximum of 40 characters');
       return;
@@ -50,14 +60,60 @@ function CreateClaim({ onClose, bountyId }) {
       return;
     }
 
-    setStatus({ loading: true, processString: 'uploading image to IPFS...' });
-    const res = await uploadFile(file);
-    if (!res) {
-      toast.error('Error uploading image to IPFS');
+    const blob = await fetchBlobFromUrl(croppedImage);
+    let image = new File([blob], formData.name, {lastModified: Date.now(), type: blob.type});
+    setActiveTab('create');
+
+    let compressedFile = null;
+
+    if (image.size > 500000) {
+      setStatus({
+        loading: true,
+        processString: 'compressing image...',
+      });
+      const options = {
+        maxSizeMB: 0.5,
+        maxWidthOrHeight: 1920,
+        useWebWorker: true,
+      };
+      try {
+        compressedFile = await imageCompression(image, options);
+      } catch (error) {
+        toast.error('error compressing file: ', error);
+      }
+    }
+    setStatus({
+      loading: true,
+      processString: 'uploading image to IPFS...',
+    });
+
+    try {
+      const res = await uploadFile(compressedFile ? compressedFile : image);
+      if (!res) {
+        toast.error('Error uploading image to IPFS');
+        onClose();
+        return;
+      }
+      setImageUri(`${gateway}${res.IpfsHash}`);
+    } catch (error) {
+      toast.error('Error uploading image to IPFS: ', error);
       onClose();
       return;
     }
-    setImageUri(`${gateway}${res.IpfsHash}`);
+  };
+
+  const attemptNavigatePreview = () => {
+    if (!formData.name || !formData.description) {
+      toast.error('Please fill out all fields');
+      return;
+    }
+
+    if (!file) {
+      toast.error('Please upload a file');
+      return;
+    }
+
+    setActiveTab('preview');
   };
 
   useEffect(() => {
@@ -76,7 +132,6 @@ function CreateClaim({ onClose, bountyId }) {
           return;
         }
         setStatus({ loading: true, processString: 'creating claim...' });
-        console.log(formData.description);
         await createClaim(
           Number(bountyId),
           formData.name,
@@ -96,7 +151,6 @@ function CreateClaim({ onClose, bountyId }) {
     <div className="claim-popup-overlay">
       <ToastContainer />
       <div className="claim-popup">
-        <h2>submit claim</h2>
         {status.loading ? (
           <div className="process-wrap">
             <SyncLoader
@@ -107,10 +161,18 @@ function CreateClaim({ onClose, bountyId }) {
             />
             <div className="process-string">{status.processString}</div>
           </div>
+        ) : activeTab === 'preview' ? (
+          <PreviewClaim
+            file={file}
+            name={formData.name}
+            description={formData.description}
+            showSubmit={showSubmit}
+            handleSubmit={handleSubmit}
+          />
         ) : (
           <>
             <Dropzone onDrop={handleUpload} />
-            <form onSubmit={handleSubmit}>
+            <form>
               <div className="claim-popup-content-wrap">
                 <div className="claim-popup-content-wrap">
                   <label className="claim-name" htmlFor="claim-name">
@@ -148,18 +210,37 @@ function CreateClaim({ onClose, bountyId }) {
                 </div>
 
                 <div className="claim-popup-buttons">
-                  <button type="submit">submit claim</button>
+                  <button onClick={attemptNavigatePreview}>view preview</button>
                 </div>
               </div>
             </form>
           </>
         )}
-        <FaX
-          className="create-claim-close"
-          color="#F4595B"
-          size={25}
-          onClick={onClose}
-        />
+        <div className="create-claim-menu-wrap">
+          <div
+            className={`create-claim-tab ${
+              activeTab === 'create' ? 'create-claim-active' : ''
+            }`}
+            onClick={() => setActiveTab('create')}
+          >
+            create
+          </div>
+
+          <div
+            className={`create-claim-tab ${
+              activeTab === 'preview' ? 'create-claim-active' : ''
+            }`}
+            onClick={() => attemptNavigatePreview('preview')}
+          >
+            preview
+          </div>
+          <FaX
+            className="create-claim-close"
+            color="#F4595B"
+            size={20}
+            onClick={onClose}
+          />
+        </div>
       </div>
     </div>
   );
