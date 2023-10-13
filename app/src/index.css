@@ -523,6 +523,12 @@ summary::-webkit-details-marker {
   }
 }
 
+@media screen and (max-width: 360px) {
+  .claim-card {
+    width: 270px;
+  }
+}
+
 .claim-card-button {
   padding: 5px 12.5px;
   font-size: 0.8em;

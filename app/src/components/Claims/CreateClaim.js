@@ -77,17 +77,8 @@ function CreateClaim({ onClose, bountyId }) {
         useWebWorker: true,
       };
       try {
-        console.log('here at image compression...', image, typeof image)
         compressedFile = await imageCompression(image, options);
-        console.log(
-          'compressedFile instanceof Blob',
-          compressedFile instanceof Blob
-        ); // true
-        console.log(
-          `compressedFile size ${compressedFile.size / 1024 / 1024} MB`
-        ); // smaller than maxSizeMB
       } catch (error) {
-        console.log(error)
         toast.error('error compressing file: ', error);
       }
     }
@@ -141,7 +132,6 @@ function CreateClaim({ onClose, bountyId }) {
           return;
         }
         setStatus({ loading: true, processString: 'creating claim...' });
-        console.log(formData.description);
         await createClaim(
           Number(bountyId),
           formData.name,
