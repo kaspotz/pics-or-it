@@ -107,6 +107,7 @@ function BountyDetails({
   return (
     <div className="bounty-details-wrap">
       <div className="bounty-details-left">
+        <h1 data-aos="fade-in">pics or it didn&#39;t happen</h1>
         <h1>bounty details</h1>
         <div className="bounty-details">
           <h2 className="bounty-details-title">{bountyDetails.name}</h2>

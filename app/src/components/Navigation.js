@@ -30,6 +30,16 @@ function Navigation() {
     );
   };
 
+   const handleGithub = () => {
+    setMenu(false);
+    window.open('https://github.com/kaspotz/pics-or-it', '_blank');
+  };
+
+   const handleArbiscan = () => {
+    setMenu(false);
+    window.open('https://arbiscan.io/address/0xdffe8a4a4103f968ffd61fd082d08c41dcf9b940', '_blank');
+  };
+
   return (
     <div>
       <span className="hamburger-menu-wrap">
@@ -46,6 +56,8 @@ function Navigation() {
             <li onClick={handleHome}>home</li>
             <li onClick={handleMyBounties}>my bounties</li>
             <li onClick={handleFaq}>faq</li>
+            <li onClick={handleGithub}>github</li>
+            <li onClick={handleArbiscan}>arbiscan</li>
             <li onClick={handleSocial}>social</li>
           </ul>
         </div>
