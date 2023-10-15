@@ -319,11 +319,13 @@ img {
 .claim-popup-content-wrap {
   flex-grow: 1;
   padding-bottom: 10px;
+  position: relative;
 }
 
 .claim-popup-buttons {
   display: flex;
   justify-content: space-evenly;
+  position: relative;
 }
 
 .claim-name,
@@ -358,6 +360,8 @@ img {
 .claim-name-input,
 .claim-description-input {
   width: 75%;
+  font-family: 'Oxygen', sans-serif;
+  font-size: 1em;
 }
 
 .dropzone {
