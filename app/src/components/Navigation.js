@@ -17,6 +17,11 @@ function Navigation() {
     navigate('/my-bounties');
   };
 
+  const handleAllBounties = () => {
+    setMenu(false);
+    navigate('/all-bounties');
+  };
+
   const handleFaq = () => {
     setMenu(false);
     window.open('https://info.poidh.xyz/', '_blank');
@@ -62,6 +67,7 @@ function Navigation() {
             <li onClick={handleGithub}>github</li>
             <li onClick={handleArbiscan}>arbiscan</li>
             <li onClick={handleSocial}>social</li>
+            <li onClick={handleAllBounties}>all bounties</li>
           </ul>
         </div>
       )}

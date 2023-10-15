@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ethers } from 'ethers';
+import { ZeroAddress, ethers } from 'ethers';
 import { init, useConnectWallet } from '@web3-onboard/react';
 import injectedModule from '@web3-onboard/injected-wallets';
 import { abi } from './abi.js';
@@ -63,6 +63,8 @@ export const useContract = () => {
 
   const [{ settingChain, connectedChain }, setChain] = useSetChain();
   const [setChainAttempts, setSetChainAttempts] = useState(false);
+  const [bountiesOffset, setBountiesOffset] = useState(0);
+  const [unClaimedBounties, setUnClaimedBounties] = useState([]);
 
   useEffect(() => {
     if (wallet) {
@@ -107,6 +109,37 @@ export const useContract = () => {
       } catch (error) {
         console.error('Error fetching user balance:', error);
       }
+    }
+  };
+
+  const fetchAllBounties = async () => {
+    try { 
+      let connectedContract = await getConnectedContract();
+      if (!connectedContract) connectedContract = await getReadOnlyContract();
+      if (connectedContract) {
+        const allBountiesLength = Number(await connectedContract.getBountiesLength()) - 1;
+        if (allBountiesLength > 0) {
+          const allBounties = await connectedContract.getBounties(bountiesOffset, allBountiesLength > 100 ? bountiesOffset + 100 : allBountiesLength);
+          const unfilteredBounties = allBounties.map(bounty => ({
+            id: Number(bounty.id),
+            issuer: bounty.issuer,
+            name: bounty.name,
+            description: bounty.description,
+            amount: Number(ethers.formatEther(bounty.amount)),
+            claimer: bounty.claimer,
+            claimId: bounty.claimId,
+            createdAt: Number(bounty.createdAt),
+          }));
+          const bountiesUnclaimed = unfilteredBounties.filter(
+            bounty => bounty.claimer === ZeroAddress
+          );
+
+          setUnClaimedBounties(bountiesUnclaimed, ...bountiesUnclaimed);
+          setBountiesOffset(allBountiesLength > 100 ? bountiesOffset + 100 : allBountiesLength);
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching user bounties:', error);
     }
   };
 
@@ -300,5 +333,7 @@ export const useContract = () => {
     getTokenUri,
     acceptClaim,
     cancelBounty,
+    fetchAllBounties,
+    unClaimedBounties,
   };
 };
