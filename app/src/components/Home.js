@@ -27,13 +27,6 @@ function Home({ wallet, connect, disconnect, connecting, userBalance }) {
       toast.error('Bounty amount should be a number greater than 0');
       return;
     }
-
-    console.log(
-      parseFloat(bountyAmount),
-      parseFloat(userBalance),
-      'wallet',
-      wallet
-    );
     if (parseFloat(bountyAmount) > parseFloat(userBalance)) {
       toast.error('Bounty amount should not exceed your balance');
       return;

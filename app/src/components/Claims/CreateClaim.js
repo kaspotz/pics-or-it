@@ -135,7 +135,7 @@ function CreateClaim({ onClose, bountyId }) {
         }
         setStatus({ loading: true, processString: 'creating claim...' });
         await createClaim(
-          Number(bountyId),
+          bountyId,
           formData.name,
           `${gateway}${resMetadata.IpfsHash}`,
           formData.description
@@ -250,7 +250,7 @@ function CreateClaim({ onClose, bountyId }) {
 
 CreateClaim.propTypes = {
   onClose: PropTypes.func.isRequired,
-  bountyId: PropTypes.string.isRequired,
+  bountyId: PropTypes.number.isRequired,
 };
 
 export default CreateClaim;

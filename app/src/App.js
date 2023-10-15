@@ -45,7 +45,7 @@ function App() {
                 connect={connect}
                 disconnect={disconnect}
                 connecting={connecting}
-                userBalance={userBalance}
+                userBalance={userBalance.toString()}
               />
             }
           />
