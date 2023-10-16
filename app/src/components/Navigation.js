@@ -43,6 +43,14 @@ function Navigation() {
     );
   };
 
+   const handleDune = () => {
+    setMenu(false);
+    window.open(
+      'https://dune.com/yesyes/poidh-pics-or-it-didnt-happen',
+      '_blank'
+    );
+  };
+
   return (
     <div>
       <span className="hamburger-menu-wrap">
@@ -56,11 +64,12 @@ function Navigation() {
             <FaX onClick={() => setMenu(!menu)} color="#F4595B" size={25} />
           </span>
           <ul className="menu-list-wrap">
-            <li onClick={handleHome}>home</li>
+            <li onClick={handleHome}>make a bounty</li>
             <li onClick={handleMyBounties}>my bounties</li>
-            <li onClick={handleFaq}>faq</li>
+            <li onClick={handleFaq}>how it works</li>
             <li onClick={handleGithub}>github</li>
             <li onClick={handleArbiscan}>arbiscan</li>
+            <li onClick={handleDune}>dune analytics</li>
             <li onClick={handleSocial}>social</li>
           </ul>
         </div>
