@@ -25,7 +25,7 @@ function Navigation() {
   const handleDiscord = () => {
     setMenu(false);
     window.open(
-      'https://discord.gg/UCyyGu5p',
+      'https://discord.gg/Pm28qNuth7',
       '_blank'
     );
   };
