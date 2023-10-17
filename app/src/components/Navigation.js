@@ -22,10 +22,10 @@ function Navigation() {
     window.open('https://info.poidh.xyz/', '_blank');
   };
 
-  const handleSocial = () => {
+  const handleDiscord = () => {
     setMenu(false);
     window.open(
-      'https://www.discove.xyz/?a=new&h=1&q=Poidh.xyz&t=Poidh.xyz+Bounty+Tracker',
+      'https://discord.gg/UCyyGu5p',
       '_blank'
     );
   };
@@ -70,7 +70,7 @@ function Navigation() {
             <li onClick={handleGithub}>github</li>
             <li onClick={handleArbiscan}>arbiscan</li>
             <li onClick={handleDune}>dune analytics</li>
-            <li onClick={handleSocial}>social</li>
+            <li onClick={handleDiscord}>discord</li>
           </ul>
         </div>
       )}
