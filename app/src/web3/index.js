@@ -113,13 +113,17 @@ export const useContract = () => {
   };
 
   const fetchAllBounties = async () => {
-    try { 
+    try {
       let connectedContract = await getConnectedContract();
       if (!connectedContract) connectedContract = await getReadOnlyContract();
       if (connectedContract) {
-        const allBountiesLength = Number(await connectedContract.getBountiesLength()) - 1;
+        const allBountiesLength =
+          Number(await connectedContract.getBountiesLength()) - 1;
         if (allBountiesLength > 0) {
-          const allBounties = await connectedContract.getBounties(bountiesOffset, allBountiesLength > 100 ? bountiesOffset + 100 : allBountiesLength);
+          const allBounties = await connectedContract.getBounties(
+            bountiesOffset,
+            allBountiesLength > 100 ? bountiesOffset + 100 : allBountiesLength
+          );
           const unfilteredBounties = allBounties.map(bounty => ({
             id: Number(bounty.id),
             issuer: bounty.issuer,
@@ -135,7 +139,9 @@ export const useContract = () => {
           );
 
           setUnClaimedBounties(bountiesUnclaimed, ...bountiesUnclaimed);
-          setBountiesOffset(allBountiesLength > 100 ? bountiesOffset + 100 : allBountiesLength);
+          setBountiesOffset(
+            allBountiesLength > 100 ? bountiesOffset + 100 : allBountiesLength
+          );
         }
       }
     } catch (error) {

@@ -24,7 +24,7 @@ function App() {
     fetchUserClaims,
     fetchUserBalance,
     fetchAllBounties,
-    unClaimedBounties
+    unClaimedBounties,
   } = useContract();
 
   useEffect(() => {
@@ -52,8 +52,8 @@ function App() {
               />
             }
           />
-          <Route 
-            path='/all-bounties'
+          <Route
+            path="/all-bounties"
             element={
               <AllBounties
                 unClaimedBounties={unClaimedBounties}
@@ -95,7 +95,6 @@ function App() {
               />
             }
           />
-          
         </Routes>
       </div>
     </Router>

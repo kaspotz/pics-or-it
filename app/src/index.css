@@ -218,6 +218,25 @@ img {
   margin-top: 3em;
 }
 
+.bounties-table {
+  width: 100%;
+  margin: 0 auto;
+  max-width: 1200px;
+  margin-top: 3em;
+}
+
+.css-1ex1afd-MuiTableCell-root {
+  color: white !important;
+  font-family: 'Oxygen', sans-serif;
+}
+
+.css-15wwp11-MuiTableHead-root,
+.css-1ygcj2i-MuiTableCell-root {
+  background-color: #f4595b;
+  color: white !important;
+  font-family: 'Oxygen', sans-serif;
+}
+
 .my-bounties-wrap {
   width: 100%;
   height: 100%;
