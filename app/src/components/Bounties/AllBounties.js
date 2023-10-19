@@ -1,50 +1,24 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { toast, ToastContainer } from 'react-toastify';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from '@mui/material';
-import { ZeroAddress } from 'ethers';
-import { Link } from 'react-router-dom';
+import BountyCard from './BountyCard';
+import { ToastContainer } from 'react-toastify';
 
-function AllBounties({
+function MyBounties({
   unClaimedBounties,
   fetchAllBounties,
+  cancelBounty,
   wallet,
   connect,
   disconnect,
   connecting,
 }) {
-  const refreshBounties = useCallback(
-    toToast => {
-      console.log('fetching bounties..');
-      fetchAllBounties();
-      if (toToast) {
-        toast.success('Bounty cancelled successfully!');
-      }
-    },
-    [wallet, fetchAllBounties]
-  );
-
   useEffect(() => {
-    if (wallet) refreshBounties();
+    if (wallet) fetchAllBounties();
   }, [wallet]);
 
   useEffect(() => {
-    console.log('unClaimedBounties', unClaimedBounties);
+    console.log('unclaimed bounties', unClaimedBounties);
   }, [unClaimedBounties]);
-
-  const shortenAddress = address => {
-    return `${address.substr(0, 5)}...${address.substr(
-      address.length - 5,
-      address.length
-    )}`;
-  };
 
   return (
     <div className="my-bounties-wrap">
@@ -62,52 +36,29 @@ function AllBounties({
         </div>
       ) : (
         <>
-          <div className="bounties-table">
-            <TableContainer>
-              <Table>
-                <TableHead className="table-wrap">
-                  <TableRow>
-                    <TableCell>ID</TableCell>
-                    <TableCell>Issuer</TableCell>
-                    <TableCell>Name</TableCell>
-                    <TableCell>Description</TableCell>
-                    <TableCell>Amount</TableCell>
-                    <TableCell>Claimer</TableCell>
-                    <TableCell>Created At</TableCell>
-                    <TableCell>Actions</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {unClaimedBounties.map(bounty => (
-                    <TableRow key={bounty.id}>
-                      <TableCell>{bounty.id}</TableCell>
-                      <TableCell>{shortenAddress(bounty.issuer)}</TableCell>
-                      <TableCell>{bounty.name}</TableCell>
-                      <TableCell>{bounty.description}</TableCell>
-                      <TableCell>{bounty.amount}</TableCell>
-                      <TableCell>
-                        {bounty.claimer === ZeroAddress
-                          ? 'open'
-                          : shortenAddress(bounty.claimer)}
-                      </TableCell>
-                      <TableCell>
-                        {new Date(bounty.createdAt * 1000).toLocaleDateString()}
-                      </TableCell>
-                      <TableCell>
-                        <Link to={`/bounties/${bounty.id}`}>
-                          <button
-                            type="button"
-                            className="bounty-details-button"
-                          >
-                            details
-                          </button>
-                        </Link>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
+          <div className="all-bounties-wrap">
+            <div className="all-bounties-control">
+              <div className="all-bounties-header">
+                <h1 data-aos="fade-in">pics or it didn&#39;t happen</h1>
+                <header data-aos="fade-in">
+                  <h1>📸🧾</h1>
+                </header>
+              </div>
+              <div className="all-bounties-action"></div>
+            </div>
+            <div className="bounties-grid">
+              {unClaimedBounties
+                .filter(bounty => bounty.amount > 0)
+                .map(bounty => (
+                  <BountyCard
+                    key={bounty.id}
+                    bounty={bounty}
+                    wallet={wallet}
+                    cancelBounty={cancelBounty}
+                    refreshBounties={fetchAllBounties}
+                  />
+                ))}
+            </div>
           </div>
           <ToastContainer />
         </>
@@ -116,7 +67,7 @@ function AllBounties({
   );
 }
 
-AllBounties.propTypes = {
+MyBounties.propTypes = {
   unClaimedBounties: PropTypes.array.isRequired,
   wallet: PropTypes.object,
   connect: PropTypes.func.isRequired,
@@ -126,4 +77,4 @@ AllBounties.propTypes = {
   cancelBounty: PropTypes.func.isRequired,
 };
 
-export default AllBounties;
+export default MyBounties;

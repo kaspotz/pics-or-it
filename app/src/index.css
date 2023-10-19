@@ -274,12 +274,14 @@ img {
 .bounty-description {
   text-align: left;
   margin-top: 0px;
+  min-height: 37px;
 }
 
 .bounty-title {
   font-size: 1em;
   font-weight: bold;
   text-align: left;
+  max-width: 150px;
 }
 
 .bounty-details-button-wrap {
@@ -301,6 +303,7 @@ img {
 .bounty-card-amount {
   padding: 0px;
   margin-right: 10px;
+  display: flex;
 }
 
 .claim-popup-overlay {
@@ -621,4 +624,16 @@ summary::-webkit-details-marker {
 .crop-finish-button {
   position: relative;
   z-index: 10000;
+}
+
+.all-bounties-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  max-width: 1200px;
+}
+
+.all-bounties-control {
+  width: 50%;
 }
