@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import BountyCard from './BountyCard';
 import { ToastContainer } from 'react-toastify';
 
-function MyBounties({
+function AllBounties({
   unClaimedBounties,
   fetchAllBounties,
   cancelBounty,
@@ -12,6 +12,8 @@ function MyBounties({
   disconnect,
   connecting,
 }) {
+  const [showCreateBounty, setShowCreateBounty] = useState(false);
+
   useEffect(() => {
     if (wallet) fetchAllBounties();
   }, [wallet]);
@@ -44,9 +46,15 @@ function MyBounties({
                   <h1>📸🧾</h1>
                 </header>
               </div>
-              <div className="all-bounties-action"></div>
+              <div className="all-bounties-action">
+                {!showCreateBounty && (
+                  <div className="bounty-details-connect-claim-button-wrap">
+                    <button onClick={() => {}}>claim</button>
+                  </div>
+                )}
+              </div>
             </div>
-            <div className="bounties-grid">
+            <div className="bounties-grid all-bounties-grid">
               {unClaimedBounties
                 .filter(bounty => bounty.amount > 0)
                 .map(bounty => (
@@ -67,7 +75,7 @@ function MyBounties({
   );
 }
 
-MyBounties.propTypes = {
+AllBounties.propTypes = {
   unClaimedBounties: PropTypes.array.isRequired,
   wallet: PropTypes.object,
   connect: PropTypes.func.isRequired,
@@ -77,4 +85,4 @@ MyBounties.propTypes = {
   cancelBounty: PropTypes.func.isRequired,
 };
 
-export default MyBounties;
+export default AllBounties;
