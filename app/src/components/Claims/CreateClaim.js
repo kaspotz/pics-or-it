@@ -218,23 +218,6 @@ function CreateClaim({ onClose, bountyId }) {
           </>
         )}
         <div className="create-claim-menu-wrap">
-          <div
-            className={`create-claim-tab ${
-              activeTab === 'create' ? 'create-claim-active' : ''
-            }`}
-            onClick={() => setActiveTab('create')}
-          >
-            create
-          </div>
-
-          <div
-            className={`create-claim-tab ${
-              activeTab === 'preview' ? 'create-claim-active' : ''
-            }`}
-            onClick={() => attemptNavigatePreview('preview')}
-          >
-            preview
-          </div>
           <FaX
             className="create-claim-close"
             color="#F4595B"
