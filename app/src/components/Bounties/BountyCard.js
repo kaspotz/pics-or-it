@@ -7,7 +7,13 @@ import { ethers } from 'ethers';
 import { ToastContainer, toast } from 'react-toastify';
 import { BeatLoader } from 'react-spinners';
 
-function BountyCard({ bounty, cancelBounty, wallet, refreshBounties }) {
+function BountyCard({
+  bounty,
+  cancelBounty,
+  wallet,
+  refreshBounties,
+  showClaim,
+}) {
   const { id, name, description, amount, claimer, issuer } = bounty;
   const [showCancel, setShowCancel] = useState(false);
   const [cancelLoading, setCancelLoading] = useState(false);
@@ -68,18 +74,20 @@ function BountyCard({ bounty, cancelBounty, wallet, refreshBounties }) {
             src={arbitrumLogo}
             alt="Arbitrum logo"
           />
-          <p className="bounty-card-amount">{amount}</p>
+          <p className="bounty-card-amount">{amount} Ξ</p>
         </div>
       </div>
       <p className="bounty-description">{truncatedDescription}</p>
       <div className="bounty-details-button-wrap">
-        <button
-          type="button"
-          className="bounty-details-button"
-          onClick={handleClaimClick}
-        >
-          claim
-        </button>
+        {showClaim && (
+          <button
+            type="button"
+            className="bounty-details-button"
+            onClick={handleClaimClick}
+          >
+            claim
+          </button>
+        )}
         <Link to={`/bounties/${id}`}>
           <button type="button" className="bounty-details-button">
             details
@@ -119,6 +127,7 @@ BountyCard.propTypes = {
   cancelBounty: PropTypes.func.isRequired,
   wallet: PropTypes.object,
   refreshBounties: PropTypes.func.isRequired,
+  showClaim: PropTypes.bool.isRequired,
 };
 
 export default BountyCard;

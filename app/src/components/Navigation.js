@@ -7,14 +7,19 @@ function Navigation() {
   const [menu, setMenu] = useState(false);
   const navigate = useNavigate();
 
-  const handleHome = () => {
+  const handleCreate = () => {
     setMenu(false);
-    navigate('/');
+    navigate('/create');
   };
 
   const handleMyBounties = () => {
     setMenu(false);
     navigate('/my-bounties');
+  };
+
+  const handleAllBounties = () => {
+    setMenu(false);
+    navigate('/');
   };
 
   const handleFaq = () => {
@@ -64,7 +69,8 @@ function Navigation() {
             <FaX onClick={() => setMenu(!menu)} color="#F4595B" size={25} />
           </span>
           <ul className="menu-list-wrap">
-            <li onClick={handleHome}>make a bounty</li>
+            <li onClick={handleAllBounties}>home</li>
+            <li onClick={handleCreate}>create bounty</li>
             <li onClick={handleMyBounties}>my bounties</li>
             <li onClick={handleFaq}>how it works</li>
             <li onClick={handleGithub}>github</li>

@@ -1,48 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import { useContract } from '../web3';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { BeatLoader } from 'react-spinners'; //import the spinner
+import BountyCreation from './Bounties/BountyCreation';
 
 function Home({ wallet, connect, disconnect, connecting, userBalance }) {
-  const { createBounty } = useContract();
-  const [bountyAmount, setBountyAmount] = useState(0);
-  const [bountyName, setBountyName] = useState('');
-  const [bountyDescription, setBountyDescription] = useState('');
-  const [loading, setLoading] = useState(false); // new state for loading status
-
-  const handleCreateBounty = async () => {
-    if (bountyName.length > 40) {
-      toast.error('Bounty name should not exceed 40 characters');
-      return;
-    }
-    if (bountyDescription.length > 300) {
-      toast.error('Bounty description should not exceed 300 characters');
-      return;
-    }
-    if (isNaN(bountyAmount) || bountyAmount <= 0) {
-      toast.error('Bounty amount should be a number greater than 0');
-      return;
-    }
-    if (parseFloat(bountyAmount) > parseFloat(userBalance)) {
-      toast.error('Bounty amount should not exceed your balance');
-      return;
-    }
-
-    setLoading(true);
-    await createBounty(bountyName, bountyDescription, bountyAmount);
-    setLoading(false);
-
-    toast.success('Bounty created successfully');
-    // reset state attributes
-    setBountyAmount(0);
-    setBountyName('');
-    setBountyDescription('');
-  };
-
   useEffect(() => {
     AOS.refresh();
   }, [wallet]);
@@ -83,61 +47,7 @@ function Home({ wallet, connect, disconnect, connecting, userBalance }) {
           </button>
         </div>
       ) : (
-        <div data-aos="fade-in" key="wallet" className="form-center">
-          <form className="myForm">
-            <p>
-              <label>
-                bounty name
-                <input
-                  type="text"
-                  name="customer_name"
-                  required
-                  value={bountyName}
-                  onChange={e => setBountyName(e.target.value)}
-                />
-              </label>
-            </p>
-            <p>
-              <label>
-                eth
-                <input
-                  type="text"
-                  name="bounty_eth"
-                  required
-                  value={bountyAmount}
-                  onChange={e => setBountyAmount(e.target.value)}
-                />
-              </label>
-            </p>
-
-            <p>
-              <label>
-                bounty description
-                <textarea
-                  className="vertical"
-                  name="comments"
-                  maxLength="300"
-                  value={bountyDescription}
-                  onChange={e => setBountyDescription(e.target.value)}
-                ></textarea>
-              </label>
-            </p>
-
-            <p>
-              <button
-                type="button"
-                disabled={loading} // button is disabled when loading
-                onClick={async () => await handleCreateBounty()}
-              >
-                {loading ? (
-                  <BeatLoader color="white" loading={loading} size={7} />
-                ) : (
-                  'create bounty'
-                )}
-              </button>
-            </p>
-          </form>
-        </div>
+        <BountyCreation userBalance={userBalance} />
       )}
     </div>
   );

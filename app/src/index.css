@@ -218,12 +218,41 @@ img {
   margin-top: 3em;
 }
 
+.all-bounties-grid {
+  margin-top: 0;
+}
+
+.bounties-table {
+  width: 100%;
+  margin: 0 auto;
+  max-width: 1200px;
+  margin-top: 3em;
+}
+
+.css-1ex1afd-MuiTableCell-root {
+  color: white !important;
+  font-family: 'Oxygen', sans-serif;
+}
+
+.css-15wwp11-MuiTableHead-root,
+.css-1ygcj2i-MuiTableCell-root {
+  background-color: #f4595b;
+  color: white !important;
+  font-family: 'Oxygen', sans-serif;
+}
+
 .my-bounties-wrap {
   width: 100%;
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+@media screen and (max-width: 1100px) {
+  .bounties-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 /* Responsive layout - makes the grid list stack on top of each other instead of next to each other */
@@ -255,12 +284,14 @@ img {
 .bounty-description {
   text-align: left;
   margin-top: 0px;
+  min-height: 37px;
 }
 
 .bounty-title {
   font-size: 1em;
   font-weight: bold;
   text-align: left;
+  max-width: 150px;
 }
 
 .bounty-details-button-wrap {
@@ -282,6 +313,7 @@ img {
 .bounty-card-amount {
   padding: 0px;
   margin-right: 10px;
+  display: flex;
 }
 
 .claim-popup-overlay {
@@ -402,6 +434,12 @@ img {
   width: 80px;
   align-items: flex-end;
   justify-content: flex-end;
+}
+
+.create-bounty-close {
+  position: absolute;
+  bottom: 2.5%;
+  right: 2.5%;
 }
 
 .create-claim-tab {
@@ -602,4 +640,37 @@ summary::-webkit-details-marker {
 .crop-finish-button {
   position: relative;
   z-index: 10000;
+}
+
+.all-bounties-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  max-width: 1200px;
+}
+
+.all-bounties-control {
+  width: 50%;
+}
+
+.bounty-creation-wrapper {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(36, 36, 36, 0.75);
+}
+
+.bounty-creation-inner-wrap {
+  background-color: #7ab2e7;
+  border-radius: 12.5px;
+  width: 80%;
+  max-width: 625px;
+  position: relative;
+  margin: 0 auto;
 }

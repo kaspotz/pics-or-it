@@ -4,6 +4,7 @@ import Navigation from './components/Navigation';
 import Home from './components/Home';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import MyBounties from './components/Bounties/MyBounties.js';
+import AllBounties from './components/Bounties/AllBounties.js';
 import BountyDetails from './components/Bounties/BountyDetails.js';
 
 function App() {
@@ -22,6 +23,8 @@ function App() {
     cancelBounty,
     fetchUserClaims,
     fetchUserBalance,
+    fetchAllBounties,
+    unClaimedBounties,
   } = useContract();
 
   useEffect(() => {
@@ -38,13 +41,28 @@ function App() {
         <Navigation />
         <Routes>
           <Route
-            path="/"
+            path="/create"
             element={
               <Home
                 wallet={wallet}
                 connect={connect}
                 disconnect={disconnect}
                 connecting={connecting}
+                userBalance={userBalance.toString()}
+              />
+            }
+          />
+          <Route
+            path="/"
+            element={
+              <AllBounties
+                unClaimedBounties={unClaimedBounties}
+                wallet={wallet}
+                connect={connect}
+                disconnect={disconnect}
+                connecting={connecting}
+                fetchAllBounties={fetchAllBounties}
+                cancelBounty={cancelBounty}
                 userBalance={userBalance.toString()}
               />
             }
