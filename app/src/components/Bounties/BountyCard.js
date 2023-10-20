@@ -74,7 +74,7 @@ function BountyCard({
             src={arbitrumLogo}
             alt="Arbitrum logo"
           />
-          <p className="bounty-card-amount">{amount} Ξ</p>
+          <p className="bounty-card-amount">{amount.toFixed(3)} Ξ</p>
         </div>
       </div>
       <p className="bounty-description">{truncatedDescription}</p>
