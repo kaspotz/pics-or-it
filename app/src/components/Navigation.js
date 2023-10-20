@@ -27,10 +27,10 @@ function Navigation() {
     window.open('https://info.poidh.xyz/', '_blank');
   };
 
-  const handleSocial = () => {
+  const handleDiscord = () => {
     setMenu(false);
     window.open(
-      'https://www.discove.xyz/?a=new&h=1&q=Poidh.xyz&t=Poidh.xyz+Bounty+Tracker',
+      'https://discord.gg/Pm28qNuth7',
       '_blank'
     );
   };
@@ -44,6 +44,14 @@ function Navigation() {
     setMenu(false);
     window.open(
       'https://arbiscan.io/address/0xdffe8a4a4103f968ffd61fd082d08c41dcf9b940',
+      '_blank'
+    );
+  };
+
+   const handleDune = () => {
+    setMenu(false);
+    window.open(
+      'https://dune.com/yesyes/poidh-pics-or-it-didnt-happen',
       '_blank'
     );
   };
@@ -64,10 +72,11 @@ function Navigation() {
             <li onClick={handleAllBounties}>home</li>
             <li onClick={handleCreate}>create bounty</li>
             <li onClick={handleMyBounties}>my bounties</li>
-            <li onClick={handleFaq}>faq</li>
+            <li onClick={handleFaq}>how it works</li>
             <li onClick={handleGithub}>github</li>
             <li onClick={handleArbiscan}>arbiscan</li>
-            <li onClick={handleSocial}>social</li>
+            <li onClick={handleDune}>dune analytics</li>
+            <li onClick={handleDiscord}>discord</li>
           </ul>
         </div>
       )}
