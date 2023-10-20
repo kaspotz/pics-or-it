@@ -114,8 +114,10 @@ export const useContract = () => {
 
   const fetchAllBounties = async () => {
     try {
-      let connectedContract = await getConnectedContract();
-      if (!connectedContract) connectedContract = await getReadOnlyContract();
+      let writeContract = await getConnectedContract();
+      let connectedContract = writeContract
+        ? writeContract
+        : await getReadOnlyContract();
       if (connectedContract) {
         const allBountiesLength =
           Number(await connectedContract.getBountiesLength()) - 1;

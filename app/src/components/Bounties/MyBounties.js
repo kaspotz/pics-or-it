@@ -52,7 +52,7 @@ function MyBounties({
           <div className="bounties-grid">
             {userBounties
               .filter(bounty => bounty.amount > 0)
-              .sort((a, b) => a.createdAt - b.createdAt)
+              .sort((a, b) => b.createdAt - a.createdAt)
               .map(bounty => (
                 <BountyCard
                   key={bounty.id}

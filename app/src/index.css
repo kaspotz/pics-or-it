@@ -416,14 +416,13 @@ img {
 
 .create-claim-menu-wrap {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: flex-end;
   align-items: center;
   width: 100%;
   position: absolute;
   bottom: 0;
   left: 0;
   min-height: 40px;
-  background-color: white;
   color: #f4595b;
   border-bottom-left-radius: 12.5px;
   border-bottom-right-radius: 12.5px;
