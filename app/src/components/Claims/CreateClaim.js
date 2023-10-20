@@ -10,7 +10,6 @@ import PreviewClaim from './PreviewClaim';
 import { ToastContainer, toast } from 'react-toastify';
 import { uploadFile } from '../../api';
 import imageCompression from 'browser-image-compression';
-import { createImage } from '../CropZone';
 
 const gateway = 'https://beige-impossible-dragon-883.mypinata.cloud/ipfs/';
 

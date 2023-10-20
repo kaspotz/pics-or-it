@@ -52,6 +52,7 @@ function MyBounties({
           <div className="bounties-grid">
             {userBounties
               .filter(bounty => bounty.amount > 0)
+              .sort((a, b) => a.createdAt - b.createdAt)
               .map(bounty => (
                 <BountyCard
                   key={bounty.id}
@@ -59,6 +60,7 @@ function MyBounties({
                   wallet={wallet}
                   cancelBounty={cancelBounty}
                   refreshBounties={refreshBounties}
+                  showClaim={true}
                 />
               ))}
           </div>

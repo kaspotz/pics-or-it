@@ -7,9 +7,9 @@ function Navigation() {
   const [menu, setMenu] = useState(false);
   const navigate = useNavigate();
 
-  const handleHome = () => {
+  const handleCreate = () => {
     setMenu(false);
-    navigate('/');
+    navigate('/create');
   };
 
   const handleMyBounties = () => {
@@ -19,7 +19,7 @@ function Navigation() {
 
   const handleAllBounties = () => {
     setMenu(false);
-    navigate('/all-bounties');
+    navigate('/');
   };
 
   const handleFaq = () => {
@@ -61,13 +61,13 @@ function Navigation() {
             <FaX onClick={() => setMenu(!menu)} color="#F4595B" size={25} />
           </span>
           <ul className="menu-list-wrap">
-            <li onClick={handleHome}>home</li>
+            <li onClick={handleAllBounties}>home</li>
+            <li onClick={handleCreate}>create bounty</li>
             <li onClick={handleMyBounties}>my bounties</li>
             <li onClick={handleFaq}>faq</li>
             <li onClick={handleGithub}>github</li>
             <li onClick={handleArbiscan}>arbiscan</li>
             <li onClick={handleSocial}>social</li>
-            <li onClick={handleAllBounties}>all bounties</li>
           </ul>
         </div>
       )}

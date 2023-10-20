@@ -4,8 +4,9 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { BeatLoader } from 'react-spinners';
 import { useContract } from '../../web3';
+import { FaX } from 'react-icons/fa6';
 
-function BountyCreation({ userBalance }) {
+function BountyCreation({ userBalance, handleClose }) {
   const { createBounty } = useContract();
   const [bountyAmount, setBountyAmount] = useState(0);
   const [bountyName, setBountyName] = useState('');
@@ -42,7 +43,7 @@ function BountyCreation({ userBalance }) {
   };
 
   return (
-    <div className="form-center">
+    <div className="bounty-creation-inner-wrap form-center">
       <ToastContainer />
       <form className="myForm">
         <p>
@@ -97,12 +98,19 @@ function BountyCreation({ userBalance }) {
           </button>
         </p>
       </form>
+      <FaX
+        className="create-bounty-close"
+        color="#F4595B"
+        size={20}
+        onClick={handleClose}
+      />
     </div>
   );
 }
 
 BountyCreation.propTypes = {
   userBalance: PropTypes.string,
+  handleClose: PropTypes.func.isRequired,
 };
 
 export default BountyCreation;

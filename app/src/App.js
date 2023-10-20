@@ -41,7 +41,7 @@ function App() {
         <Navigation />
         <Routes>
           <Route
-            path="/"
+            path="/create"
             element={
               <Home
                 wallet={wallet}
@@ -53,7 +53,7 @@ function App() {
             }
           />
           <Route
-            path="/all-bounties"
+            path="/"
             element={
               <AllBounties
                 unClaimedBounties={unClaimedBounties}
@@ -63,6 +63,7 @@ function App() {
                 connecting={connecting}
                 fetchAllBounties={fetchAllBounties}
                 cancelBounty={cancelBounty}
+                userBalance={userBalance.toString()}
               />
             }
           />

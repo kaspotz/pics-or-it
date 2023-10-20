@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import BountyCard from './BountyCard';
 import { ToastContainer } from 'react-toastify';
+import BountyCreation from './BountyCreation';
 
 function AllBounties({
   unClaimedBounties,
@@ -11,6 +12,7 @@ function AllBounties({
   connect,
   disconnect,
   connecting,
+  userBalance,
 }) {
   const [showCreateBounty, setShowCreateBounty] = useState(false);
 
@@ -18,9 +20,9 @@ function AllBounties({
     if (wallet) fetchAllBounties();
   }, [wallet]);
 
-  useEffect(() => {
-    console.log('unclaimed bounties', unClaimedBounties);
-  }, [unClaimedBounties]);
+  const handleCreateBounty = () => {
+    setShowCreateBounty(!showCreateBounty);
+  };
 
   return (
     <div className="my-bounties-wrap">
@@ -49,7 +51,9 @@ function AllBounties({
               <div className="all-bounties-action">
                 {!showCreateBounty && (
                   <div className="bounty-details-connect-claim-button-wrap">
-                    <button onClick={() => {}}>claim</button>
+                    <button onClick={() => handleCreateBounty()}>
+                      create bounty
+                    </button>
                   </div>
                 )}
               </div>
@@ -57,6 +61,7 @@ function AllBounties({
             <div className="bounties-grid all-bounties-grid">
               {unClaimedBounties
                 .filter(bounty => bounty.amount > 0)
+                .sort((a, b) => a.createdAt - b.createdAt)
                 .map(bounty => (
                   <BountyCard
                     key={bounty.id}
@@ -64,11 +69,20 @@ function AllBounties({
                     wallet={wallet}
                     cancelBounty={cancelBounty}
                     refreshBounties={fetchAllBounties}
+                    showClaim={false}
                   />
                 ))}
             </div>
           </div>
           <ToastContainer />
+          {showCreateBounty && (
+            <div className="bounty-creation-wrapper">
+              <BountyCreation
+                userBalance={userBalance}
+                handleClose={handleCreateBounty}
+              />
+            </div>
+          )}
         </>
       )}
     </div>
@@ -83,6 +97,7 @@ AllBounties.propTypes = {
   connecting: PropTypes.bool.isRequired,
   fetchAllBounties: PropTypes.func.isRequired,
   cancelBounty: PropTypes.func.isRequired,
+  userBalance: PropTypes.string.isRequired,
 };
 
 export default AllBounties;

@@ -116,7 +116,6 @@ export const useContract = () => {
     try {
       let connectedContract = await getConnectedContract();
       if (!connectedContract) connectedContract = await getReadOnlyContract();
-      console.log('read only contract', connectedContract);
       if (connectedContract) {
         const allBountiesLength =
           Number(await connectedContract.getBountiesLength()) - 1;
