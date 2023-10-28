@@ -63,7 +63,6 @@ export const useContract = () => {
 
   const [{ settingChain, connectedChain }, setChain] = useSetChain();
   const [setChainAttempts, setSetChainAttempts] = useState(false);
-  const [bountiesOffset, setBountiesOffset] = useState(0);
   const [unClaimedBounties, setUnClaimedBounties] = useState([]);
 
   useEffect(() => {
