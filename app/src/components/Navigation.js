@@ -29,10 +29,7 @@ function Navigation() {
 
   const handleDiscord = () => {
     setMenu(false);
-    window.open(
-      'https://discord.gg/Pm28qNuth7',
-      '_blank'
-    );
+    window.open('https://discord.gg/Pm28qNuth7', '_blank');
   };
 
   const handleGithub = () => {
@@ -48,7 +45,7 @@ function Navigation() {
     );
   };
 
-   const handleDune = () => {
+  const handleDune = () => {
     setMenu(false);
     window.open(
       'https://dune.com/yesyes/poidh-pics-or-it-didnt-happen',
