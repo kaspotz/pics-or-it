@@ -121,11 +121,17 @@ export const useContract = () => {
       if (connectedContract) {
         const allBountiesLength =
           Number(await connectedContract.getBountiesLength()) - 1;
-        if (allBountiesLength > 0) {
+
+        if (allBountiesLength >= 0) {
+          // Calculate the starting and ending indices to fetch the latest 20 bounties
+          const startIndex = Math.max(0, allBountiesLength - 19);
+          const endIndex = allBountiesLength;
+
           const allBounties = await connectedContract.getBounties(
-            bountiesOffset,
-            allBountiesLength > 100 ? bountiesOffset + 100 : allBountiesLength
+            startIndex,
+            endIndex
           );
+
           const unfilteredBounties = allBounties.map(bounty => ({
             id: Number(bounty.id),
             issuer: bounty.issuer,
@@ -136,14 +142,12 @@ export const useContract = () => {
             claimId: bounty.claimId,
             createdAt: Number(bounty.createdAt),
           }));
+
           const bountiesUnclaimed = unfilteredBounties.filter(
             bounty => bounty.claimer === ZeroAddress
           );
 
-          setUnClaimedBounties(bountiesUnclaimed, ...bountiesUnclaimed);
-          setBountiesOffset(
-            allBountiesLength > 100 ? bountiesOffset + 100 : allBountiesLength
-          );
+          setUnClaimedBounties(bountiesUnclaimed);
         }
       }
     } catch (error) {

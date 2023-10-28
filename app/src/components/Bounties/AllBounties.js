@@ -20,13 +20,12 @@ function AllBounties({
   const intervalId = useRef(); // Using a ref to persist the interval ID
 
   useEffect(() => {
-    if (wallet) fetchAllBounties();
+    if (wallet && unClaimedBounties.length == 0) fetchAllBounties();
   }, [wallet]);
 
   useEffect(() => {
     if (unClaimedBounties.length == 0 && firstRender) {
       intervalId.current = setInterval(fetchAllBounties, 5000);
-
       setFirstRender(false);
     }
 
