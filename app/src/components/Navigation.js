@@ -53,6 +53,14 @@ function Navigation() {
     );
   };
 
+    const handleTwitter = () => {
+    setMenu(false);
+    window.open(
+      'https://twitter.com/poidhxyz',
+      '_blank'
+    );
+  };
+
   return (
     <div>
       <span className="hamburger-menu-wrap">
@@ -70,10 +78,11 @@ function Navigation() {
             <li onClick={handleCreate}>create bounty</li>
             <li onClick={handleMyBounties}>my bounties</li>
             <li onClick={handleFaq}>how it works</li>
+            <li onClick={handleTwitter}>twitter</li>
+            <li onClick={handleDiscord}>discord</li>
+            <li onClick={handleDune}>dune analytics</li>
             <li onClick={handleGithub}>github</li>
             <li onClick={handleArbiscan}>arbiscan</li>
-            <li onClick={handleDune}>dune analytics</li>
-            <li onClick={handleDiscord}>discord</li>
           </ul>
         </div>
       )}
