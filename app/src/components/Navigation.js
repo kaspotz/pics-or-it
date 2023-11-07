@@ -53,10 +53,18 @@ function Navigation() {
     );
   };
 
-    const handleTwitter = () => {
+   const handleTwitter = () => {
     setMenu(false);
     window.open(
       'https://twitter.com/poidhxyz',
+      '_blank'
+    );
+  };
+
+   const handleAbout = () => {
+    setMenu(false);
+    window.open(
+      'https://paragraph.xyz/@poidh/about-pics-or-it-didnt-happen',
       '_blank'
     );
   };
@@ -78,6 +86,7 @@ function Navigation() {
             <li onClick={handleCreate}>create bounty</li>
             <li onClick={handleMyBounties}>my bounties</li>
             <li onClick={handleFaq}>how it works</li>
+            <li onClick={handleAbout}>about us</li>
             <li onClick={handleTwitter}>twitter</li>
             <li onClick={handleDiscord}>discord</li>
             <li onClick={handleDune}>dune analytics</li>
