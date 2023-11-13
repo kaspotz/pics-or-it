@@ -109,16 +109,6 @@ function CreateClaim({ onClose, bountyId }) {
       return;
     }
 
-    if (formData.name.length > 40) {
-      toast.error('Name limit 40 characters');
-      return;
-    }
-
-    if (formData.description.length > 300) {
-      toast.error('Description limit 300 characters');
-      return;
-    }
-
     if (!file) {
       toast.error('Please upload a file');
       return;
