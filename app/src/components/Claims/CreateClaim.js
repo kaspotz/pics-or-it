@@ -27,7 +27,7 @@ function CreateClaim({ onClose, bountyId }) {
     const fileName = acceptedFiles[0].name;
 
     setFile(acceptedFiles[0]);
-    setFormData({ ...formData, name: fileName });
+    setFormData({ ...formData, });
     if (showSubmit) setShowSubmit(true);
   };
 
