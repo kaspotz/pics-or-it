@@ -52,6 +52,7 @@ function BountyCreation({ userBalance, handleClose }) {
             <input
               type="text"
               name="customer_name"
+              maxLength="40"
               required
               value={bountyName}
               onChange={e => setBountyName(e.target.value)}
@@ -64,7 +65,6 @@ function BountyCreation({ userBalance, handleClose }) {
             <input
               type="text"
               name="bounty_eth"
-              maxLength="40"
               required
               value={bountyAmount}
               onChange={e => setBountyAmount(e.target.value)}
