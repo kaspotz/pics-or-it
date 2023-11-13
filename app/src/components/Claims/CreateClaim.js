@@ -182,6 +182,7 @@ function CreateClaim({ onClose, bountyId }) {
                   <input
                     className="claim-name-input"
                     type="text"
+                    maxlength="40"
                     value={formData.name}
                     onChange={event =>
                       setFormData({ ...formData, name: event.target.value })
@@ -199,6 +200,7 @@ function CreateClaim({ onClose, bountyId }) {
                   </label>
                   <textarea
                     className="claim-description-input"
+                    maxlength="300"
                     value={formData.description}
                     onChange={event =>
                       setFormData({
