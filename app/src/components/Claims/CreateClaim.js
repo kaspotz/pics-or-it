@@ -70,7 +70,7 @@ function CreateClaim({ onClose, bountyId }) {
     if (image.size > 500000) {
       setStatus({
         loading: true,
-        processString: 'compressing image process may take up to 30 seconds...',
+        processString: 'compressing image...',
       });
       const options = {
         maxSizeMB: 0.5,
