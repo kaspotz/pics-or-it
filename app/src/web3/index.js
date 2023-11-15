@@ -123,7 +123,7 @@ export const useContract = () => {
 
         if (allBountiesLength >= 0) {
           // Calculate the starting and ending indices to fetch the latest 20 bounties
-          const startIndex = Math.max(0, allBountiesLength - 39);
+          const startIndex = Math.max(0, allBountiesLength - 79);
           const endIndex = allBountiesLength;
 
           const allBounties = await connectedContract.getBounties(
