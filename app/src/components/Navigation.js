@@ -37,10 +37,10 @@ function Navigation() {
     window.open('https://github.com/kaspotz/pics-or-it', '_blank');
   };
 
-  const handleArbiscan = () => {
+  const handleSecurity = () => {
     setMenu(false);
     window.open(
-      'https://arbiscan.io/address/0xdffe8a4a4103f968ffd61fd082d08c41dcf9b940',
+      'https://paragraph.xyz/@poidh/poidh-security-report',
       '_blank'
     );
   };
@@ -87,11 +87,11 @@ function Navigation() {
             <li onClick={handleMyBounties}>my bounties</li>
             <li onClick={handleFaq}>how it works</li>
             <li onClick={handleAbout}>about us</li>
+            <li onClick={handleSecurity}>security</li>
+            <li onClick={handleGithub}>github</li>
+            <li onClick={handleDune}>dune analytics</li>
             <li onClick={handleTwitter}>twitter</li>
             <li onClick={handleDiscord}>discord</li>
-            <li onClick={handleDune}>dune analytics</li>
-            <li onClick={handleGithub}>github</li>
-            <li onClick={handleArbiscan}>arbiscan</li>
           </ul>
         </div>
       )}
