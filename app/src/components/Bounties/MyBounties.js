@@ -11,7 +11,6 @@ function MyBounties({
   connect,
   disconnect,
   connecting,
-  userSummary
 }) {
   const refreshBounties = useCallback(
     toToast => {
@@ -119,7 +118,6 @@ MyBounties.propTypes = {
   connecting: PropTypes.bool.isRequired,
   fetchUserBounties: PropTypes.func.isRequired,
   cancelBounty: PropTypes.func.isRequired,
-  userSummary: PropTypes.object.isRequired,
 };
 
 export default MyBounties;

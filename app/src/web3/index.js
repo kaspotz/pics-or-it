@@ -58,7 +58,6 @@ export const useContract = () => {
   const [userBounties, setUserBounties] = useState([]);
   const [userClaims, setUserClaims] = useState([]);
   const [userBalance, setUserBalance] = useState(0);
-  const [userSummary, setUserSummary] = useState([]);
 
   const jsonProviderUrl = PROVIDER_URL; // Replace with the desired JSON provider URL
 
@@ -174,7 +173,6 @@ export const useContract = () => {
           createdAt: Number(bounty.createdAt),
         }));
         setUserBounties(plainObject);
-        fetchBountySummary(plainObject)
       }
     } catch (error) {
       console.error('Error fetching user bounties:', error);
@@ -367,6 +365,5 @@ export const useContract = () => {
     cancelBounty,
     fetchAllBounties,
     unClaimedBounties,
-    userSummary,
   };
 };
