@@ -49,7 +49,7 @@ function MyBounties({
           </button>
         </div>
       ) : (
-        <>
+        <div>
           <div className="table-container">
             <table className="summary-table">
               <tr>
@@ -104,7 +104,7 @@ function MyBounties({
               ))}
           </div>
           <ToastContainer />
-        </>
+        </div>
       )
       }
     </div >

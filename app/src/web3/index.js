@@ -186,18 +186,14 @@ export const useContract = () => {
       const userSumObject = bounties.reduce((acc, obj) => {
         if (obj.claimer !== null && obj.claimer !== ZeroAddress) {
           acc.completedBounties += 1;
-          acc.ethSpent += obj.amount === null ? 0 : obj.amount;
+          acc.ethSpent += obj.amount === null ? 0 : obj.amount.toFixed(4);
         } else {
           acc.inProgressBounties += 1;
-          acc.ethInOpenBounties += obj.amount === null ? 0 : obj.amount
+          acc.ethInOpenBounties += obj.amount === null ? 0 : obj.amount.toFixed(4)
         }
         return acc;
       }, { completedBounties: 0, inProgressBounties: 0, ethSpent: 0, ethInOpenBounties: 0 });
-
       setUserSummary(userSumObject);
-      console.log("data")
-      console.log(userSumObject.completedBounties);
-      console.log(userSumObject.ethSpent);
     } catch (error) {
       console.error('Error fetching user summary data', error);
     }
