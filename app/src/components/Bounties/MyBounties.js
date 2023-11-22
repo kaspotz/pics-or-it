@@ -11,7 +11,6 @@ function MyBounties({
   connect,
   disconnect,
   connecting,
-  userSummary
 }) {
   const refreshBounties = useCallback(
     toToast => {
@@ -50,44 +49,6 @@ function MyBounties({
         </div>
       ) : (
         <>
-          <div className="table-container">
-            <table className="summary-table">
-              <tr>
-                <th className="summary-align-left">
-                  completed bounties:
-                </th>
-                <th className="summary-align-right">
-                  {userSummary.completedBounties}
-                </th>
-              </tr>
-              <tr>
-                <th className="summary-align-left">
-                  total eth sent:
-                </th>
-                <th className="summary-align-right">
-                  {userSummary.ethSpent}
-                </th>
-              </tr>
-            </table>
-            <table className="summary-table">
-              <tr>
-                <th className="summary-align-left">
-                  in progress bounties:
-                </th>
-                <th className="summary-align-right">
-                  {userSummary.inProgressBounties}
-                </th>
-              </tr>
-              <tr>
-                <th className="summary-align-left">
-                  total eth in contracts:
-                </th>
-                <th className="summary-align-right">
-                  {userSummary.ethInOpenBounties}
-                </th>
-              </tr>
-            </table>
-          </div>
           <div className="bounties-grid">
             {userBounties
               .filter(bounty => bounty.amount > 0)
@@ -105,9 +66,8 @@ function MyBounties({
           </div>
           <ToastContainer />
         </>
-      )
-      }
-    </div >
+      )}
+    </div>
   );
 }
 
@@ -119,7 +79,6 @@ MyBounties.propTypes = {
   connecting: PropTypes.bool.isRequired,
   fetchUserBounties: PropTypes.func.isRequired,
   cancelBounty: PropTypes.func.isRequired,
-  userSummary: PropTypes.object.isRequired,
 };
 
 export default MyBounties;
