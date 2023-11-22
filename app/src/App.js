@@ -26,6 +26,8 @@ function App() {
     fetchAllBounties,
     unClaimedBounties,
     userSummary,
+    claimerBounties,
+    fetchClaimerBounties,
   } = useContract();
 
   useEffect(() => {
@@ -80,6 +82,10 @@ function App() {
                 fetchUserBounties={fetchUserBounties}
                 cancelBounty={cancelBounty}
                 userSummary={userSummary}
+                claimerBounties={claimerBounties}
+                getTokenUri={getTokenUri}
+                acceptClaim={acceptClaim}
+                fetchClaimerBounties={fetchClaimerBounties}
               />
             }
           />

@@ -2,6 +2,7 @@ import React, { useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import BountyCard from './BountyCard';
 import { toast, ToastContainer } from 'react-toastify';
+import ClaimCard from '../Claims/ClaimCard';
 
 function MyBounties({
   userBounties,
@@ -12,7 +13,12 @@ function MyBounties({
   disconnect,
   connecting,
   userSummary,
+  claimerBounties,
+  fetchClaimerBounties,
+  getTokenUri,
+  acceptClaim,
 }) {
+
   const refreshBounties = useCallback(
     toToast => {
       if (wallet) {
@@ -33,14 +39,21 @@ function MyBounties({
     return user;
   }
 
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      refreshBounties(false);
-    }, 3000);
+  // useEffect(() => {
+  //   const intervalId = setInterval(() => {
+  //     refreshBounties(false);
+  //   }, 3000);
 
-    // cleanup function on component unmount
-    return () => clearInterval(intervalId);
-  }, [refreshBounties]);
+  //   // cleanup function on component unmount
+  //   return () => clearInterval(intervalId);
+  // }, [refreshBounties]);
+
+  useEffect(() => {
+    const callfetchClaimer = async (bounties) => {
+      await fetchClaimerBounties(bounties);
+    }
+    callfetchClaimer(userBounties);
+  }, []);
 
   return (
     <div className="my-bounties-wrap">
@@ -59,12 +72,12 @@ function MyBounties({
       ) : (
         <div>
           <div>
-            <h1>
+            <h1 className="my-profile-header">
               your profile
             </h1>
-          </div>
-          <div className="summary-align-left">
-            {acctFormatted()}
+            <div className="formatted-account">
+              {acctFormatted()}
+            </div>
           </div>
           <div className="table-container">
             <table className="summary-table">
@@ -104,6 +117,33 @@ function MyBounties({
               </tr>
             </table>
           </div>
+          <div>
+            <h1>
+              your nfts
+            </h1>
+          </div>
+          <div className="bounties-grid bounty-details-right">
+            {
+              claimerBounties
+                .map(claim => (
+                  <ClaimCard
+                    key={claim.id}
+                    bountyId={claim.id}
+                    bountyDetails={claim}
+                    claim={claim}
+                    getTokenUri={getTokenUri}
+                    isOwner={true}
+                    acceptClaim={acceptClaim}
+                    isClaimed={true}
+                  />
+                ))
+            }
+          </div>
+          <div>
+            <h1>
+              your bounties
+            </h1>
+          </div>
           <div className="bounties-grid">
             {userBounties
               .filter(bounty => bounty.amount > 0)
@@ -136,6 +176,12 @@ MyBounties.propTypes = {
   fetchUserBounties: PropTypes.func.isRequired,
   cancelBounty: PropTypes.func.isRequired,
   userSummary: PropTypes.object.isRequired,
+  claimerBounties: PropTypes.array.isRequired,
+  getClaimsByBountyId: PropTypes.func.isRequired,
+  fetchBountyDetails: PropTypes.func.isRequired,
+  getTokenUri: PropTypes.func.isRequired,
+  acceptClaim: PropTypes.func.isRequired,
+  fetchClaimerBounties: PropTypes.func.isRequired,
 };
 
 export default MyBounties;

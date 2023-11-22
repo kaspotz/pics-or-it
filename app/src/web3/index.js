@@ -58,13 +58,14 @@ export const useContract = () => {
   const [userBounties, setUserBounties] = useState([]);
   const [userClaims, setUserClaims] = useState([]);
   const [userBalance, setUserBalance] = useState(0);
-  const [userSummary, setUserSummary] = useState([]);
+  const [userSummary, setUserSummary] = useState({});
 
   const jsonProviderUrl = PROVIDER_URL; // Replace with the desired JSON provider URL
 
   const [{ settingChain, connectedChain }, setChain] = useSetChain();
   const [setChainAttempts, setSetChainAttempts] = useState(false);
   const [unClaimedBounties, setUnClaimedBounties] = useState([]);
+  const [claimerBounties, setClaimerBounties] = useState([]);
 
   useEffect(() => {
     if (wallet) {
@@ -174,7 +175,7 @@ export const useContract = () => {
           createdAt: Number(bounty.createdAt),
         }));
         setUserBounties(plainObject);
-        fetchBountySummary(plainObject)
+        fetchBountySummary(plainObject);
       }
     } catch (error) {
       console.error('Error fetching user bounties:', error);
@@ -196,6 +197,25 @@ export const useContract = () => {
       setUserSummary(userSumObject);
     } catch (error) {
       console.error('Error fetching user summary data', error);
+    }
+  }
+
+  const fetchClaimerBounties = async (bounties) => {
+    try {
+      let filteredBounties = bounties.filter(bounty => bounty.claimer !== null && bounty.claimer !== ZeroAddress)
+        .sort((a, b) => b.createdAt - a.createdAt);
+
+      for (let i = 0; i < filteredBounties.length; i++) {
+        let claimDetails = await getClaimsByBountyId(filteredBounties[i].id);
+        filteredBounties[i].tokenId = claimDetails[0].tokenId;
+
+      }
+
+      if (filteredBounties.length > 0) {
+        setClaimerBounties(filteredBounties)
+      }
+    } catch (error) {
+      console.error('Error fetching claimer Bounties', error);
     }
   }
 
@@ -370,5 +390,7 @@ export const useContract = () => {
     fetchAllBounties,
     unClaimedBounties,
     userSummary,
+    claimerBounties,
+    fetchClaimerBounties,
   };
 };

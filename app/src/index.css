@@ -697,3 +697,17 @@ summary::-webkit-details-marker {
   margin-left: 80px;
   /* Adjust the space as needed */
 }
+
+.my-profile-header {
+  margin-bottom: 20px;
+  /* Adjust this value as needed */
+  line-height: 1.2;
+  /* Adjust based on your design */
+}
+
+.formatted-account {
+  padding-left: 275px;
+  color: white;
+  font-family: 'Oxygen', sans-serif;
+  text-align: left;
+}
