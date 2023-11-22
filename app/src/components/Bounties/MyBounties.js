@@ -11,6 +11,7 @@ function MyBounties({
   connect,
   disconnect,
   connecting,
+  userSummary,
 }) {
   const refreshBounties = useCallback(
     toToast => {
@@ -23,6 +24,14 @@ function MyBounties({
     },
     [wallet, fetchUserBounties]
   );
+
+  function acctFormatted() {
+    const user = wallet.accounts[0].address;
+    if (user.length > 10) {
+      return `${user.substring(0, 6)}...${user.substring(user.length - 4)}`.toLowerCase();
+    }
+    return user;
+  }
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -49,6 +58,14 @@ function MyBounties({
         </div>
       ) : (
         <div>
+          <div>
+            <h1>
+              your profile
+            </h1>
+          </div>
+          <div className="summary-align-left">
+            {acctFormatted()}
+          </div>
           <div className="table-container">
             <table className="summary-table">
               <tr>
@@ -118,6 +135,7 @@ MyBounties.propTypes = {
   connecting: PropTypes.bool.isRequired,
   fetchUserBounties: PropTypes.func.isRequired,
   cancelBounty: PropTypes.func.isRequired,
+  userSummary: PropTypes.object.isRequired,
 };
 
 export default MyBounties;
