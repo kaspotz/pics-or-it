@@ -25,6 +25,7 @@ function App() {
     fetchUserBalance,
     fetchAllBounties,
     unClaimedBounties,
+    userSummary,
   } = useContract();
 
   useEffect(() => {
@@ -78,6 +79,7 @@ function App() {
                 connecting={connecting}
                 fetchUserBounties={fetchUserBounties}
                 cancelBounty={cancelBounty}
+                userSummary={userSummary}
               />
             }
           />

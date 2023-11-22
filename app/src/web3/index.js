@@ -58,6 +58,7 @@ export const useContract = () => {
   const [userBounties, setUserBounties] = useState([]);
   const [userClaims, setUserClaims] = useState([]);
   const [userBalance, setUserBalance] = useState(0);
+  const [userSummary, setUserSummary] = useState([]);
 
   const jsonProviderUrl = PROVIDER_URL; // Replace with the desired JSON provider URL
 
@@ -173,11 +174,35 @@ export const useContract = () => {
           createdAt: Number(bounty.createdAt),
         }));
         setUserBounties(plainObject);
+        fetchBountySummary(plainObject)
       }
     } catch (error) {
       console.error('Error fetching user bounties:', error);
     }
   };
+
+  const fetchBountySummary = async (bounties) => {
+    try {
+      const userSumObject = bounties.reduce((acc, obj) => {
+        if (obj.claimer !== null && obj.claimer !== ZeroAddress) {
+          acc.completedBounties += 1;
+          acc.ethSpent += obj.amount === null ? 0 : obj.amount;
+        } else {
+          acc.inProgressBounties += 1;
+          acc.ethInOpenBounties += obj.amount === null ? 0 : obj.amount
+        }
+        return acc;
+      }, { completedBounties: 0, inProgressBounties: 0, ethSpent: 0, ethInOpenBounties: 0 });
+
+      setUserSummary(userSumObject);
+      console.log("data")
+      console.log(userSumObject.completedBounties);
+      console.log(userSumObject.ethSpent);
+    } catch (error) {
+      console.error('Error fetching user summary data', error);
+    }
+  }
+
 
   const fetchBountyDetails = async id => {
     try {
@@ -346,5 +371,6 @@ export const useContract = () => {
     cancelBounty,
     fetchAllBounties,
     unClaimedBounties,
+    userSummary,
   };
 };
