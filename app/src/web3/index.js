@@ -58,12 +58,14 @@ export const useContract = () => {
   const [userBounties, setUserBounties] = useState([]);
   const [userClaims, setUserClaims] = useState([]);
   const [userBalance, setUserBalance] = useState(0);
+  const [userSummary, setUserSummary] = useState({});
 
   const jsonProviderUrl = PROVIDER_URL; // Replace with the desired JSON provider URL
 
   const [{ settingChain, connectedChain }, setChain] = useSetChain();
   const [setChainAttempts, setSetChainAttempts] = useState(false);
   const [unClaimedBounties, setUnClaimedBounties] = useState([]);
+  const [claimerBounties, setClaimerBounties] = useState([]);
 
   useEffect(() => {
     if (wallet) {
@@ -173,11 +175,50 @@ export const useContract = () => {
           createdAt: Number(bounty.createdAt),
         }));
         setUserBounties(plainObject);
+        fetchBountySummary(plainObject);
       }
     } catch (error) {
       console.error('Error fetching user bounties:', error);
     }
   };
+
+  const fetchBountySummary = async (bounties) => {
+    try {
+      const userSumObject = bounties.reduce((acc, obj) => {
+        if (obj.claimer !== null && obj.claimer !== ZeroAddress) {
+          acc.completedBounties += 1;
+          acc.ethSpent += obj.amount === null ? 0 : obj.amount.toFixed(4);
+        } else {
+          acc.inProgressBounties += 1;
+          acc.ethInOpenBounties += obj.amount === null ? 0 : obj.amount.toFixed(4)
+        }
+        return acc;
+      }, { completedBounties: 0, inProgressBounties: 0, ethSpent: 0, ethInOpenBounties: 0 });
+      setUserSummary(userSumObject);
+    } catch (error) {
+      console.error('Error fetching user summary data', error);
+    }
+  }
+
+  const fetchClaimerBounties = async (bounties) => {
+    try {
+      let filteredBounties = bounties.filter(bounty => bounty.claimer !== null && bounty.claimer !== ZeroAddress)
+        .sort((a, b) => b.createdAt - a.createdAt);
+
+      for (let i = 0; i < filteredBounties.length; i++) {
+        let claimDetails = await getClaimsByBountyId(filteredBounties[i].id);
+        filteredBounties[i].tokenId = claimDetails[0].tokenId;
+
+      }
+
+      if (filteredBounties.length > 0) {
+        setClaimerBounties(filteredBounties)
+      }
+    } catch (error) {
+      console.error('Error fetching claimer Bounties', error);
+    }
+  }
+
 
   const fetchBountyDetails = async id => {
     try {
@@ -326,6 +367,8 @@ export const useContract = () => {
       : '0xa4b1' == connectedChain.id;
   };
 
+
+
   return {
     wallet,
     userBounties,
@@ -346,5 +389,8 @@ export const useContract = () => {
     cancelBounty,
     fetchAllBounties,
     unClaimedBounties,
+    userSummary,
+    claimerBounties,
+    fetchClaimerBounties,
   };
 };

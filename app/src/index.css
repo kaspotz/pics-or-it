@@ -76,7 +76,8 @@ nav a {
 }
 
 button {
-  -webkit-transition-duration: 0.1s; /* Safari */
+  -webkit-transition-duration: 0.1s;
+  /* Safari */
   transition-duration: 0.1s;
   background-color: #f4595b;
   border-radius: 8px;
@@ -672,4 +673,41 @@ summary::-webkit-details-marker {
   max-width: 625px;
   position: relative;
   margin: 0 auto;
+}
+
+.table-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-family: 'Oxygen', sans-serif;
+}
+
+.summary-align-left {
+  text-align: left;
+}
+
+.summary-align-right {
+  text-align: right;
+}
+
+.summary-table:not(:first-child) {
+  margin-left: 80px;
+  /* Adjust the space as needed */
+}
+
+.my-profile-header {
+  margin-bottom: 20px;
+  /* Adjust this value as needed */
+  line-height: 1.2;
+  /* Adjust based on your design */
+}
+
+.formatted-account {
+  padding-left: 275px;
+  color: white;
+  font-family: 'Oxygen', sans-serif;
+  text-align: left;
 }
