@@ -99,17 +99,6 @@ export const useContract = () => {
     return contract.connect(await ethersProvider.getSigner());
   };
 
-  const getContract = async () => {
-    let contract = await getConnectedContract();
-    if (contract) {
-      contract.isWrite = true;
-    } else {
-      contract = await getReadOnlyContract();
-      contract.isWrite = false;
-    }
-    return contract;
-  };
-
   const fetchUserBalance = async () => {
     if (wallet) {
       try {
@@ -123,33 +112,26 @@ export const useContract = () => {
   };
 
   const fetchAllBounties = async () => {
-    setUnClaimedBounties(fetchBounties());
-  };
-
-  const fetchBounties = async (offset = 0, limit) => {
     try {
       let writeContract = await getConnectedContract();
       let connectedContract = writeContract
         ? writeContract
         : await getReadOnlyContract();
       if (connectedContract) {
-        let startIndex = offset;
-        let endIndex = offset + limit;
+        const allBountiesLength =
+          Number(await connectedContract.getBountiesLength()) - 1;
 
-        // If limit isn't specified then fetch all from `start` to end.
-        if (!limit) {
-          const allBountiesLength =
-            Number(await connectedContract.getBountiesLength()) - 1;
+        if (allBountiesLength >= 0) {
+          // Calculate the starting and ending indices to fetch the latest 20 bounties
+          const startIndex = Math.max(0, allBountiesLength - 79);
+          const endIndex = allBountiesLength;
 
-          endIndex = allBountiesLength;
-        }
-
-        if (startIndex - endIndex > 0) {
-          const bounties = await connectedContract.getBounties(
+          const allBounties = await connectedContract.getBounties(
             startIndex,
             endIndex
           );
-          const unfilteredBounties = bounties.map(bounty => ({
+
+          const unfilteredBounties = allBounties.map(bounty => ({
             id: Number(bounty.id),
             issuer: bounty.issuer,
             name: bounty.name,
@@ -160,9 +142,11 @@ export const useContract = () => {
             createdAt: Number(bounty.createdAt),
           }));
 
-          return unfilteredBounties.filter(
+          const bountiesUnclaimed = unfilteredBounties.filter(
             bounty => bounty.claimer === ZeroAddress
           );
+
+          setUnClaimedBounties(bountiesUnclaimed);
         }
       }
     } catch (error) {
@@ -340,6 +324,17 @@ export const useContract = () => {
     return process.env.NODE_ENV === 'development'
       ? '0x66eed' == connectedChain.id
       : '0xa4b1' == connectedChain.id;
+  };
+  
+  const getContract = async () => {
+    let contract = await getConnectedContract();
+    if (contract) {
+      contract.isWrite = true;
+    } else {
+      contract = await getReadOnlyContract();
+      contract.isWrite = false;
+    }
+    return contract;
   };
 
   return {
