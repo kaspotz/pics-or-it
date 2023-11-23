@@ -115,14 +115,18 @@ export const useContract = () => {
     try {
 
       let nftContract = await getNftContract();
-      const balance = await nftContract.balanceOf(wallet.accounts[0].address);
+      const balance = Number(await nftContract.balanceOf(wallet.accounts[0].address));
       const tokenIds = [];
 
+      console.log("balance ", balance);
+
       for (let i = 0; i < balance; i++) {
-        const tokenId = await nftContract.tokenOfOwnerByIndex(wallet.accounts[0].address, i);
-        tokenIds.push(tokenId.toString());
+        const tokenId = Number(await nftContract.tokenOfOwnerByIndex(wallet.accounts[0].address, i));
+        console.log("tokenId ", tokenId);
+        tokenIds.push(tokenId);
       }
 
+      console.log("tokenIds pre ", tokenIds)
       return tokenIds
 
     } catch (error) {
@@ -133,7 +137,8 @@ export const useContract = () => {
   const createNftCards = async () => {
     try {
 
-      const tokenIds = [Number(await fetchAllUserNftTokenIds())];
+      const tokenIds = (await fetchAllUserNftTokenIds());
+      console.log("tokenIds ", tokenIds);
       let claimData = [];
 
       for (let i = 0; i < userBounties.length; i++) {

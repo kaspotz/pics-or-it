@@ -185,7 +185,6 @@ MyBounties.propTypes = {
   fetchUserBounties: PropTypes.func.isRequired,
   cancelBounty: PropTypes.func.isRequired,
   userSummary: PropTypes.object.isRequired,
-  claimerBounties: PropTypes.array.isRequired,
   getClaimsByBountyId: PropTypes.func.isRequired,
   fetchBountyDetails: PropTypes.func.isRequired,
   getTokenUri: PropTypes.func.isRequired,
