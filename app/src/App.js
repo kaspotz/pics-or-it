@@ -24,6 +24,7 @@ function App() {
     fetchUserClaims,
     fetchUserBalance,
     fetchAllBounties,
+    getContract,
     unClaimedBounties,
   } = useContract();
 
@@ -62,6 +63,7 @@ function App() {
                 disconnect={disconnect}
                 connecting={connecting}
                 fetchAllBounties={fetchAllBounties}
+                getContract={getContract}
                 cancelBounty={cancelBounty}
                 userBalance={userBalance.toString()}
               />

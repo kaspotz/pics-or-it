@@ -53,15 +53,12 @@ function Navigation() {
     );
   };
 
-   const handleTwitter = () => {
+  const handleTwitter = () => {
     setMenu(false);
-    window.open(
-      'https://twitter.com/poidhxyz',
-      '_blank'
-    );
+    window.open('https://twitter.com/poidhxyz', '_blank');
   };
 
-   const handleAbout = () => {
+  const handleAbout = () => {
     setMenu(false);
     window.open(
       'https://paragraph.xyz/@poidh/about-pics-or-it-didnt-happen',

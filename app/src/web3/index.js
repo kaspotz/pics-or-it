@@ -99,6 +99,17 @@ export const useContract = () => {
     return contract.connect(await ethersProvider.getSigner());
   };
 
+  const getContract = async () => {
+    let contract = await getConnectedContract();
+    if (contract) {
+      contract.isWrite = true;
+    } else {
+      contract = await getReadOnlyContract();
+      contract.isWrite = false;
+    }
+    return contract;
+  };
+
   const fetchUserBalance = async () => {
     if (wallet) {
       try {
@@ -112,26 +123,33 @@ export const useContract = () => {
   };
 
   const fetchAllBounties = async () => {
+    setUnClaimedBounties(fetchBounties());
+  };
+
+  const fetchBounties = async (offset = 0, limit) => {
     try {
       let writeContract = await getConnectedContract();
       let connectedContract = writeContract
         ? writeContract
         : await getReadOnlyContract();
       if (connectedContract) {
-        const allBountiesLength =
-          Number(await connectedContract.getBountiesLength()) - 1;
+        let startIndex = offset;
+        let endIndex = offset + limit;
 
-        if (allBountiesLength >= 0) {
-          // Calculate the starting and ending indices to fetch the latest 20 bounties
-          const startIndex = Math.max(0, allBountiesLength - 39);
-          const endIndex = allBountiesLength;
+        // If limit isn't specified then fetch all from `start` to end.
+        if (!limit) {
+          const allBountiesLength =
+            Number(await connectedContract.getBountiesLength()) - 1;
 
-          const allBounties = await connectedContract.getBounties(
+          endIndex = allBountiesLength;
+        }
+
+        if (startIndex - endIndex > 0) {
+          const bounties = await connectedContract.getBounties(
             startIndex,
             endIndex
           );
-
-          const unfilteredBounties = allBounties.map(bounty => ({
+          const unfilteredBounties = bounties.map(bounty => ({
             id: Number(bounty.id),
             issuer: bounty.issuer,
             name: bounty.name,
@@ -142,11 +160,9 @@ export const useContract = () => {
             createdAt: Number(bounty.createdAt),
           }));
 
-          const bountiesUnclaimed = unfilteredBounties.filter(
+          return unfilteredBounties.filter(
             bounty => bounty.claimer === ZeroAddress
           );
-
-          setUnClaimedBounties(bountiesUnclaimed);
         }
       }
     } catch (error) {
@@ -345,6 +361,7 @@ export const useContract = () => {
     acceptClaim,
     cancelBounty,
     fetchAllBounties,
+    getContract,
     unClaimedBounties,
   };
 };
