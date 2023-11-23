@@ -26,8 +26,9 @@ function App() {
     fetchAllBounties,
     unClaimedBounties,
     userSummary,
-    claimerBounties,
     fetchClaimerBounties,
+    createNftCards,
+    userNftCards,
   } = useContract();
 
   useEffect(() => {
@@ -82,10 +83,11 @@ function App() {
                 fetchUserBounties={fetchUserBounties}
                 cancelBounty={cancelBounty}
                 userSummary={userSummary}
-                claimerBounties={claimerBounties}
                 getTokenUri={getTokenUri}
                 acceptClaim={acceptClaim}
                 fetchClaimerBounties={fetchClaimerBounties}
+                createNftCards={createNftCards}
+                userNftCards={userNftCards}
               />
             }
           />

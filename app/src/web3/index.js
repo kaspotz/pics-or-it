@@ -6,6 +6,7 @@ import { abi } from './abi.js';
 import { PROVIDER_URL, CONTRACT } from './constants.js';
 import { useSetChain } from '@web3-onboard/react';
 import walletConnectModule from '@web3-onboard/walletconnect';
+import { abiErc721Enumerable1 } from './abierc721enumerable1.js';
 
 const injected = injectedModule();
 
@@ -59,13 +60,14 @@ export const useContract = () => {
   const [userClaims, setUserClaims] = useState([]);
   const [userBalance, setUserBalance] = useState(0);
   const [userSummary, setUserSummary] = useState({});
+  const [userNftCards, setUserNftCards] = useState([]);
+
 
   const jsonProviderUrl = PROVIDER_URL; // Replace with the desired JSON provider URL
 
   const [{ settingChain, connectedChain }, setChain] = useSetChain();
   const [setChainAttempts, setSetChainAttempts] = useState(false);
   const [unClaimedBounties, setUnClaimedBounties] = useState([]);
-  const [claimerBounties, setClaimerBounties] = useState([]);
 
   useEffect(() => {
     if (wallet) {
@@ -99,6 +101,76 @@ export const useContract = () => {
     if (!wallet || !contract || !isCorrectChain()) return null;
     const ethersProvider = new ethers.BrowserProvider(wallet.provider);
     return contract.connect(await ethersProvider.getSigner());
+  };
+
+  const getNftContract = async () => {
+    //if (!wallet || !contract || !isCorrectChain()) return null;
+    const provider = new ethers.JsonRpcProvider(PROVIDER_URL);
+    const contractAddress = CONTRACT;
+    return new ethers.Contract(contractAddress, abiErc721Enumerable1, provider);
+  };
+
+  const fetchAllUserNftTokenIds = async () => {
+
+    try {
+
+      let nftContract = await getNftContract();
+      const balance = await nftContract.balanceOf(wallet.accounts[0].address);
+      const tokenIds = [];
+
+      for (let i = 0; i < balance; i++) {
+        const tokenId = await nftContract.tokenOfOwnerByIndex(wallet.accounts[0].address, i);
+        tokenIds.push(tokenId.toString());
+      }
+
+      return tokenIds
+
+    } catch (error) {
+      console.error('Error fetching user nfts:', error);
+    }
+  };
+
+  const createNftCards = async () => {
+    try {
+
+      const tokenIds = [Number(await fetchAllUserNftTokenIds())];
+      let claimData = [];
+
+      for (let i = 0; i < userBounties.length; i++) {
+        let claims = await getClaimsByBountyId(userBounties[i].id);
+        //grab claims where token id matches an nft from the address. 
+        let filteredClaim = claims.filter(claim => tokenIds.includes(claim.tokenId));
+        if (filteredClaim.length > 0) {
+          claimData.push(filteredClaim[0]);
+        }
+      }
+
+      // Extract ticketid values into an array
+      const idsToRemove = claimData.map(obj => obj.tokenId);
+
+      // Filter the number array
+      const tokenIdsNoClaims = tokenIds.filter(token => !idsToRemove.includes(token));
+
+      //format nfts with no claim into nftclaimcard object and push into existing claims array
+      for (let i = 0; i < tokenIdsNoClaims.length; i++) {
+        let nftClaim = {
+          id: null,
+          issuer: null,
+          bountyId: null,
+          bountyIssuer: null,
+          name: null,
+          description: null,
+          tokenId: Number(tokenIdsNoClaims[i]),
+          createdAt: null,
+        };
+        claimData.push(nftClaim);
+      }
+
+      setUserNftCards(claimData);
+
+    } catch (error) {
+      console.error('Error creating nft cards:', error);
+    }
   };
 
   const fetchUserBalance = async () => {
@@ -187,10 +259,10 @@ export const useContract = () => {
       const userSumObject = bounties.reduce((acc, obj) => {
         if (obj.claimer !== null && obj.claimer !== ZeroAddress) {
           acc.completedBounties += 1;
-          acc.ethSpent += obj.amount === null ? 0 : obj.amount.toFixed(4);
+          acc.ethSpent += obj.amount === null ? 0 : (obj.amount);
         } else {
           acc.inProgressBounties += 1;
-          acc.ethInOpenBounties += obj.amount === null ? 0 : obj.amount.toFixed(4)
+          acc.ethInOpenBounties += obj.amount === null ? 0 : (obj.amount);
         }
         return acc;
       }, { completedBounties: 0, inProgressBounties: 0, ethSpent: 0, ethInOpenBounties: 0 });
@@ -199,26 +271,6 @@ export const useContract = () => {
       console.error('Error fetching user summary data', error);
     }
   }
-
-  const fetchClaimerBounties = async (bounties) => {
-    try {
-      let filteredBounties = bounties.filter(bounty => bounty.claimer !== null && bounty.claimer !== ZeroAddress)
-        .sort((a, b) => b.createdAt - a.createdAt);
-
-      for (let i = 0; i < filteredBounties.length; i++) {
-        let claimDetails = await getClaimsByBountyId(filteredBounties[i].id);
-        filteredBounties[i].tokenId = claimDetails[0].tokenId;
-
-      }
-
-      if (filteredBounties.length > 0) {
-        setClaimerBounties(filteredBounties)
-      }
-    } catch (error) {
-      console.error('Error fetching claimer Bounties', error);
-    }
-  }
-
 
   const fetchBountyDetails = async id => {
     try {
@@ -369,6 +421,8 @@ export const useContract = () => {
 
 
 
+
+
   return {
     wallet,
     userBounties,
@@ -390,7 +444,7 @@ export const useContract = () => {
     fetchAllBounties,
     unClaimedBounties,
     userSummary,
-    claimerBounties,
-    fetchClaimerBounties,
+    createNftCards,
+    userNftCards,
   };
 };

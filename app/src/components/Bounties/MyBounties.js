@@ -2,7 +2,7 @@ import React, { useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import BountyCard from './BountyCard';
 import { toast, ToastContainer } from 'react-toastify';
-import ClaimCard from '../Claims/ClaimCard';
+import NftCard from '../Claims/NftCard';
 
 function MyBounties({
   userBounties,
@@ -13,10 +13,10 @@ function MyBounties({
   disconnect,
   connecting,
   userSummary,
-  claimerBounties,
-  fetchClaimerBounties,
   getTokenUri,
   acceptClaim,
+  createNftCards,
+  userNftCards,
 }) {
 
   const refreshBounties = useCallback(
@@ -49,10 +49,19 @@ function MyBounties({
   // }, [refreshBounties]);
 
   useEffect(() => {
-    const callfetchClaimer = async (bounties) => {
-      await fetchClaimerBounties(bounties);
+    const callCreateNftCards = async () => {
+      await createNftCards();
     }
-    callfetchClaimer(userBounties);
+    if (wallet) callCreateNftCards();
+
+  }, [userBounties]);
+
+  useEffect(() => {
+    const callFetchUserBounties = async () => {
+      await fetchUserBounties();
+    }
+    if (wallet) callFetchUserBounties();
+
   }, []);
 
   return (
@@ -94,7 +103,7 @@ function MyBounties({
                   total eth sent:
                 </th>
                 <th className="summary-align-right">
-                  {userSummary.ethSpent}
+                  {userSummary.ethSpent?.toFixed(6)}
                 </th>
               </tr>
             </table>
@@ -112,7 +121,7 @@ function MyBounties({
                   total eth in contracts:
                 </th>
                 <th className="summary-align-right">
-                  {userSummary.ethInOpenBounties}
+                  {userSummary.ethInOpenBounties?.toFixed(6)}
                 </th>
               </tr>
             </table>
@@ -124,9 +133,9 @@ function MyBounties({
           </div>
           <div className="bounties-grid bounty-details-right">
             {
-              claimerBounties
+              userNftCards
                 .map(claim => (
-                  <ClaimCard
+                  <NftCard
                     key={claim.id}
                     bountyId={claim.id}
                     bountyDetails={claim}
@@ -181,7 +190,8 @@ MyBounties.propTypes = {
   fetchBountyDetails: PropTypes.func.isRequired,
   getTokenUri: PropTypes.func.isRequired,
   acceptClaim: PropTypes.func.isRequired,
-  fetchClaimerBounties: PropTypes.func.isRequired,
+  createNftCards: PropTypes.func.isRequired,
+  userNftCards: PropTypes.array.isRequired,
 };
 
 export default MyBounties;
