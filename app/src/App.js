@@ -33,7 +33,7 @@ function App() {
 
   useEffect(() => {
     if (wallet) {
-      fetchUserBounties();
+      fetchUserBounties(wallet.accounts[0].address);
       fetchUserClaims();
       fetchUserBalance();
     }

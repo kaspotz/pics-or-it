@@ -141,6 +141,24 @@ function MyBounties({
                 </th>
               </tr>
             </table>
+            <table className="summary-table">
+              <tr>
+                <th className="summary-align-left">
+                  completed claims:
+                </th>
+                <th className="summary-align-right">
+                  {userSummary.completedClaims}
+                </th>
+              </tr>
+              <tr>
+                <th className="summary-align-left">
+                  eth made:
+                </th>
+                <th className="summary-align-right">
+                  {userSummary.ethMade?.toFixed(6)}
+                </th>
+              </tr>
+            </table>
           </div>
           <div>
             <h1>
