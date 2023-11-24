@@ -2,8 +2,11 @@ import React, { useState } from 'react';
 import { FaBars } from 'react-icons/fa';
 import { FaX } from 'react-icons/fa6';
 import { useNavigate } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
-function Navigation() {
+function Navigation({
+  wallet,
+}) {
   const [menu, setMenu] = useState(false);
   const navigate = useNavigate();
 
@@ -14,7 +17,7 @@ function Navigation() {
 
   const handleMyBounties = () => {
     setMenu(false);
-    navigate('/my-bounties');
+    navigate(`/my-bounties/${wallet?.accounts[0]?.address}`);
   };
 
   const handleAllBounties = () => {
@@ -53,7 +56,7 @@ function Navigation() {
     );
   };
 
-   const handleTwitter = () => {
+  const handleTwitter = () => {
     setMenu(false);
     window.open(
       'https://twitter.com/poidhxyz',
@@ -61,7 +64,7 @@ function Navigation() {
     );
   };
 
-   const handleAbout = () => {
+  const handleAbout = () => {
     setMenu(false);
     window.open(
       'https://paragraph.xyz/@poidh/about-pics-or-it-didnt-happen',
@@ -97,6 +100,10 @@ function Navigation() {
       )}
     </div>
   );
+}
+
+Navigation.propTypes = {
+  wallet: PropTypes.object,
 }
 
 export default Navigation;

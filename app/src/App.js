@@ -42,7 +42,9 @@ function App() {
   return (
     <Router basename="/">
       <div>
-        <Navigation />
+        <Navigation
+          wallet={wallet}
+        />
         <Routes>
           <Route
             path="/create"
@@ -72,7 +74,7 @@ function App() {
             }
           />
           <Route
-            path="/my-bounties"
+            path="/my-bounties/:urlUserAddress"
             element={
               <MyBounties
                 userBounties={userBounties}

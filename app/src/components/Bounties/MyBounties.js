@@ -1,8 +1,9 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
 import BountyCard from './BountyCard';
 import { toast, ToastContainer } from 'react-toastify';
 import NftCard from '../Claims/NftCard';
+import { useParams } from 'react-router-dom';
 
 function MyBounties({
   userBounties,
@@ -19,10 +20,25 @@ function MyBounties({
   userNftCards,
 }) {
 
+  const [userAddress, setUserAddress] = useState();
+  const { urlUserAddress } = useParams();
+
+  console.log("og urlUserAddress", urlUserAddress);
+
+  useEffect(() => {
+    if (urlUserAddress && urlUserAddress.toLowerCase() !== "undefined" && urlUserAddress.length > 0) {
+      console.log("urlUserAddress ", urlUserAddress);
+      setUserAddress(urlUserAddress);
+    } else if (wallet) {
+      setUserAddress(wallet.accounts[0].address);
+    }
+
+  }, [urlUserAddress, wallet]);
+
   const refreshBounties = useCallback(
     toToast => {
       if (wallet) {
-        fetchUserBounties();
+        fetchUserBounties(userAddress);
         if (toToast) {
           toast.success('Bounty cancelled successfully!');
         }
@@ -32,11 +48,10 @@ function MyBounties({
   );
 
   function acctFormatted() {
-    const user = wallet.accounts[0].address;
-    if (user.length > 10) {
-      return `${user.substring(0, 6)}...${user.substring(user.length - 4)}`.toLowerCase();
+    if (userAddress && userAddress.length > 10) {
+      return `${userAddress.substring(0, 6)}...${userAddress.substring(userAddress.length - 4)}`.toLowerCase();
     }
-    return user;
+    return userAddress;
   }
 
   // useEffect(() => {
@@ -50,23 +65,24 @@ function MyBounties({
 
   useEffect(() => {
     const callCreateNftCards = async () => {
-      await createNftCards();
+      await createNftCards(userAddress);
     }
-    if (wallet) callCreateNftCards();
+    console.log("call nft card userAddress ", userAddress);
+    if (userAddress && userAddress.length > 0) callCreateNftCards();
 
   }, [userBounties]);
 
   useEffect(() => {
     const callFetchUserBounties = async () => {
-      await fetchUserBounties();
+      await fetchUserBounties(userAddress);
     }
-    if (wallet) callFetchUserBounties();
+    if (userAddress && userAddress.length > 0) callFetchUserBounties();
 
-  }, []);
+  }, [userAddress]);
 
   return (
     <div className="my-bounties-wrap">
-      {!wallet ? (
+      {(!wallet && urlUserAddress.toLowerCase() == "undefined") ? (
         <div>
           <h2>connect your wallet to view your bounties</h2>
           <button

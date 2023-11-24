@@ -110,18 +110,18 @@ export const useContract = () => {
     return new ethers.Contract(contractAddress, abiErc721Enumerable1, provider);
   };
 
-  const fetchAllUserNftTokenIds = async () => {
+  const fetchAllUserNftTokenIds = async (userAddress) => {
 
     try {
 
       let nftContract = await getNftContract();
-      const balance = Number(await nftContract.balanceOf(wallet.accounts[0].address));
+      const balance = Number(await nftContract.balanceOf(userAddress));
       const tokenIds = [];
 
       console.log("balance ", balance);
 
       for (let i = 0; i < balance; i++) {
-        const tokenId = Number(await nftContract.tokenOfOwnerByIndex(wallet.accounts[0].address, i));
+        const tokenId = Number(await nftContract.tokenOfOwnerByIndex(userAddress, i));
         console.log("tokenId ", tokenId);
         tokenIds.push(tokenId);
       }
@@ -134,15 +134,16 @@ export const useContract = () => {
     }
   };
 
-  const createNftCards = async () => {
+  const createNftCards = async (userAddress) => {
     try {
 
-      const tokenIds = (await fetchAllUserNftTokenIds());
+      const tokenIds = (await fetchAllUserNftTokenIds(userAddress));
       console.log("tokenIds ", tokenIds);
       let claimData = [];
 
       for (let i = 0; i < userBounties.length; i++) {
         let claims = await getClaimsByBountyId(userBounties[i].id);
+        console.log("each claims", claims);
         //grab claims where token id matches an nft from the address. 
         let filteredClaim = claims.filter(claim => tokenIds.includes(claim.tokenId));
         if (filteredClaim.length > 0) {
@@ -150,11 +151,15 @@ export const useContract = () => {
         }
       }
 
+      console.log("claimData", claimData);
+
       // Extract ticketid values into an array
       const idsToRemove = claimData.map(obj => obj.tokenId);
+      console.log("idsToRemove", idsToRemove);
 
       // Filter the number array
       const tokenIdsNoClaims = tokenIds.filter(token => !idsToRemove.includes(token));
+      console.log("tokenIdsNoClaims", tokenIdsNoClaims);
 
       //format nfts with no claim into nftclaimcard object and push into existing claims array
       for (let i = 0; i < tokenIdsNoClaims.length; i++) {
@@ -233,13 +238,13 @@ export const useContract = () => {
     }
   };
 
-  const fetchUserBounties = async () => {
+  const fetchUserBounties = async (userAddress) => {
     try {
       let connectedContract = await getConnectedContract();
       if (!connectedContract) connectedContract = await getReadOnlyContract();
       if (connectedContract) {
         const userBounties = await connectedContract.getBountiesByUser(
-          wallet.accounts[0].address
+          userAddress
         );
         const plainObject = userBounties.map(bounty => ({
           id: Number(bounty.id),
