@@ -13,6 +13,7 @@ function MyBounties({
   connect,
   disconnect,
   connecting,
+  fetchUserSummary,
   userSummary,
   getTokenUri,
   acceptClaim,
@@ -66,6 +67,7 @@ function MyBounties({
   useEffect(() => {
     const callCreateNftCards = async () => {
       await createNftCards(userAddress);
+      await fetchUserSummary(userAddress);
     }
     console.log("call nft card userAddress ", userAddress);
     if (userAddress && userAddress.length > 0) callCreateNftCards();
@@ -75,10 +77,19 @@ function MyBounties({
   useEffect(() => {
     const callFetchUserBounties = async () => {
       await fetchUserBounties(userAddress);
+      await fetchUserSummary(userAddress);
     }
     if (userAddress && userAddress.length > 0) callFetchUserBounties();
 
   }, [userAddress]);
+
+  useEffect(() => {
+    const callFetchUserSummary = async () => {
+      await fetchUserSummary(userAddress);
+    }
+    if (userAddress && userAddress.length > 0) callFetchUserSummary();
+
+  }, []);
 
   return (
     <div className="my-bounties-wrap">
@@ -152,7 +163,7 @@ function MyBounties({
               </tr>
               <tr>
                 <th className="summary-align-left">
-                  eth made:
+                  total eth earned:
                 </th>
                 <th className="summary-align-right">
                   {userSummary.ethMade?.toFixed(6)}
@@ -218,6 +229,8 @@ MyBounties.propTypes = {
   connecting: PropTypes.bool.isRequired,
   fetchUserBounties: PropTypes.func.isRequired,
   cancelBounty: PropTypes.func.isRequired,
+  fetchBountySummary: PropTypes.func.isRequired,
+  fetchUserSummary: PropTypes.func.isRequired,
   userSummary: PropTypes.object.isRequired,
   getClaimsByBountyId: PropTypes.func.isRequired,
   fetchBountyDetails: PropTypes.func.isRequired,

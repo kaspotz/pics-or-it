@@ -25,6 +25,7 @@ function App() {
     fetchUserBalance,
     fetchAllBounties,
     unClaimedBounties,
+    fetchUserSummary,
     userSummary,
     fetchClaimerBounties,
     createNftCards,
@@ -84,6 +85,7 @@ function App() {
                 connecting={connecting}
                 fetchUserBounties={fetchUserBounties}
                 cancelBounty={cancelBounty}
+                fetchUserSummary={fetchUserSummary}
                 userSummary={userSummary}
                 getTokenUri={getTokenUri}
                 acceptClaim={acceptClaim}

@@ -233,12 +233,15 @@ export const useContract = () => {
 
           const { bountiesClaimed, bountiesUnclaimed } = unfilteredBounties.reduce((acc, obj) => {
             if (obj.claimer && obj.claimer !== ZeroAddress) {
+              console.log("have a claimed bounty");
               acc.bountiesClaimed.push(obj);
             } else {
               acc.bountiesUnclaimed.push(obj);
             }
             return acc;
           }, { bountiesClaimed: [], bountiesUnclaimed: [] });
+
+          console.log("pre bounties claimed", bountiesClaimed);
 
           setClaimedBounties(bountiesClaimed);
           setUnClaimedBounties(bountiesUnclaimed);
@@ -269,15 +272,16 @@ export const useContract = () => {
           createdAt: Number(bounty.createdAt),
         }));
         setUserBounties(plainObject);
-        fetchBountySummary(userAddress);
+        await fetchUserSummary(userAddress);
       }
     } catch (error) {
       console.error('Error fetching user bounties:', error);
     }
   };
 
-  const fetchBountySummary = async (userAddress) => {
+  const fetchUserSummary = async (userAddress) => {
     try {
+      await fetchAllBounties();
       const userBountiesSum = userBounties.reduce((acc, obj) => {
         if (obj.claimer !== null && obj.claimer !== ZeroAddress) {
           acc.completedBounties += 1;
@@ -289,10 +293,9 @@ export const useContract = () => {
         return acc;
       }, { completedBounties: 0, inProgressBounties: 0, ethSpent: 0, ethInOpenBounties: 0 });
 
-
-
+      console.log("all claimed bounties ", claimedBounties);
       const userAcceptedClaimsSum = claimedBounties.reduce((acc, obj) => {
-        if (obj.claimer === userAddress) {
+        if (obj.claimer == userAddress) {
           acc.completedClaims += 1;
           acc.ethMade += obj.amount === null ? 0 : (obj.amount);
         }
@@ -462,10 +465,6 @@ export const useContract = () => {
       : '0xa4b1' == connectedChain.id;
   };
 
-
-
-
-
   return {
     wallet,
     userBounties,
@@ -485,7 +484,9 @@ export const useContract = () => {
     acceptClaim,
     cancelBounty,
     fetchAllBounties,
+    claimedBounties,
     unClaimedBounties,
+    fetchUserSummary,
     userSummary,
     createNftCards,
     userNftCards,
