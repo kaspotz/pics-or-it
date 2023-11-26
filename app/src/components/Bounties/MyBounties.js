@@ -19,22 +19,25 @@ function MyBounties({
   acceptClaim,
   createNftCards,
   userNftCards,
+  claimedBounties,
+  fetchAllBounties,
 }) {
 
-  const [userAddress, setUserAddress] = useState();
   const { urlUserAddress } = useParams();
+  const [userAddress, setUserAddress] = useState()
+  const [nftLoading, setNftLoading] = useState(true);
 
-  console.log("og urlUserAddress", urlUserAddress);
-
-  useEffect(() => {
-    if (urlUserAddress && urlUserAddress.toLowerCase() !== "undefined" && urlUserAddress.length > 0) {
-      console.log("urlUserAddress ", urlUserAddress);
+  const fetchUser = useCallback(async () => {
+    if (urlUserAddress && urlUserAddress?.toLowerCase() !== "undefined" && urlUserAddress?.length > 0) {
       setUserAddress(urlUserAddress);
-    } else if (wallet) {
+    } else if (wallet && wallet?.accounts[0]?.address?.toLowerCase() != userAddress?.toLowerCase()) {
       setUserAddress(wallet.accounts[0].address);
     }
+  }, [wallet, urlUserAddress]);
 
-  }, [urlUserAddress, wallet]);
+  useEffect(() => {
+    fetchUser();
+  }, [fetchUser]);
 
   const refreshBounties = useCallback(
     toToast => {
@@ -65,31 +68,28 @@ function MyBounties({
   // }, [refreshBounties]);
 
   useEffect(() => {
-    const callCreateNftCards = async () => {
-      await createNftCards(userAddress);
-      await fetchUserSummary(userAddress);
-    }
-    console.log("call nft card userAddress ", userAddress);
-    if (userAddress && userAddress.length > 0) callCreateNftCards();
-
-  }, [userBounties]);
-
-  useEffect(() => {
     const callFetchUserBounties = async () => {
       await fetchUserBounties(userAddress);
-      await fetchUserSummary(userAddress);
     }
     if (userAddress && userAddress.length > 0) callFetchUserBounties();
-
   }, [userAddress]);
 
   useEffect(() => {
-    const callFetchUserSummary = async () => {
-      await fetchUserSummary(userAddress);
+    const callFetchAllBounties = async () => {
+      await fetchAllBounties();
     }
-    if (userAddress && userAddress.length > 0) callFetchUserSummary();
+    if (userAddress && userAddress.length > 0) callFetchAllBounties();
+  }, [userBounties]);
 
-  }, []);
+  useEffect(() => {
+    const callFetchSummaryandNfts = async () => {
+      await fetchUserSummary(userAddress);
+      setNftLoading(true);
+      await createNftCards(userAddress);
+      setNftLoading(false);
+    }
+    if (userAddress && userAddress.length > 0 && claimedBounties.length > 0) callFetchSummaryandNfts();
+  }, [claimedBounties]);
 
   return (
     <div className="my-bounties-wrap">
@@ -117,58 +117,64 @@ function MyBounties({
           </div>
           <div className="table-container">
             <table className="summary-table">
-              <tr>
-                <th className="summary-align-left">
-                  completed bounties:
-                </th>
-                <th className="summary-align-right">
-                  {userSummary.completedBounties}
-                </th>
-              </tr>
-              <tr>
-                <th className="summary-align-left">
-                  total eth sent:
-                </th>
-                <th className="summary-align-right">
-                  {userSummary.ethSpent?.toFixed(6)}
-                </th>
-              </tr>
+              <thead>
+                <tr>
+                  <th className="summary-align-left">
+                    completed bounties:
+                  </th>
+                  <th className="summary-align-right">
+                    {userSummary?.completedBounties}
+                  </th>
+                </tr>
+                <tr>
+                  <th className="summary-align-left">
+                    total eth sent:
+                  </th>
+                  <th className="summary-align-right">
+                    {userSummary?.ethSpent?.toFixed(6)}
+                  </th>
+                </tr>
+              </thead>
             </table>
             <table className="summary-table">
-              <tr>
-                <th className="summary-align-left">
-                  in progress bounties:
-                </th>
-                <th className="summary-align-right">
-                  {userSummary.inProgressBounties}
-                </th>
-              </tr>
-              <tr>
-                <th className="summary-align-left">
-                  total eth in contracts:
-                </th>
-                <th className="summary-align-right">
-                  {userSummary.ethInOpenBounties?.toFixed(6)}
-                </th>
-              </tr>
+              <thead>
+                <tr>
+                  <th className="summary-align-left">
+                    in progress bounties:
+                  </th>
+                  <th className="summary-align-right">
+                    {userSummary?.inProgressBounties}
+                  </th>
+                </tr>
+                <tr>
+                  <th className="summary-align-left">
+                    total eth in contracts:
+                  </th>
+                  <th className="summary-align-right">
+                    {userSummary?.ethInOpenBounties?.toFixed(6)}
+                  </th>
+                </tr>
+              </thead>
             </table>
             <table className="summary-table">
-              <tr>
-                <th className="summary-align-left">
-                  completed claims:
-                </th>
-                <th className="summary-align-right">
-                  {userSummary.completedClaims}
-                </th>
-              </tr>
-              <tr>
-                <th className="summary-align-left">
-                  total eth earned:
-                </th>
-                <th className="summary-align-right">
-                  {userSummary.ethMade?.toFixed(6)}
-                </th>
-              </tr>
+              <thead>
+                <tr>
+                  <th className="summary-align-left">
+                    completed claims:
+                  </th>
+                  <th className="summary-align-right">
+                    {userSummary?.completedClaims}
+                  </th>
+                </tr>
+                <tr>
+                  <th className="summary-align-left">
+                    total eth earned:
+                  </th>
+                  <th className="summary-align-right">
+                    {userSummary?.ethMade?.toFixed(6)}
+                  </th>
+                </tr>
+              </thead>
             </table>
           </div>
           <div>
@@ -177,7 +183,9 @@ function MyBounties({
             </h1>
           </div>
           <div className="bounties-grid bounty-details-right">
-            {
+            {nftLoading ? (
+              <div className="loading-nft">loading nfts...</div>
+            ) : (
               userNftCards
                 .map(claim => (
                   <NftCard
@@ -191,7 +199,7 @@ function MyBounties({
                     isClaimed={true}
                   />
                 ))
-            }
+            )}
           </div>
           <div>
             <h1>
@@ -229,15 +237,17 @@ MyBounties.propTypes = {
   connecting: PropTypes.bool.isRequired,
   fetchUserBounties: PropTypes.func.isRequired,
   cancelBounty: PropTypes.func.isRequired,
-  fetchBountySummary: PropTypes.func.isRequired,
+  fetchBountySummary: PropTypes.func,
   fetchUserSummary: PropTypes.func.isRequired,
   userSummary: PropTypes.object.isRequired,
-  getClaimsByBountyId: PropTypes.func.isRequired,
-  fetchBountyDetails: PropTypes.func.isRequired,
+  getClaimsByBountyId: PropTypes.func,
+  fetchBountyDetails: PropTypes.func,
   getTokenUri: PropTypes.func.isRequired,
   acceptClaim: PropTypes.func.isRequired,
   createNftCards: PropTypes.func.isRequired,
   userNftCards: PropTypes.array.isRequired,
+  claimedBounties: PropTypes.array.isRequired,
+  fetchAllBounties: PropTypes.func.isRequired,
 };
 
 export default MyBounties;

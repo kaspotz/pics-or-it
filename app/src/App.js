@@ -25,6 +25,7 @@ function App() {
     fetchUserBalance,
     fetchAllBounties,
     unClaimedBounties,
+    claimedBounties,
     fetchUserSummary,
     userSummary,
     fetchClaimerBounties,
@@ -34,7 +35,6 @@ function App() {
 
   useEffect(() => {
     if (wallet) {
-      fetchUserBounties(wallet.accounts[0].address);
       fetchUserClaims();
       fetchUserBalance();
     }
@@ -92,6 +92,8 @@ function App() {
                 fetchClaimerBounties={fetchClaimerBounties}
                 createNftCards={createNftCards}
                 userNftCards={userNftCards}
+                claimedBounties={claimedBounties}
+                fetchAllBounties={fetchAllBounties}
               />
             }
           />

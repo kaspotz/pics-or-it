@@ -711,3 +711,13 @@ summary::-webkit-details-marker {
   font-family: 'Oxygen', sans-serif;
   text-align: left;
 }
+
+.loading-nft {
+  color: white;
+  font-family: 'Oxygen', sans-serif;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 75%;
+  flex-direction: column;
+}

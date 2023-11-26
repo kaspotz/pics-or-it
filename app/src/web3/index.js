@@ -119,15 +119,11 @@ export const useContract = () => {
       const balance = Number(await nftContract.balanceOf(userAddress));
       const tokenIds = [];
 
-      console.log("balance ", balance);
-
       for (let i = 0; i < balance; i++) {
         const tokenId = Number(await nftContract.tokenOfOwnerByIndex(userAddress, i));
-        console.log("tokenId ", tokenId);
         tokenIds.push(tokenId);
       }
 
-      console.log("tokenIds pre ", tokenIds)
       return tokenIds
 
     } catch (error) {
@@ -139,12 +135,10 @@ export const useContract = () => {
     try {
 
       const tokenIds = (await fetchAllUserNftTokenIds(userAddress));
-      console.log("tokenIds ", tokenIds);
       let claimData = [];
 
       for (let i = 0; i < userBounties.length; i++) {
         let claims = await getClaimsByBountyId(userBounties[i].id);
-        console.log("each claims", claims);
         //grab claims where token id matches an nft from the address. 
         let filteredClaim = claims.filter(claim => tokenIds.includes(claim.tokenId));
         if (filteredClaim.length > 0) {
@@ -152,15 +146,11 @@ export const useContract = () => {
         }
       }
 
-      console.log("claimData", claimData);
-
       // Extract ticketid values into an array
       const idsToRemove = claimData.map(obj => obj.tokenId);
-      console.log("idsToRemove", idsToRemove);
 
       // Filter the number array
       const tokenIdsNoClaims = tokenIds.filter(token => !idsToRemove.includes(token));
-      console.log("tokenIdsNoClaims", tokenIdsNoClaims);
 
       //format nfts with no claim into nftclaimcard object and push into existing claims array
       for (let i = 0; i < tokenIdsNoClaims.length; i++) {
@@ -233,15 +223,12 @@ export const useContract = () => {
 
           const { bountiesClaimed, bountiesUnclaimed } = unfilteredBounties.reduce((acc, obj) => {
             if (obj.claimer && obj.claimer !== ZeroAddress) {
-              console.log("have a claimed bounty");
               acc.bountiesClaimed.push(obj);
             } else {
               acc.bountiesUnclaimed.push(obj);
             }
             return acc;
           }, { bountiesClaimed: [], bountiesUnclaimed: [] });
-
-          console.log("pre bounties claimed", bountiesClaimed);
 
           setClaimedBounties(bountiesClaimed);
           setUnClaimedBounties(bountiesUnclaimed);
@@ -272,7 +259,6 @@ export const useContract = () => {
           createdAt: Number(bounty.createdAt),
         }));
         setUserBounties(plainObject);
-        await fetchUserSummary(userAddress);
       }
     } catch (error) {
       console.error('Error fetching user bounties:', error);
@@ -281,7 +267,7 @@ export const useContract = () => {
 
   const fetchUserSummary = async (userAddress) => {
     try {
-      await fetchAllBounties();
+      console.log("userBounties", userBounties);
       const userBountiesSum = userBounties.reduce((acc, obj) => {
         if (obj.claimer !== null && obj.claimer !== ZeroAddress) {
           acc.completedBounties += 1;
@@ -293,7 +279,7 @@ export const useContract = () => {
         return acc;
       }, { completedBounties: 0, inProgressBounties: 0, ethSpent: 0, ethInOpenBounties: 0 });
 
-      console.log("all claimed bounties ", claimedBounties);
+      console.log("claimedBounties", claimedBounties);
       const userAcceptedClaimsSum = claimedBounties.reduce((acc, obj) => {
         if (obj.claimer == userAddress) {
           acc.completedClaims += 1;
@@ -310,6 +296,8 @@ export const useContract = () => {
         completedClaims: Number(userAcceptedClaimsSum.completedClaims),
         ethMade: Number(userAcceptedClaimsSum.ethMade)
       };
+
+      console.log("completeSummary", completeSummary);
 
       setUserSummary(completeSummary);
 
