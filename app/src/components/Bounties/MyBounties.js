@@ -13,6 +13,7 @@ function MyBounties({
   connect,
   disconnect,
   connecting,
+<<<<<<< HEAD
   fetchUserSummary,
   userSummary,
   getTokenUri,
@@ -39,6 +40,9 @@ function MyBounties({
     fetchUser();
   }, [fetchUser]);
 
+=======
+}) {
+>>>>>>> master
   const refreshBounties = useCallback(
     toToast => {
       if (wallet) {
@@ -51,6 +55,7 @@ function MyBounties({
     [wallet, fetchUserBounties]
   );
 
+<<<<<<< HEAD
   function acctFormatted() {
     if (userAddress && userAddress.length > 10) {
       return `${userAddress.substring(0, 6)}...${userAddress.substring(userAddress.length - 4)}`.toLowerCase();
@@ -90,6 +95,16 @@ function MyBounties({
     }
     if (userAddress && userAddress.length > 0 && claimedBounties.length > 0) callFetchSummaryandNfts();
   }, [claimedBounties]);
+=======
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      refreshBounties(false);
+    }, 3000);
+
+    // cleanup function on component unmount
+    return () => clearInterval(intervalId);
+  }, [refreshBounties]);
+>>>>>>> master
 
   return (
     <div className="my-bounties-wrap">
@@ -106,6 +121,7 @@ function MyBounties({
           </button>
         </div>
       ) : (
+<<<<<<< HEAD
         <div>
           <div>
             <h1 className="my-profile-header">
@@ -206,6 +222,9 @@ function MyBounties({
               your bounties
             </h1>
           </div>
+=======
+        <>
+>>>>>>> master
           <div className="bounties-grid">
             {userBounties
               .filter(bounty => bounty.amount > 0)
@@ -222,10 +241,9 @@ function MyBounties({
               ))}
           </div>
           <ToastContainer />
-        </div>
-      )
-      }
-    </div >
+        </>
+      )}
+    </div>
   );
 }
 
@@ -237,6 +255,7 @@ MyBounties.propTypes = {
   connecting: PropTypes.bool.isRequired,
   fetchUserBounties: PropTypes.func.isRequired,
   cancelBounty: PropTypes.func.isRequired,
+<<<<<<< HEAD
   fetchBountySummary: PropTypes.func,
   fetchUserSummary: PropTypes.func.isRequired,
   userSummary: PropTypes.object.isRequired,
@@ -248,6 +267,8 @@ MyBounties.propTypes = {
   userNftCards: PropTypes.array.isRequired,
   claimedBounties: PropTypes.array.isRequired,
   fetchAllBounties: PropTypes.func.isRequired,
+=======
+>>>>>>> master
 };
 
 export default MyBounties;
