@@ -265,7 +265,6 @@ export const useContract = () => {
 
   const fetchUserSummary = async (userAddress) => {
     try {
-      console.log("userBounties", userBounties);
       const userBountiesSum = userBounties.reduce((acc, obj) => {
         if (obj.claimer !== null && obj.claimer !== ZeroAddress) {
           acc.completedBounties += 1;
@@ -277,7 +276,6 @@ export const useContract = () => {
         return acc;
       }, { completedBounties: 0, inProgressBounties: 0, ethSpent: 0, ethInOpenBounties: 0 });
 
-      console.log("claimedBounties", claimedBounties);
       const userAcceptedClaimsSum = claimedBounties.reduce((acc, obj) => {
         if (obj.claimer == userAddress) {
           acc.completedClaims += 1;
@@ -294,8 +292,6 @@ export const useContract = () => {
         completedClaims: Number(userAcceptedClaimsSum.completedClaims),
         ethMade: Number(userAcceptedClaimsSum.ethMade)
       };
-
-      console.log("completeSummary", completeSummary);
 
       setUserSummary(completeSummary);
 
