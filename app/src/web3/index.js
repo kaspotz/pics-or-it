@@ -54,27 +54,19 @@ init({
 
 export const useContract = () => {
   const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
-
   const [contract, setContract] = useState(null);
   const [userBounties, setUserBounties] = useState([]);
   const [userClaims, setUserClaims] = useState([]);
   const [userBalance, setUserBalance] = useState(0);
-<<<<<<< HEAD
   const [userSummary, setUserSummary] = useState({});
   const [userNftCards, setUserNftCards] = useState([]);
-
-=======
->>>>>>> master
 
   const jsonProviderUrl = PROVIDER_URL; // Replace with the desired JSON provider URL
 
   const [{ settingChain, connectedChain }, setChain] = useSetChain();
   const [setChainAttempts, setSetChainAttempts] = useState(false);
   const [unClaimedBounties, setUnClaimedBounties] = useState([]);
-<<<<<<< HEAD
   const [claimedBounties, setClaimedBounties] = useState([]);
-=======
->>>>>>> master
 
   useEffect(() => {
     if (wallet) {

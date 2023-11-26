@@ -222,7 +222,7 @@ function MyBounties({
               ))}
           </div>
           <ToastContainer />
-        </>
+        </div>
       )}
     </div>
   );
