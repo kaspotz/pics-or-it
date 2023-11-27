@@ -720,4 +720,6 @@ summary::-webkit-details-marker {
   align-items: center;
   width: 75%;
   flex-direction: column;
+  padding-left: 565px;
+  font-size: 1.5em;
 }

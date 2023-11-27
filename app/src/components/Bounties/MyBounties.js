@@ -26,6 +26,7 @@ function MyBounties({
   const { urlUserAddress } = useParams();
   const [userAddress, setUserAddress] = useState()
   const [nftLoading, setNftLoading] = useState(true);
+  const [userHasNfts, setUserHasNfts] = useState(true);
 
   const fetchUser = useCallback(async () => {
     if (urlUserAddress && urlUserAddress?.toLowerCase() !== "undefined" && urlUserAddress?.length > 0) {
@@ -91,6 +92,10 @@ function MyBounties({
     if (userAddress && userAddress.length > 0 && claimedBounties.length > 0) callFetchSummaryandNfts();
   }, [claimedBounties]);
 
+  useEffect(() => {
+    setUserHasNfts(userNftCards && userNftCards.length > 0)
+  }, [userNftCards]);
+
   return (
     <div className="my-bounties-wrap">
       {(!wallet && urlUserAddress.toLowerCase() == "undefined") ? (
@@ -111,7 +116,7 @@ function MyBounties({
             <h1 className="my-profile-header">
               your profile
             </h1>
-            <div className="formatted-account">
+            <div className="table-container">
               {acctFormatted()}
             </div>
           </div>
@@ -185,20 +190,21 @@ function MyBounties({
           <div className="bounties-grid bounty-details-right">
             {nftLoading ? (
               <div className="loading-nft">loading nfts...</div>
+            ) : !userHasNfts ? (
+              <div className="loading-nft">no assets at this time - create a bounty to collect your first poidh nft</div>
             ) : (
-              userNftCards
-                .map(claim => (
-                  <NftCard
-                    key={claim.id}
-                    bountyId={claim.id}
-                    bountyDetails={claim}
-                    claim={claim}
-                    getTokenUri={getTokenUri}
-                    isOwner={true}
-                    acceptClaim={acceptClaim}
-                    isClaimed={true}
-                  />
-                ))
+              userNftCards.map(claim => (
+                <NftCard
+                  key={claim.id}
+                  bountyId={claim.id}
+                  bountyDetails={claim}
+                  claim={claim}
+                  getTokenUri={getTokenUri}
+                  isOwner={true}
+                  acceptClaim={acceptClaim}
+                  isClaimed={true}
+                />
+              ))
             )}
           </div>
           <div>
