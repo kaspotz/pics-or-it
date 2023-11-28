@@ -133,10 +133,10 @@ function MyBounties({
                 </tr>
                 <tr>
                   <th className="summary-align-left">
-                    total eth sent:
+                    total eth paid:
                   </th>
                   <th className="summary-align-right">
-                    {userSummary?.ethSpent?.toFixed(6)}
+                    {userSummary?.ethSpent?.toFixed(4)}
                   </th>
                 </tr>
               </thead>
@@ -156,7 +156,7 @@ function MyBounties({
                     total eth in contracts:
                   </th>
                   <th className="summary-align-right">
-                    {userSummary?.ethInOpenBounties?.toFixed(6)}
+                    {userSummary?.ethInOpenBounties?.toFixed(4)}
                   </th>
                 </tr>
               </thead>
@@ -176,7 +176,7 @@ function MyBounties({
                     total eth earned:
                   </th>
                   <th className="summary-align-right">
-                    {userSummary?.ethMade?.toFixed(6)}
+                    {userSummary?.ethMade?.toFixed(4)}
                   </th>
                 </tr>
               </thead>

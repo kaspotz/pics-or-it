@@ -277,7 +277,7 @@ export const useContract = () => {
       }, { completedBounties: 0, inProgressBounties: 0, ethSpent: 0, ethInOpenBounties: 0 });
 
       const userAcceptedClaimsSum = claimedBounties.reduce((acc, obj) => {
-        if (obj.claimer == userAddress) {
+        if (obj.claimer.trim().toLowerCase() == userAddress.trim().toLowerCase()) {
           acc.completedClaims += 1;
           acc.ethMade += obj.amount === null ? 0 : (obj.amount);
         }

@@ -698,6 +698,22 @@ summary::-webkit-details-marker {
   /* Adjust the space as needed */
 }
 
+/* Mobile view - stack tables vertically */
+@media screen and (max-width: 768px) {
+
+  /* adjust 768px based on your design needs */
+  .table-container {
+    flex-direction: column;
+    justify-content: left;
+    align-items: left;
+  }
+
+  .summary-table:not(:first-child) {
+    margin-left: 0px;
+    /* Adjust the space as needed */
+  }
+}
+
 .my-profile-header {
   margin-bottom: 20px;
   /* Adjust this value as needed */
