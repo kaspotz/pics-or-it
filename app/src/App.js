@@ -25,11 +25,16 @@ function App() {
     fetchUserBalance,
     fetchAllBounties,
     unClaimedBounties,
+    claimedBounties,
+    fetchUserSummary,
+    userSummary,
+    fetchClaimerBounties,
+    createNftCards,
+    userNftCards,
   } = useContract();
 
   useEffect(() => {
     if (wallet) {
-      fetchUserBounties();
       fetchUserClaims();
       fetchUserBalance();
     }
@@ -38,7 +43,9 @@ function App() {
   return (
     <Router basename="/">
       <div>
-        <Navigation />
+        <Navigation
+          wallet={wallet}
+        />
         <Routes>
           <Route
             path="/create"
@@ -68,7 +75,7 @@ function App() {
             }
           />
           <Route
-            path="/my-bounties"
+            path="/my-bounties/:urlUserAddress"
             element={
               <MyBounties
                 userBounties={userBounties}
@@ -78,6 +85,15 @@ function App() {
                 connecting={connecting}
                 fetchUserBounties={fetchUserBounties}
                 cancelBounty={cancelBounty}
+                fetchUserSummary={fetchUserSummary}
+                userSummary={userSummary}
+                getTokenUri={getTokenUri}
+                acceptClaim={acceptClaim}
+                fetchClaimerBounties={fetchClaimerBounties}
+                createNftCards={createNftCards}
+                userNftCards={userNftCards}
+                claimedBounties={claimedBounties}
+                fetchAllBounties={fetchAllBounties}
               />
             }
           />
