@@ -503,10 +503,11 @@ img {
 .claim-card-issuer {
   color: white;
   font-size: 0.85em;
+  margin-top: 3px;
+  margin-bottom: 3px;
 }
 
 .claim-card-details {
-  margin-top: 10px;
   font-size: 0.85em;
   color: white;
   font-family: 'Oxygen', sans-serif;
@@ -519,7 +520,6 @@ img {
 }
 
 .bounty-card-details {
-  margin-top: 10px;
   font-size: 1em;
   color: white;
   font-family: 'Oxygen', sans-serif;
