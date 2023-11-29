@@ -189,9 +189,9 @@ function MyBounties({
           </div>
           <div className="bounties-grid bounty-details-right">
             {nftLoading ? (
-              <div className="loading-nft">loading nfts...</div>
+              <div className="bounties-grid nft-loading">loading nfts...</div>
             ) : !userHasNfts ? (
-              <div className="loading-nft">no assets at this time - create a bounty to collect your first poidh nft</div>
+              <div className="bounties-grid nft-loading">no assets at this time - create a bounty to collect your first poidh nft</div>
             ) : (
               userNftCards.map(claim => (
                 <NftCard
