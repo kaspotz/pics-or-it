@@ -55,9 +55,9 @@ function ClaimCard({
                             <summary className="summary">issuer</summary>
                             <a className="summary-body summary-issuer" href={`/my-bounties/${issuerMyBountyUrl}`} target="_blank" rel="noreferrer noopener">{issuer}</a>
                         </details>
-                        <details className="nft-card-details">
+                        <details className="claim-card-issuer">
                             <summary className="summary">description</summary>
-                            <div className="summary-body">{description}</div>
+                            <div className="summary-body summary-issuer">{description}</div>
                         </details>
                         <details className="claim-card-issuer">
                             <summary className="summary">source bounty</summary>
