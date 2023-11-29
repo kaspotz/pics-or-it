@@ -109,11 +109,10 @@ export const useContract = () => {
     return new ethers.Contract(contractAddress, abiErc721Enumerable1, provider);
   };
 
-  const fetchAllUserNftTokenIds = async (userAddress) => {
+  const fetchAllUserNftTokenIds = async (userAddress, nftContract) => {
 
     try {
 
-      let nftContract = await getNftContract();
       const balance = Number(await nftContract.balanceOf(userAddress));
       const tokenIds = [];
 
@@ -129,43 +128,73 @@ export const useContract = () => {
     }
   };
 
+  const fetchNftUriMetaData = async (nftContract, tokenId) => {
+
+    try {
+
+      const tokenURI = await nftContract.tokenURI(tokenId);
+      const metadataResponse = (await fetch(tokenURI)).json();
+
+      return metadataResponse;
+
+    } catch (error) {
+      console.error('Error fetching nft metadata:', error);
+    }
+  };
+
+  const fetchNftMintSourceAddrs = async (nftContract, userAddress, tokenId) => {
+
+    try {
+
+      const filter = nftContract.filters.Transfer(null, userAddress, tokenId);
+      const events = await nftContract.queryFilter(filter);
+
+      return events[0].args.from;
+
+    } catch (error) {
+      console.error('Error fetching nft source minter:', error);
+    }
+  };
+
   const createNftCards = async (userAddress) => {
     try {
 
-      const tokenIds = (await fetchAllUserNftTokenIds(userAddress));
-      let claimData = [];
+      let nftContract = await getNftContract();
+      const tokenIds = (await fetchAllUserNftTokenIds(userAddress, nftContract));
 
-      for (let i = 0; i < userBounties.length; i++) {
-        let claims = await getClaimsByBountyId(userBounties[i].id);
-        //grab claims where token id matches an nft from the address. 
-        let filteredClaim = claims.filter(claim => tokenIds.includes(claim.tokenId));
-        if (filteredClaim.length > 0) {
-          claimData.push(filteredClaim[0]);
+      let userNftSummary = [];
+
+      let nftSummary = {};
+
+      for (let i = 0; i < tokenIds.length; i++) {
+
+        try {
+
+          let nftMetaData = await fetchNftUriMetaData(nftContract, tokenIds[i])
+          let sourceMinter = await fetchNftMintSourceAddrs(nftContract, userAddress, tokenIds[i])
+
+          nftSummary = {
+            id: null,
+            issuer: sourceMinter,
+            bountyId: null,
+            bountyIssuer: null,
+            name: nftMetaData?.name,
+            description: nftMetaData?.description,
+            tokenId: tokenIds[i],
+            createdAt: null,
+            issuerMyBountyUrl: `https://www.poidh.xyz/my-bounties/${sourceMinter}`,
+            openSeaUrl: `https://opensea.io/assets/arbitrum/${sourceMinter}/${tokenIds[i]}`
+          };
+
+        } catch (error) {
+          console.error(`error in creating nft summary for token id: ${tokenIds[i]}`, error);
         }
+
+        userNftSummary.push(nftSummary);
+
       }
 
-      // Extract ticketid values into an array
-      const idsToRemove = claimData.map(obj => obj.tokenId);
-
-      // Filter the number array
-      const tokenIdsNoClaims = tokenIds.filter(token => !idsToRemove.includes(token));
-
-      //format nfts with no claim into nftclaimcard object and push into existing claims array
-      for (let i = 0; i < tokenIdsNoClaims.length; i++) {
-        let nftClaim = {
-          id: null,
-          issuer: null,
-          bountyId: null,
-          bountyIssuer: null,
-          name: null,
-          description: null,
-          tokenId: Number(tokenIdsNoClaims[i]),
-          createdAt: null,
-        };
-        claimData.push(nftClaim);
-      }
-
-      setUserNftCards(claimData);
+      setUserNftCards(userNftSummary);
 
     } catch (error) {
       console.error('Error creating nft cards:', error);

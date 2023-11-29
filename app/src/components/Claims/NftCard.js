@@ -6,7 +6,7 @@ function ClaimCard({
     claim,
     getTokenUri,
 }) {
-    const { name, issuer, tokenId, description, id } = claim;
+    const { name, issuer, tokenId, description, id, issuerMyBountyUrl, openSeaUrl } = claim;
     const [isLoading, setIsLoading] = useState(true);
     const [imageSrc, setImageSrc] = useState('');
 
@@ -50,20 +50,20 @@ function ClaimCard({
                     <div className="claim-card-info">
                         <div className="claim-card-title-wrap">
                             <div className="claim-card-title">{truncatedName}</div>
-                            {isClaimAccepted &&
-                                <button className="claim-card-button" disabled>
-                                    accepted
-                                </button>
-                            }
                         </div>
                         <details className="claim-card-issuer">
                             <summary className="summary">issuer</summary>
-                            <div className="summary-body summary-issuer">{issuer}</div>
+                            <a className="summary-body summary-issuer" href={issuerMyBountyUrl} target="_blank" rel="noreferrer noopener">{issuer}</a>
                         </details>
                         <details className="claim-card-details">
                             <summary className="summary">description</summary>
                             <div className="summary-body">{description}</div>
                         </details>
+                        <details className="claim-card-issuer">
+                            <summary className="summary">opensea</summary>
+                            <a className="summary-body summary-issuer" href={openSeaUrl} target="_blank" rel="noreferrer noopener">opensea link</a>
+                        </details>
+
                     </div>
                 </>
             )}
@@ -78,6 +78,8 @@ ClaimCard.propTypes = {
         issuer: PropTypes.string.isRequired,
         tokenId: PropTypes.number.isRequired,
         description: PropTypes.string.isRequired,
+        issuerMyBountyUrl: PropTypes.string.isRequired,
+        openSeaUrl: PropTypes.string.isRequired,
     }).isRequired,
     getTokenUri: PropTypes.func.isRequired,
     bountyId: PropTypes.string.isRequired,
