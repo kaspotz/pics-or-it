@@ -135,6 +135,7 @@ export const useContract = () => {
       const tokenURI = await nftContract.tokenURI(tokenId);
       const metadataResponse = (await fetch(tokenURI)).json();
 
+      console.log(metadataResponse);
       return metadataResponse;
 
     } catch (error) {
@@ -148,6 +149,12 @@ export const useContract = () => {
 
       const filter = nftContract.filters.Transfer(null, userAddress, tokenId);
       const events = await nftContract.queryFilter(filter);
+
+      for (let i = 0; i < events.length; i++) {
+        console.log("Event ", i, " ", events[i]);
+      }
+
+      console.log("end ", events[0].args.from);
 
       return events[0].args.from;
 
@@ -257,7 +264,7 @@ export const useContract = () => {
             return acc;
           }, { bountiesClaimed: [], bountiesUnclaimed: [] });
 
-          setClaimedBounties(bountiesClaimed);
+          setClaimedBounties(F);
           setUnClaimedBounties(bountiesUnclaimed);
 
         }
