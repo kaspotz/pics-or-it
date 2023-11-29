@@ -188,7 +188,7 @@ export const useContract = () => {
             description: filteredClaim[0].description,
             tokenId: filteredClaim[0].tokenId,
             createdAt: filteredClaim[0].createdAt,
-            issuerMyBountyUrl: `https://www.poidh.xyz/my-bounties/${filteredClaim[0].issuer}`,
+            issuerMyBountyUrl: `${filteredClaim[0].issuer}`,
             openSeaUrl: `https://opensea.io/assets/arbitrum/${CONTRACT}/${tokenIds[i]}`
           };
 
@@ -260,7 +260,7 @@ export const useContract = () => {
             return acc;
           }, { bountiesClaimed: [], bountiesUnclaimed: [] });
 
-          setClaimedBounties(F);
+          setClaimedBounties(bountiesClaimed);
           setUnClaimedBounties(bountiesUnclaimed);
 
         }

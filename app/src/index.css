@@ -512,6 +512,12 @@ img {
   font-family: 'Oxygen', sans-serif;
 }
 
+.nft-card-details {
+  font-size: 0.85em;
+  color: white;
+  font-family: 'Oxygen', sans-serif;
+}
+
 .bounty-card-details {
   margin-top: 10px;
   font-size: 1em;

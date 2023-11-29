@@ -6,7 +6,7 @@ function ClaimCard({
     claim,
     getTokenUri,
 }) {
-    const { name, issuer, tokenId, description, id, issuerMyBountyUrl, openSeaUrl } = claim;
+    const { name, issuer, tokenId, description, id, issuerMyBountyUrl, openSeaUrl, bountyId } = claim;
     const [isLoading, setIsLoading] = useState(true);
     const [imageSrc, setImageSrc] = useState('');
 
@@ -53,11 +53,15 @@ function ClaimCard({
                         </div>
                         <details className="claim-card-issuer">
                             <summary className="summary">issuer</summary>
-                            <a className="summary-body summary-issuer" href={issuerMyBountyUrl} target="_blank" rel="noreferrer noopener">{issuer}</a>
+                            <a className="summary-body summary-issuer" href={`/my-bounties/${issuerMyBountyUrl}`} target="_blank" rel="noreferrer noopener">{issuer}</a>
                         </details>
-                        <details className="claim-card-details">
+                        <details className="nft-card-details">
                             <summary className="summary">description</summary>
                             <div className="summary-body">{description}</div>
+                        </details>
+                        <details className="claim-card-issuer">
+                            <summary className="summary">source bounty</summary>
+                            <a className="summary-body summary-issuer" href={`/bounties/${bountyId}`} target="_blank" rel="noreferrer noopener">{`Bounty id ${bountyId}`}</a>
                         </details>
                         <details className="claim-card-issuer">
                             <summary className="summary">opensea</summary>
@@ -80,6 +84,7 @@ ClaimCard.propTypes = {
         description: PropTypes.string.isRequired,
         issuerMyBountyUrl: PropTypes.string.isRequired,
         openSeaUrl: PropTypes.string.isRequired,
+        bountyId: PropTypes.string.isRequired,
     }).isRequired,
     getTokenUri: PropTypes.func.isRequired,
     bountyId: PropTypes.string.isRequired,
