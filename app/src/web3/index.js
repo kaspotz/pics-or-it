@@ -189,7 +189,7 @@ export const useContract = () => {
             tokenId: filteredClaim[0].tokenId,
             createdAt: filteredClaim[0].createdAt,
             issuerMyBountyUrl: `${filteredClaim[0].issuer}`,
-            openSeaUrl: `https://opensea.io/assets/arbitrum/${CONTRACT}/${tokenIds[i]}`
+            openSeaUrl: `https://opensea.io/assets/arbitrum/${CONTRACT}/${filteredClaim[0].tokenId}`
           };
 
           userNftSummary.push(nftSummary);
