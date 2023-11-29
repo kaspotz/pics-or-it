@@ -128,33 +128,40 @@ export const useContract = () => {
     }
   };
 
-  const fetchNftUriMetaData = async (nftContract, tokenId) => {
+  // const fetchNftUriMetaData = async (nftContract, tokenId) => {
 
-    try {
+  //   try {
 
-      const tokenURI = await nftContract.tokenURI(tokenId);
-      const metadataResponse = (await fetch(tokenURI)).json();
+  //     const tokenURI = await nftContract.tokenURI(tokenId);
+  //     const metadataResponse = (await fetch(tokenURI)).json();
 
-      return metadataResponse;
+  //     console.log(metadataResponse);
+  //     return metadataResponse;
 
-    } catch (error) {
-      console.error('Error fetching nft metadata:', error);
-    }
-  };
+  //   } catch (error) {
+  //     console.error('Error fetching nft metadata:', error);
+  //   }
+  // };
 
-  const fetchNftMintSourceAddrs = async (nftContract, userAddress, tokenId) => {
+  // const fetchNftMintSourceAddrs = async (nftContract, userAddress, tokenId) => {
 
-    try {
+  //   try {
 
-      const filter = nftContract.filters.Transfer(null, userAddress, tokenId);
-      const events = await nftContract.queryFilter(filter);
+  //     const filter = nftContract.filters.Transfer(null, userAddress, tokenId);
+  //     const events = await nftContract.queryFilter(filter);
 
-      return events[0].args.from;
+  //     for (let i = 0; i < events.length; i++) {
+  //       console.log("Event ", i, " ", events[i]);
+  //     }
 
-    } catch (error) {
-      console.error('Error fetching nft source minter:', error);
-    }
-  };
+  //     console.log("end ", events[0].args.from);
+
+  //     return events[0].args.from;
+
+  //   } catch (error) {
+  //     console.error('Error fetching nft source minter:', error);
+  //   }
+  // };
 
   const createNftCards = async (userAddress) => {
     try {
@@ -166,31 +173,27 @@ export const useContract = () => {
 
       let nftSummary = {};
 
-      for (let i = 0; i < tokenIds.length; i++) {
-
-        try {
-
-          let nftMetaData = await fetchNftUriMetaData(nftContract, tokenIds[i])
-          let sourceMinter = await fetchNftMintSourceAddrs(nftContract, userAddress, tokenIds[i])
+      for (let i = 0; i < claimedBounties.length; i++) {
+        let claims = await getClaimsByBountyId(claimedBounties[i].id);
+        //grab claims where token id matches an nft from the address. 
+        let filteredClaim = claims.filter(claim => tokenIds.includes(claim.tokenId));
+        if (filteredClaim.length > 0) {
 
           nftSummary = {
             id: null,
-            issuer: sourceMinter,
-            bountyId: null,
+            issuer: filteredClaim[0].issuer,
+            bountyId: filteredClaim[0].bountyId,
             bountyIssuer: null,
-            name: nftMetaData?.name,
-            description: nftMetaData?.description,
-            tokenId: tokenIds[i],
-            createdAt: null,
-            issuerMyBountyUrl: `https://www.poidh.xyz/my-bounties/${sourceMinter}`,
-            openSeaUrl: `https://opensea.io/assets/arbitrum/${sourceMinter}/${tokenIds[i]}`
+            name: filteredClaim[0].name,
+            description: filteredClaim[0].description,
+            tokenId: filteredClaim[0].tokenId,
+            createdAt: filteredClaim[0].createdAt,
+            issuerMyBountyUrl: `${filteredClaim[0].issuer}`,
+            openSeaUrl: `https://opensea.io/assets/arbitrum/${CONTRACT}/${filteredClaim[0].tokenId}`
           };
 
-        } catch (error) {
-          console.error(`error in creating nft summary for token id: ${tokenIds[i]}`, error);
+          userNftSummary.push(nftSummary);
         }
-
-        userNftSummary.push(nftSummary);
 
       }
 
