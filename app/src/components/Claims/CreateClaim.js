@@ -27,7 +27,7 @@ function CreateClaim({ onClose, bountyId }) {
     const fileName = acceptedFiles[0].name;
 
     setFile(acceptedFiles[0]);
-    setFormData({ ...formData, name: fileName });
+    setFormData({ ...formData, });
     if (showSubmit) setShowSubmit(true);
   };
 
@@ -182,6 +182,7 @@ function CreateClaim({ onClose, bountyId }) {
                   <input
                     className="claim-name-input"
                     type="text"
+                    maxLength="40"
                     value={formData.name}
                     onChange={event =>
                       setFormData({ ...formData, name: event.target.value })

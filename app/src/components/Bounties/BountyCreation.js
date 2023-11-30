@@ -52,6 +52,7 @@ function BountyCreation({ userBalance, handleClose }) {
             <input
               type="text"
               name="customer_name"
+              maxLength="40"
               required
               value={bountyName}
               onChange={e => setBountyName(e.target.value)}
