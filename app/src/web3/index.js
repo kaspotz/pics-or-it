@@ -263,7 +263,6 @@ export const useContract = () => {
   const fetchUserSummary = async (userAddress) => {
     try {
       const userBountiesSum = userBounties.reduce((acc, obj) => {
-        console.log("obj.name: ", obj.name, "obj.amount", obj.amount);
         if (obj.claimer !== null && obj.claimer !== ZeroAddress) {
           acc.completedBounties += 1;
           acc.ethSpent += obj.amount === null ? 0 : (obj.amount);
