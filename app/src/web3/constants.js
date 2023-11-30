@@ -9,8 +9,8 @@ export const CONTRACT_DEV_ADDRESS =
   '0x83355E78fEA8147F1CFD533a7A8A1D15Ec22432c';
 
 export const PROVIDER_URL =
-  process.env.NODE_ENV === 'development' ? ARB_DEV_RPC : ARB_RPC;
+  process.env.REACT_APP_NODE_ENV === 'development' ? ARB_DEV_RPC : ARB_RPC;
 export const CONTRACT =
-  process.env.NODE_ENV === 'development'
+  process.env.REACT_APP_NODE_ENV === 'development'
     ? CONTRACT_DEV_ADDRESS
     : CONTRACT_ADDRESS;

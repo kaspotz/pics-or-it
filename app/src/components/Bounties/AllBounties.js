@@ -3,10 +3,67 @@ import PropTypes from 'prop-types';
 import BountyCard from './BountyCard';
 import { ToastContainer } from 'react-toastify';
 import BountyCreation from './BountyCreation';
+import { ZeroAddress, ethers } from 'ethers';
+
+const BOUNTIES_PER_PAGE = 30;
+
+const fetchBounties = async (connectedContract, offset = 0, limit) => {
+  try {
+    if (connectedContract) {
+      const allBountiesLength =
+        Number(await connectedContract.getBountiesLength()) - 1;
+
+      let start, end;
+
+      if (limit !== undefined) {
+        // Calculate start and end index for slicing the bounties array based on the limit
+        start = allBountiesLength - offset - limit;
+        end = allBountiesLength - offset;
+      } else {
+        // If limit is not specified, fetch all bounties
+        start = 0;
+        end = allBountiesLength;
+      }
+
+      // Ensure start and end indices are within the bounds of the array
+      start = Math.max(start, 0);
+      end = Math.min(end, allBountiesLength);
+
+      // If offset is beyond the total number of bounties, return an empty array
+      if (start > allBountiesLength) {
+        return { bounties: [], unclaimedBountiesTotal: allBountiesLength };
+      }
+
+      const bounties = await connectedContract.getBounties(start, end);
+      const unfilteredBounties = bounties.map(bounty => ({
+        id: Number(bounty.id),
+        issuer: bounty.issuer,
+        name: bounty.name,
+        description: bounty.description,
+        amount: Number(ethers.formatEther(bounty.amount)),
+        claimer: bounty.claimer,
+        claimId: bounty.claimId,
+        createdAt: Number(bounty.createdAt),
+      }));
+
+      const unClaimedBounties = unfilteredBounties.filter(
+        bounty => bounty.claimer === ZeroAddress
+      );
+
+      // Filter by unclaimed bounties if needed
+      return {
+        bounties: unClaimedBounties,
+        unclaimedBountiesTotal: unClaimedBounties.length,
+      };
+    }
+  } catch (error) {
+    console.error('Error fetching bounties:', error);
+  }
+};
 
 function AllBounties({
-  unClaimedBounties,
   fetchAllBounties,
+  getContract,
   cancelBounty,
   wallet,
   connect,
@@ -15,30 +72,90 @@ function AllBounties({
   userBalance,
 }) {
   const [showCreateBounty, setShowCreateBounty] = useState(false);
-  const [firstRender, setFirstRender] = useState(true);
 
-  const intervalId = useRef(); // Using a ref to persist the interval ID
+  const [bounties, setBounties] = useState([true]);
+  const [unclaimedBountiesTotal, setUnclaimedBountiesTotal] = useState();
+
+  const [offset, setOffset] = useState(0);
+  const [isUpdating, setIsUpdating] = useState(true);
+  const intervalId = useRef();
 
   useEffect(() => {
-    if (wallet && unClaimedBounties.length == 0) fetchAllBounties();
+    const fetchInitialBounties = async () => {
+      const contract = await getContract();
+      // Fetch BOUNTIES_PER_PAGE bounties when the component mounts
+      const { bounties, unclaimedBountiesTotal } = await fetchBounties(
+        contract,
+        0,
+        BOUNTIES_PER_PAGE
+      );
+      setBounties(bounties);
+
+      setUnclaimedBountiesTotal(unclaimedBountiesTotal);
+    };
+
+    if (wallet) {
+      fetchInitialBounties();
+    }
+    // Run only once on mount when wallet is available
   }, [wallet]);
 
   useEffect(() => {
-    if (unClaimedBounties.length == 0 && firstRender) {
-      intervalId.current = setInterval(fetchAllBounties, 5000);
-      setFirstRender(false);
+    const updateBounties = async () => {
+      const contract = await getContract();
+
+      // Fetch all unclaimed bounties.
+      const { bounties: unclaimedBounties, unclaimedBountiesTotal } =
+        await fetchBounties(contract);
+      if (!unclaimedBounties?.length) return;
+      const unclaimedSet = new Set(unclaimedBounties.map(b => b.id));
+
+      // Filter out bounties not in the unclaimed set
+      const updatedBounties = bounties?.filter(b => unclaimedSet.has(b.id));
+
+      // Sort updatedBounties by createdAt in descending order
+      updatedBounties.sort((a, b) => b.createdAt - a.createdAt);
+
+      // Get the latest timestamp from the current bounties
+      const latestTimestamp =
+        updatedBounties.length > 0 ? updatedBounties[0].createdAt : 0;
+
+      unclaimedBounties.sort((a, b) => b.createdAt - a.createdAt);
+      // Filter new bounties based on timestamp
+      const newBounties = unclaimedBounties.filter(
+        b => b.createdAt > latestTimestamp
+      );
+
+      // Add new bounties to the beginning of the array
+      setBounties([...newBounties, ...updatedBounties]);
+      setUnclaimedBountiesTotal(unclaimedBountiesTotal);
+    };
+
+    if (wallet && isUpdating) {
+      intervalId.current = setInterval(updateBounties, 5000);
     }
 
-    if (unClaimedBounties.length > 0) {
-      clearInterval(intervalId.current);
-    }
-
-    // cleanup function on component unmount
+    // Cleanup function
     return () => clearInterval(intervalId.current);
-  }, [unClaimedBounties]);
+  }, [wallet, bounties, isUpdating]);
 
   const handleCreateBounty = () => {
     setShowCreateBounty(!showCreateBounty);
+  };
+
+  const loadMoreBounties = async () => {
+    setIsUpdating(false);
+    const contract = await getContract();
+    const { bounties: moreBounties } = await fetchBounties(
+      contract,
+      offset + BOUNTIES_PER_PAGE,
+      BOUNTIES_PER_PAGE
+    );
+    setBounties([...bounties, ...moreBounties]);
+
+    setUnclaimedBountiesTotal(unclaimedBountiesTotal);
+    setOffset(offset + BOUNTIES_PER_PAGE);
+    setIsUpdating(true);
   };
 
   return (
@@ -80,12 +197,12 @@ function AllBounties({
             </div>
           </div>
           <div className="bounties-grid all-bounties-grid">
-            {unClaimedBounties
-              .filter(bounty => bounty.amount > 0)
+            {bounties
+              ?.filter(bounty => bounty.amount > 0)
               .sort((a, b) => b.createdAt - a.createdAt)
-              .map(bounty => (
+              .map((bounty, index) => (
                 <BountyCard
-                  key={bounty.id}
+                  key={index}
                   bounty={bounty}
                   wallet={wallet}
                   cancelBounty={cancelBounty}
@@ -93,6 +210,12 @@ function AllBounties({
                   showClaim={false}
                 />
               ))}
+          </div>
+          <div className="load-more-wrap">
+            {/* Assuming you have no more bounties to load when the fetched list is empty */}
+            {offset < unclaimedBountiesTotal && (
+              <button onClick={loadMoreBounties}>Load More</button>
+            )}
           </div>
         </div>
         <ToastContainer />
@@ -118,6 +241,7 @@ AllBounties.propTypes = {
   fetchAllBounties: PropTypes.func.isRequired,
   cancelBounty: PropTypes.func.isRequired,
   userBalance: PropTypes.string.isRequired,
+  getContract: PropTypes.func.isRequired,
 };
 
 export default AllBounties;

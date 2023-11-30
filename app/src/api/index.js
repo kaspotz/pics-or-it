@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // eslint-disable-next-line no-unused-vars
 const apiUrl =
-  process.env.NODE_ENV === 'development'
+  process.env.REACT_APP_NODE_ENV === 'development'
     ? 'http://localhost:3001'
     : 'https://us-central1-plated-hangout-393021.cloudfunctions.net/poidh';
 
