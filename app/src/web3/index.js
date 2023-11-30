@@ -128,41 +128,6 @@ export const useContract = () => {
     }
   };
 
-  // const fetchNftUriMetaData = async (nftContract, tokenId) => {
-
-  //   try {
-
-  //     const tokenURI = await nftContract.tokenURI(tokenId);
-  //     const metadataResponse = (await fetch(tokenURI)).json();
-
-  //     console.log(metadataResponse);
-  //     return metadataResponse;
-
-  //   } catch (error) {
-  //     console.error('Error fetching nft metadata:', error);
-  //   }
-  // };
-
-  // const fetchNftMintSourceAddrs = async (nftContract, userAddress, tokenId) => {
-
-  //   try {
-
-  //     const filter = nftContract.filters.Transfer(null, userAddress, tokenId);
-  //     const events = await nftContract.queryFilter(filter);
-
-  //     for (let i = 0; i < events.length; i++) {
-  //       console.log("Event ", i, " ", events[i]);
-  //     }
-
-  //     console.log("end ", events[0].args.from);
-
-  //     return events[0].args.from;
-
-  //   } catch (error) {
-  //     console.error('Error fetching nft source minter:', error);
-  //   }
-  // };
-
   const createNftCards = async (userAddress) => {
     try {
 
@@ -298,10 +263,11 @@ export const useContract = () => {
   const fetchUserSummary = async (userAddress) => {
     try {
       const userBountiesSum = userBounties.reduce((acc, obj) => {
+        console.log("obj.name: ", obj.name, "obj.amount", obj.amount);
         if (obj.claimer !== null && obj.claimer !== ZeroAddress) {
           acc.completedBounties += 1;
           acc.ethSpent += obj.amount === null ? 0 : (obj.amount);
-        } else {
+        } else if (obj?.amount != null && Number(obj.amount) > 0) {
           acc.inProgressBounties += 1;
           acc.ethInOpenBounties += obj.amount === null ? 0 : (obj.amount);
         }
