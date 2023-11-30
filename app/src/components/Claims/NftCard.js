@@ -61,7 +61,7 @@ function ClaimCard({
                         </details>
                         <details className="claim-card-issuer">
                             <summary className="summary">source bounty</summary>
-                            <a className="summary-body summary-issuer" href={`/bounties/${bountyId}`}>{`Bounty id ${bountyId}`}</a>
+                            <a className="summary-body summary-issuer" href={`/bounties/${bountyId}`}>{`bounty id ${bountyId}`}</a>
                         </details>
                         <details className="claim-card-issuer">
                             <summary className="summary">opensea</summary>
