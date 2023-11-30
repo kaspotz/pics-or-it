@@ -70,7 +70,9 @@ export const useContract = () => {
       if (!settingChain && !setChainAttempts) {
         setChain({
           chainId:
-            process.env.NODE_ENV === 'development' ? '0x66eed' : '0xa4b1',
+            process.env.REACT_APP_NODE_ENV === 'development'
+              ? '0x66eed'
+              : '0xa4b1',
         }).catch(error => {
           console.error('Error setting chain:', error);
         });
@@ -321,11 +323,11 @@ export const useContract = () => {
   };
 
   const isCorrectChain = () => {
-    return process.env.NODE_ENV === 'development'
+    return process.env.REACT_APP_NODE_ENV === 'development'
       ? '0x66eed' == connectedChain.id
       : '0xa4b1' == connectedChain.id;
   };
-  
+
   const getContract = async () => {
     let contract = await getConnectedContract();
     if (contract) {
