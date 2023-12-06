@@ -58,7 +58,7 @@ function Dropzone({ onDrop }) {
       ) : (
         <p>Drag and drop an image file here, or click to select a file</p>
       )}
-      {fileDropped && <p>File uploaded!</p>}
+      {fileDropped && <p>🎉 File uploaded! 🎉</p>}
     </div>
   );
 }
