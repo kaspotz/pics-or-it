@@ -663,6 +663,7 @@ summary::-webkit-details-marker {
   align-items: center;
   flex-direction: column;
   max-width: 1200px;
+  padding-bottom: 120px;
 }
 
 .all-bounties-control {
