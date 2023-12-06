@@ -6,6 +6,7 @@ import { abi } from './abi.js';
 import { PROVIDER_URL, CONTRACT } from './constants.js';
 import { useSetChain } from '@web3-onboard/react';
 import walletConnectModule from '@web3-onboard/walletconnect';
+import { abiErc721Enumerable1 } from './abierc721enumerable1.js';
 
 const injected = injectedModule();
 
@@ -53,17 +54,19 @@ init({
 
 export const useContract = () => {
   const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
-
   const [contract, setContract] = useState(null);
   const [userBounties, setUserBounties] = useState([]);
   const [userClaims, setUserClaims] = useState([]);
   const [userBalance, setUserBalance] = useState(0);
+  const [userSummary, setUserSummary] = useState({});
+  const [userNftCards, setUserNftCards] = useState([]);
 
   const jsonProviderUrl = PROVIDER_URL; // Replace with the desired JSON provider URL
 
   const [{ settingChain, connectedChain }, setChain] = useSetChain();
   const [setChainAttempts, setSetChainAttempts] = useState(false);
   const [unClaimedBounties, setUnClaimedBounties] = useState([]);
+  const [claimedBounties, setClaimedBounties] = useState([]);
 
   useEffect(() => {
     if (wallet) {
@@ -99,6 +102,73 @@ export const useContract = () => {
     if (!wallet || !contract || !isCorrectChain()) return null;
     const ethersProvider = new ethers.BrowserProvider(wallet.provider);
     return contract.connect(await ethersProvider.getSigner());
+  };
+
+  const getNftContract = async () => {
+    //if (!wallet || !contract || !isCorrectChain()) return null;
+    const provider = new ethers.JsonRpcProvider(PROVIDER_URL);
+    const contractAddress = CONTRACT;
+    return new ethers.Contract(contractAddress, abiErc721Enumerable1, provider);
+  };
+
+  const fetchAllUserNftTokenIds = async (userAddress, nftContract) => {
+
+    try {
+
+      const balance = Number(await nftContract.balanceOf(userAddress));
+      const tokenIds = [];
+
+      for (let i = 0; i < balance; i++) {
+        const tokenId = Number(await nftContract.tokenOfOwnerByIndex(userAddress, i));
+        tokenIds.push(tokenId);
+      }
+
+      return tokenIds
+
+    } catch (error) {
+      console.error('Error fetching user nfts:', error);
+    }
+  };
+
+  const createNftCards = async (userAddress) => {
+    try {
+
+      let nftContract = await getNftContract();
+      const tokenIds = (await fetchAllUserNftTokenIds(userAddress, nftContract));
+
+      let userNftSummary = [];
+
+      let nftSummary = {};
+
+      for (let i = 0; i < claimedBounties.length; i++) {
+        let claims = await getClaimsByBountyId(claimedBounties[i].id);
+        //grab claims where token id matches an nft from the address. 
+        let filteredClaim = claims.filter(claim => tokenIds.includes(claim.tokenId));
+        if (filteredClaim.length > 0) {
+
+          nftSummary = {
+            id: null,
+            issuer: filteredClaim[0].issuer,
+            bountyId: filteredClaim[0].bountyId,
+            bountyIssuer: null,
+            name: filteredClaim[0].name,
+            description: filteredClaim[0].description,
+            tokenId: filteredClaim[0].tokenId,
+            createdAt: filteredClaim[0].createdAt,
+            issuerMyBountyUrl: `${filteredClaim[0].issuer}`,
+            openSeaUrl: `https://opensea.io/assets/arbitrum/${CONTRACT}/${filteredClaim[0].tokenId}`
+          };
+
+          userNftSummary.push(nftSummary);
+        }
+
+      }
+
+      setUserNftCards(userNftSummary);
+
+    } catch (error) {
+      console.error('Error creating nft cards:', error);
+    }
   };
 
   const fetchUserBalance = async () => {
@@ -144,11 +214,22 @@ export const useContract = () => {
             createdAt: Number(bounty.createdAt),
           }));
 
-          const bountiesUnclaimed = unfilteredBounties.filter(
-            bounty => bounty.claimer === ZeroAddress
-          );
+          // const bountiesUnclaimed = unfilteredBounties.filter(
+          //   bounty => bounty.claimer === ZeroAddress
+          // );
 
+          const { bountiesClaimed, bountiesUnclaimed } = unfilteredBounties.reduce((acc, obj) => {
+            if (obj.claimer && obj.claimer !== ZeroAddress) {
+              acc.bountiesClaimed.push(obj);
+            } else {
+              acc.bountiesUnclaimed.push(obj);
+            }
+            return acc;
+          }, { bountiesClaimed: [], bountiesUnclaimed: [] });
+
+          setClaimedBounties(bountiesClaimed);
           setUnClaimedBounties(bountiesUnclaimed);
+
         }
       }
     } catch (error) {
@@ -156,13 +237,13 @@ export const useContract = () => {
     }
   };
 
-  const fetchUserBounties = async () => {
+  const fetchUserBounties = async (userAddress) => {
     try {
       let connectedContract = await getConnectedContract();
       if (!connectedContract) connectedContract = await getReadOnlyContract();
       if (connectedContract) {
         const userBounties = await connectedContract.getBountiesByUser(
-          wallet.accounts[0].address
+          userAddress
         );
         const plainObject = userBounties.map(bounty => ({
           id: Number(bounty.id),
@@ -180,6 +261,43 @@ export const useContract = () => {
       console.error('Error fetching user bounties:', error);
     }
   };
+
+  const fetchUserSummary = async (userAddress) => {
+    try {
+      const userBountiesSum = userBounties.reduce((acc, obj) => {
+        if (obj.claimer !== null && obj.claimer !== ZeroAddress) {
+          acc.completedBounties += 1;
+          acc.ethSpent += obj.amount === null ? 0 : (obj.amount);
+        } else if (obj?.amount != null && Number(obj.amount) > 0) {
+          acc.inProgressBounties += 1;
+          acc.ethInOpenBounties += obj.amount === null ? 0 : (obj.amount);
+        }
+        return acc;
+      }, { completedBounties: 0, inProgressBounties: 0, ethSpent: 0, ethInOpenBounties: 0 });
+
+      const userAcceptedClaimsSum = claimedBounties.reduce((acc, obj) => {
+        if (obj.claimer.trim().toLowerCase() == userAddress.trim().toLowerCase()) {
+          acc.completedClaims += 1;
+          acc.ethMade += obj.amount === null ? 0 : (obj.amount);
+        }
+        return acc;
+      }, { completedClaims: 0, ethMade: 0 });
+
+      const completeSummary = {
+        completedBounties: Number(userBountiesSum.completedBounties),
+        inProgressBounties: Number(userBountiesSum.inProgressBounties),
+        ethSpent: Number(userBountiesSum.ethSpent),
+        ethInOpenBounties: Number(userBountiesSum.ethInOpenBounties),
+        completedClaims: Number(userAcceptedClaimsSum.completedClaims),
+        ethMade: Number(userAcceptedClaimsSum.ethMade)
+      };
+
+      setUserSummary(completeSummary);
+
+    } catch (error) {
+      console.error('Error fetching user summary data', error);
+    }
+  }
 
   const fetchBountyDetails = async id => {
     try {
@@ -359,6 +477,11 @@ export const useContract = () => {
     cancelBounty,
     fetchAllBounties,
     getContract,
+    claimedBounties,
     unClaimedBounties,
+    fetchUserSummary,
+    userSummary,
+    createNftCards,
+    userNftCards,
   };
 };

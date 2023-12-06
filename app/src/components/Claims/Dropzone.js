@@ -12,7 +12,7 @@ function Dropzone({ onDrop }) {
 
       const fileSizeInKb = file.size / 1024;
       if (fileSizeInKb > 1000) {
-        toast.info('Compressing file: must be 1MB or less.');
+        toast.info('Compressing file');
       }
 
       const reader = new FileReader();

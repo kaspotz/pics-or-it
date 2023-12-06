@@ -76,7 +76,8 @@ nav a {
 }
 
 button {
-  -webkit-transition-duration: 0.1s; /* Safari */
+  -webkit-transition-duration: 0.1s;
+  /* Safari */
   transition-duration: 0.1s;
   background-color: #f4595b;
   border-radius: 8px;
@@ -502,17 +503,23 @@ img {
 .claim-card-issuer {
   color: white;
   font-size: 0.85em;
+  margin-top: 3px;
+  margin-bottom: 3px;
 }
 
 .claim-card-details {
-  margin-top: 10px;
+  font-size: 0.85em;
+  color: white;
+  font-family: 'Oxygen', sans-serif;
+}
+
+.nft-card-details {
   font-size: 0.85em;
   color: white;
   font-family: 'Oxygen', sans-serif;
 }
 
 .bounty-card-details {
-  margin-top: 10px;
   font-size: 1em;
   color: white;
   font-family: 'Oxygen', sans-serif;
@@ -556,6 +563,15 @@ summary::-webkit-details-marker {
   align-items: center;
   width: 75%;
   flex-direction: column;
+}
+
+.nft-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  color: white;
+  font-family: 'Oxygen', sans-serif;
 }
 
 @media screen and (max-width: 768px) {
@@ -673,4 +689,107 @@ summary::-webkit-details-marker {
   max-width: 625px;
   position: relative;
   margin: 0 auto;
+}
+
+.table-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  /* justify-content: center; */
+  /* align-items: center; */
+  color: white;
+  font-family: 'Oxygen', sans-serif;
+  justify-content: flex-start;
+  /* or center, space-between, etc. */
+}
+
+.summary-align-left {
+  text-align: left;
+  justify-content: flex-start;
+  flex-grow: 1;
+}
+
+.summary-align-right {
+  text-align: right;
+  justify-content: flex-start;
+  flex-grow: 1;
+}
+
+.summary-table:not(:first-child) {
+  margin-left: 80px;
+  flex-grow: 1;
+  /* Adjust the space as needed */
+}
+
+/* Mobile view - stack tables vertically */
+@media screen and (max-width: 768px) {
+
+  /* adjust 768px based on your design needs */
+  .table-container {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+  }
+
+
+  .summary-table:nth-child(1) {
+    margin-left: 0px;
+    justify-content: flex-start;
+    flex-grow: 1;
+    text-align: left;
+    /* Adjust the space as needed */
+  }
+
+  .summary-table:nth-child(2) {
+    margin-left: 1px;
+    justify-content: flex-start;
+    flex-grow: 1;
+    text-align: left;
+    /* Adjust the space as needed */
+  }
+
+  .summary-table:nth-child(3) {
+    margin-left: 0px;
+    justify-content: flex-start;
+    flex-grow: 1;
+    text-align: left;
+    /* Adjust the space as needed */
+  }
+
+  .summary-table th:nth-child(2) {
+    padding-left: 50px;
+  }
+
+  .table-container>.summary-table:nth-child(3) th.summary-align-right {
+    padding-left: 70px;
+    /* Adjust this value as needed */
+  }
+
+}
+
+.my-profile-header {
+  margin-bottom: 20px;
+  /* Adjust this value as needed */
+  line-height: 1.2;
+  /* Adjust based on your design */
+}
+
+.formatted-account {
+  padding-left: 115px;
+  color: white;
+  font-family: 'Oxygen', sans-serif;
+  text-align: left;
+}
+
+.loading-nft {
+  color: white;
+  font-family: 'Oxygen', sans-serif;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 75%;
+  flex-direction: column;
+  padding-left: 565px;
+  font-size: 1.5em;
 }
