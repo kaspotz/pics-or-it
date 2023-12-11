@@ -73,7 +73,9 @@ export const useContract = () => {
       if (!settingChain && !setChainAttempts) {
         setChain({
           chainId:
-            process.env.NODE_ENV === 'development' ? '0x66eed' : '0xa4b1',
+            process.env.REACT_APP_NODE_ENV === 'development'
+              ? '0x66eed'
+              : '0xa4b1',
         }).catch(error => {
           console.error('Error setting chain:', error);
         });
@@ -127,41 +129,6 @@ export const useContract = () => {
       console.error('Error fetching user nfts:', error);
     }
   };
-
-  // const fetchNftUriMetaData = async (nftContract, tokenId) => {
-
-  //   try {
-
-  //     const tokenURI = await nftContract.tokenURI(tokenId);
-  //     const metadataResponse = (await fetch(tokenURI)).json();
-
-  //     console.log(metadataResponse);
-  //     return metadataResponse;
-
-  //   } catch (error) {
-  //     console.error('Error fetching nft metadata:', error);
-  //   }
-  // };
-
-  // const fetchNftMintSourceAddrs = async (nftContract, userAddress, tokenId) => {
-
-  //   try {
-
-  //     const filter = nftContract.filters.Transfer(null, userAddress, tokenId);
-  //     const events = await nftContract.queryFilter(filter);
-
-  //     for (let i = 0; i < events.length; i++) {
-  //       console.log("Event ", i, " ", events[i]);
-  //     }
-
-  //     console.log("end ", events[0].args.from);
-
-  //     return events[0].args.from;
-
-  //   } catch (error) {
-  //     console.error('Error fetching nft source minter:', error);
-  //   }
-  // };
 
   const createNftCards = async (userAddress) => {
     try {
@@ -228,7 +195,7 @@ export const useContract = () => {
 
         if (allBountiesLength >= 0) {
           // Calculate the starting and ending indices to fetch the latest 20 bounties
-          const startIndex = Math.max(0, allBountiesLength - 79);
+          const startIndex = 0;
           const endIndex = allBountiesLength;
 
           const allBounties = await connectedContract.getBounties(
@@ -301,7 +268,7 @@ export const useContract = () => {
         if (obj.claimer !== null && obj.claimer !== ZeroAddress) {
           acc.completedBounties += 1;
           acc.ethSpent += obj.amount === null ? 0 : (obj.amount);
-        } else {
+        } else if (obj?.amount != null && Number(obj.amount) > 0) {
           acc.inProgressBounties += 1;
           acc.ethInOpenBounties += obj.amount === null ? 0 : (obj.amount);
         }
@@ -474,9 +441,20 @@ export const useContract = () => {
   };
 
   const isCorrectChain = () => {
-    return process.env.NODE_ENV === 'development'
+    return process.env.REACT_APP_NODE_ENV === 'development'
       ? '0x66eed' == connectedChain.id
       : '0xa4b1' == connectedChain.id;
+  };
+
+  const getContract = async () => {
+    let contract = await getConnectedContract();
+    if (contract) {
+      contract.isWrite = true;
+    } else {
+      contract = await getReadOnlyContract();
+      contract.isWrite = false;
+    }
+    return contract;
   };
 
   return {
@@ -498,6 +476,7 @@ export const useContract = () => {
     acceptClaim,
     cancelBounty,
     fetchAllBounties,
+    getContract,
     claimedBounties,
     unClaimedBounties,
     fetchUserSummary,

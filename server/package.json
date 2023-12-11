@@ -27,7 +27,6 @@
     "helmet": "^7.0.0",
     "multer": "^1.4.5-lts.1",
     "ts-node": "^10.9.1",
-    "typescript": "^5.1.6",
     "winston": "^3.9.0",
     "winston-daily-rotate-file": "^4.7.1"
   },
@@ -42,6 +41,7 @@
     "chai-http": "^4.4.0",
     "eslint": "^8.44.0",
     "mocha": "^10.2.0",
-    "prettier": "^2.8.8"
+    "prettier": "^2.8.8",
+    "typescript": "^5.3.2"
   }
 }

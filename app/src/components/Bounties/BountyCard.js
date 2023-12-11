@@ -30,13 +30,31 @@ function BountyCard({
     }
   }, [wallet]);
 
-  const truncatedDescription =
-    description.length > 50
-      ? `${description.substr(0, 10)}...${description.substr(
-        description.length - 20,
-        description.length
-      )}`
-      : description;
+  // if description is long, grab first x full sentences equating less than 50 characters.
+  // if first sentance is really long, just grab first 47 characters of first sentence. 
+  const truncatedDescription = (() => {
+    if (description.length <= 50) {
+      return description;
+    }
+
+    const sentences = description.match(/[^.!?]+[.!?]+/g) || [];
+
+    if (sentences.length === 0 || sentences[0].length > 50) {
+      // If there are no sentences or the first sentence is longer than 50 characters
+      return description.substring(0, 47) + '...';
+    }
+
+    let truncated = '';
+    for (let sentence of sentences) {
+      if (truncated.length + sentence.length > 47) {
+        break;
+      }
+      truncated += sentence;
+    }
+
+    return truncated + (truncated.length < description.length ? '...' : '');
+  })();
+
 
   const handleClaimClick = () => {
     if (

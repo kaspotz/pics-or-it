@@ -58,10 +58,7 @@ function Navigation({
 
   const handleTwitter = () => {
     setMenu(false);
-    window.open(
-      'https://twitter.com/poidhxyz',
-      '_blank'
-    );
+    window.open('https://twitter.com/poidhxyz', '_blank');
   };
 
   const handleAbout = () => {
