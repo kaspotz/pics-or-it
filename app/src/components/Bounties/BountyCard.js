@@ -20,7 +20,7 @@ function BountyCard({
   const [showCreateClaim, setShowCreateClaim] = useState(false);
 
   useEffect(() => {
-    if (wallet) {
+    if (wallet?.provider) {
       if (
         ethers.getAddress(wallet.accounts[0].address) ===
         ethers.getAddress(issuer)

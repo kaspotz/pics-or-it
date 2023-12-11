@@ -12,7 +12,7 @@ function MyClaims({
   const { userClaims } = useContract();
 
   useEffect(() => {
-    if (wallet) {
+    if (wallet?.provider) {
       fetchUserClaims();
     }
   }, [wallet]);
