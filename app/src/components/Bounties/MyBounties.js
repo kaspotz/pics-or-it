@@ -42,7 +42,7 @@ function MyBounties({
 
   const refreshBounties = useCallback(
     toToast => {
-      if (wallet) {
+      if (wallet?.provider) {
         fetchUserBounties(userAddress);
         if (toToast) {
           toast.success('Bounty cancelled successfully!');

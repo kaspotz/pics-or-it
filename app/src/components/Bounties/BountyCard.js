@@ -20,7 +20,7 @@ function BountyCard({
   const [showCreateClaim, setShowCreateClaim] = useState(false);
 
   useEffect(() => {
-    if (wallet) {
+    if (wallet?.provider) {
       if (
         ethers.getAddress(wallet.accounts[0].address) ===
         ethers.getAddress(issuer)
@@ -33,9 +33,9 @@ function BountyCard({
   const truncatedDescription =
     description.length > 50
       ? `${description.substr(0, 10)}...${description.substr(
-          description.length - 20,
-          description.length
-        )}`
+        description.length - 20,
+        description.length
+      )}`
       : description;
 
   const handleClaimClick = () => {

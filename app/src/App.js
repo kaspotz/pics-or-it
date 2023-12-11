@@ -34,7 +34,8 @@ function App() {
   } = useContract();
 
   useEffect(() => {
-    if (wallet) {
+    console.log("is this getting called?");
+    if (wallet?.provider) {
       fetchUserClaims();
       fetchUserBalance();
     }
