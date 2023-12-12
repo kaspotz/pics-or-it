@@ -160,7 +160,7 @@ function AllBounties({
 
     // Cleanup function
     return () => clearInterval(intervalId.current);
-  }, [bounties, isUpdating]);
+  }, [isUpdating]);
 
   const handleCreateBounty = () => {
     setShowCreateBounty(!showCreateBounty);
@@ -209,8 +209,8 @@ function AllBounties({
                     {connecting
                       ? 'connecting'
                       : wallet
-                      ? 'disconnect'
-                      : 'connect'}
+                        ? 'disconnect'
+                        : 'connect'}
                   </button>
                 </div>
               ) : (
