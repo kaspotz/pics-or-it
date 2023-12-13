@@ -127,40 +127,41 @@ function AllBounties({
     fetchInitialBounties();
   }, []);
 
-  useEffect(() => {
-    const updateBounties = async () => {
-      const contract = await getContract();
 
-      // Fetch all unclaimed bounties.
-      const { bounties: unclaimedBounties } = await fetchBounties(contract);
-      if (!unclaimedBounties?.length) return;
-      const unclaimedSet = new Set(unclaimedBounties.map(b => b.id));
+  // useEffect(() => {
+  //   const updateBounties = async () => {
+  //     const contract = await getContract();
 
-      // Filter out bounties not in the unclaimed set
-      const updatedBounties = bounties?.filter(b => unclaimedSet.has(b.id));
+  //     // Fetch all unclaimed bounties.
+  //     const { bounties: unclaimedBounties } = await fetchBounties(contract);
+  //     if (!unclaimedBounties?.length) return;
+  //     const unclaimedSet = new Set(unclaimedBounties.map(b => b.id));
 
-      // Sort updatedBounties by createdAt in descending order
-      updatedBounties.sort((a, b) => b.createdAt - a.createdAt);
+  //     // Filter out bounties not in the unclaimed set
+  //     const updatedBounties = bounties?.filter(b => unclaimedSet.has(b.id));
 
-      // Get the latest timestamp from the current bounties
-      const latestTimestamp =
-        updatedBounties.length > 0 ? updatedBounties[0].createdAt : 0;
-      // Filter new bounties based on timestamp
-      const newBounties = unclaimedBounties.filter(
-        b => b.createdAt > latestTimestamp
-      );
+  //     // Sort updatedBounties by createdAt in descending order
+  //     updatedBounties.sort((a, b) => b.createdAt - a.createdAt);
 
-      // Add new bounties to the beginning of the array
-      setBounties([...newBounties, ...updatedBounties]);
-    };
+  //     // Get the latest timestamp from the current bounties
+  //     const latestTimestamp =
+  //       updatedBounties.length > 0 ? updatedBounties[0].createdAt : 0;
+  //     // Filter new bounties based on timestamp
+  //     const newBounties = unclaimedBounties.filter(
+  //       b => b.createdAt > latestTimestamp
+  //     );
 
-    if (isUpdating) {
-      intervalId.current = setInterval(updateBounties, 5000);
-    }
+  //     // Add new bounties to the beginning of the array
+  //     setBounties([...newBounties, ...updatedBounties]);
+  //   };
 
-    // Cleanup function
-    return () => clearInterval(intervalId.current);
-  }, [bounties, isUpdating]);
+  //   if (isUpdating) {
+  //     intervalId.current = setInterval(updateBounties, 5000);
+  //   }
+
+  //   // Cleanup function
+  //   return () => clearInterval(intervalId.current);
+  // }, [bounties, isUpdating]);
 
   const handleCreateBounty = () => {
     setShowCreateBounty(!showCreateBounty);
@@ -184,6 +185,8 @@ function AllBounties({
     setHasMore(hasMore);
     setOffset(lastIndex);
     setIsUpdating(true);
+    console.log("isUpdating: ", isUpdating);
+    console.log("intervalId: ", intervalId);
   };
 
   return (
@@ -209,8 +212,8 @@ function AllBounties({
                     {connecting
                       ? 'connecting'
                       : wallet
-                      ? 'disconnect'
-                      : 'connect'}
+                        ? 'disconnect'
+                        : 'connect'}
                   </button>
                 </div>
               ) : (
