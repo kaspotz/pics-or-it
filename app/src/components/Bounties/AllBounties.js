@@ -127,6 +127,7 @@ function AllBounties({
     fetchInitialBounties();
   }, []);
 
+
   // useEffect(() => {
   //   const updateBounties = async () => {
   //     const contract = await getContract();
