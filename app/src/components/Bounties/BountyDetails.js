@@ -88,9 +88,9 @@ function BountyDetails({
 
     fetchClaimsAndDetails();
 
-    const intervalId = setInterval(fetchClaimsAndDetails, 3000);
+    //const intervalId = setInterval(fetchClaimsAndDetails, 3000);
+    //return () => clearInterval(intervalId);
 
-    return () => clearInterval(intervalId);
   }, [id]);
 
   useEffect(() => {
