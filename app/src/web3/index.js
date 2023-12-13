@@ -69,7 +69,7 @@ export const useContract = () => {
   const [claimedBounties, setClaimedBounties] = useState([]);
 
   useEffect(() => {
-    if (wallet) {
+    if (wallet?.provider) {
       if (!settingChain && !setChainAttempts) {
         setChain({
           chainId:
@@ -172,7 +172,7 @@ export const useContract = () => {
   };
 
   const fetchUserBalance = async () => {
-    if (wallet) {
+    if (wallet?.provider) {
       try {
         const provider = new ethers.BrowserProvider(wallet.provider);
         const balance = await provider.getBalance(wallet.accounts[0].address);
