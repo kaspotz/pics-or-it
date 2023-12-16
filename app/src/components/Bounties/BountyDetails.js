@@ -73,7 +73,7 @@ function BountyDetails({
 
   useEffect(() => {
     const fetchClaimsAndDetails = async () => {
-      const claims = await getClaimsByBountyId(id);
+      let claims = await getClaimsByBountyId(id);
       const bountyDetails = await fetchBountyDetails(id);
 
       claims.sort((a, b) => {
