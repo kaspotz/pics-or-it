@@ -6,6 +6,7 @@ import { ethers } from 'ethers';
 import CreateClaim from '../Claims/CreateClaim';
 import { ToastContainer, toast } from 'react-toastify';
 import { BsArrowRightCircle } from 'react-icons/bs';
+import { blacklist } from '../../blacklist';
 
 function BountyDetails({
   getTokenUri,
@@ -79,6 +80,12 @@ function BountyDetails({
         if (a.id === Number(bountyDetails.claimId)) return -1;
         if (b.id === Number(bountyDetails.claimId)) return 1;
         return b.createdAt - a.createdAt;
+      });
+
+      blacklist.forEach(bounty => {
+        if (bounty.bountyId === Number(id)) {
+          claims = claims.filter(claim => !bounty.claims.includes(claim.id));
+        }
       });
 
       setUserClaims(claims);
