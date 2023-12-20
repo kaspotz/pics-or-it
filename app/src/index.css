@@ -286,6 +286,8 @@ img {
   text-align: left;
   margin-top: 0px;
   min-height: 37px;
+  word-wrap: break-word;
+  ;
 }
 
 .bounty-title {
