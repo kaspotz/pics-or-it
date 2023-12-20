@@ -27,7 +27,7 @@ function Navigation({
 
   const handleFaq = () => {
     setMenu(false);
-    window.open('https://info.poidh.xyz/', '_blank');
+    window.open('https://info.poidh.xyz', '_blank');
   };
 
   const handleDiscord = () => {
