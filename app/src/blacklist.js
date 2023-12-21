@@ -9,7 +9,8 @@ export const blacklist = [
             209,
             210,
             203,
-            211
+            211,
+            224
         ]
     }
 ]
