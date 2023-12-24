@@ -6,6 +6,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import MyBounties from './components/Bounties/MyBounties.js';
 import AllBounties from './components/Bounties/AllBounties.js';
 import BountyDetails from './components/Bounties/BountyDetails.js';
+import Footer from './components/Footer';
+import Terms from './components/Terms';
 
 function App() {
   const {
@@ -115,7 +117,15 @@ function App() {
               />
             }
           />
+          <Route
+            path="/terms"
+            element={
+              <Terms
+              />
+            }
+          />
         </Routes>
+        <Footer />
       </div>
     </Router>
   );

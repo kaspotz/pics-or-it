@@ -203,6 +203,10 @@ img {
   font-size: 1.5em;
 }
 
+.terms-list-prohibited {
+  color: white;
+}
+
 .menu-list-wrap li {
   margin: 1em;
   cursor: pointer;
@@ -248,6 +252,7 @@ img {
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-bottom: 5em;
 }
 
 @media screen and (max-width: 1100px) {
@@ -691,6 +696,7 @@ summary::-webkit-details-marker {
   max-width: 625px;
   position: relative;
   margin: 0 auto;
+  padding-bottom: 5em;
 }
 
 .table-container {
@@ -794,4 +800,11 @@ summary::-webkit-details-marker {
   flex-direction: column;
   padding-left: 565px;
   font-size: 1.5em;
+}
+
+.footer-style {
+  text-Align: 'center';
+  color: white;
+  font-family: 'Oxygen', sans-serif;
+  padding: '20em';
 }
