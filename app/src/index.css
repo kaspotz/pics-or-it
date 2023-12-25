@@ -10,6 +10,21 @@ body {
   text-align: center;
 }
 
+.site-container {
+  display: flex;
+  /* Use Flexbox */
+  flex-direction: column;
+  /* Stack children vertically */
+  min-height: 100vh;
+  /* Ensure at least full viewport height */
+}
+
+.content-wrap {
+  flex: 1;
+  /* Flex grow to take available space */
+  /* More content styling */
+}
+
 p,
 .bounty-title,
 .process-string {
@@ -807,4 +822,5 @@ summary::-webkit-details-marker {
   color: white;
   font-family: 'Oxygen', sans-serif;
   padding: '20em';
+  margin-bottom: 2em;
 }
