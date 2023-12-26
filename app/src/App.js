@@ -6,6 +6,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import MyBounties from './components/Bounties/MyBounties.js';
 import AllBounties from './components/Bounties/AllBounties.js';
 import BountyDetails from './components/Bounties/BountyDetails.js';
+import Footer from './components/Footer';
+import Terms from './components/Terms';
 
 function App() {
   const {
@@ -44,78 +46,88 @@ function App() {
 
   return (
     <Router basename="/">
-      <div>
-        <Navigation
-          wallet={wallet}
-        />
-        <Routes>
-          <Route
-            path="/create"
-            element={
-              <Home
-                wallet={wallet}
-                connect={connect}
-                disconnect={disconnect}
-                connecting={connecting}
-                userBalance={userBalance.toString()}
-              />
-            }
+      <div className="site-container">
+        <div className="content-wrap">
+          <Navigation
+            wallet={wallet}
           />
-          <Route
-            path="/"
-            element={
-              <AllBounties
-                unClaimedBounties={unClaimedBounties}
-                wallet={wallet}
-                connect={connect}
-                disconnect={disconnect}
-                connecting={connecting}
-                fetchAllBounties={fetchAllBounties}
-                getContract={getContract}
-                cancelBounty={cancelBounty}
-                userBalance={userBalance.toString()}
-              />
-            }
-          />
-          <Route
-            path="/my-bounties/:urlUserAddress"
-            element={
-              <MyBounties
-                userBounties={userBounties}
-                wallet={wallet}
-                connect={connect}
-                disconnect={disconnect}
-                connecting={connecting}
-                fetchUserBounties={fetchUserBounties}
-                cancelBounty={cancelBounty}
-                fetchUserSummary={fetchUserSummary}
-                userSummary={userSummary}
-                getTokenUri={getTokenUri}
-                acceptClaim={acceptClaim}
-                fetchClaimerBounties={fetchClaimerBounties}
-                createNftCards={createNftCards}
-                userNftCards={userNftCards}
-                claimedBounties={claimedBounties}
-                fetchAllBounties={fetchAllBounties}
-              />
-            }
-          />
-          <Route
-            path="/bounties/:id"
-            element={
-              <BountyDetails
-                wallet={wallet}
-                connect={connect}
-                disconnect={disconnect}
-                connecting={connecting}
-                getClaimsByBountyId={getClaimsByBountyId}
-                getTokenUri={getTokenUri}
-                fetchBountyDetails={fetchBountyDetails}
-                acceptClaim={acceptClaim}
-              />
-            }
-          />
-        </Routes>
+          <Routes>
+            <Route
+              path="/create"
+              element={
+                <Home
+                  wallet={wallet}
+                  connect={connect}
+                  disconnect={disconnect}
+                  connecting={connecting}
+                  userBalance={userBalance.toString()}
+                />
+              }
+            />
+            <Route
+              path="/"
+              element={
+                <AllBounties
+                  unClaimedBounties={unClaimedBounties}
+                  wallet={wallet}
+                  connect={connect}
+                  disconnect={disconnect}
+                  connecting={connecting}
+                  fetchAllBounties={fetchAllBounties}
+                  getContract={getContract}
+                  cancelBounty={cancelBounty}
+                  userBalance={userBalance.toString()}
+                />
+              }
+            />
+            <Route
+              path="/my-bounties/:urlUserAddress"
+              element={
+                <MyBounties
+                  userBounties={userBounties}
+                  wallet={wallet}
+                  connect={connect}
+                  disconnect={disconnect}
+                  connecting={connecting}
+                  fetchUserBounties={fetchUserBounties}
+                  cancelBounty={cancelBounty}
+                  fetchUserSummary={fetchUserSummary}
+                  userSummary={userSummary}
+                  getTokenUri={getTokenUri}
+                  acceptClaim={acceptClaim}
+                  fetchClaimerBounties={fetchClaimerBounties}
+                  createNftCards={createNftCards}
+                  userNftCards={userNftCards}
+                  claimedBounties={claimedBounties}
+                  fetchAllBounties={fetchAllBounties}
+                />
+              }
+            />
+            <Route
+              path="/bounties/:id"
+              element={
+                <BountyDetails
+                  wallet={wallet}
+                  connect={connect}
+                  disconnect={disconnect}
+                  connecting={connecting}
+                  getClaimsByBountyId={getClaimsByBountyId}
+                  getTokenUri={getTokenUri}
+                  fetchBountyDetails={fetchBountyDetails}
+                  acceptClaim={acceptClaim}
+                />
+              }
+            />
+            <Route
+              path="/terms"
+              element={
+                <Terms
+                />
+              }
+            />
+          </Routes>
+        </div>
+        <Footer />
       </div>
     </Router>
   );

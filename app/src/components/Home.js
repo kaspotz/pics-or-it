@@ -12,7 +12,7 @@ function Home({ wallet, connect, disconnect, connecting, userBalance }) {
   }, [wallet]);
 
   return (
-    <div>
+    <div style={{ paddingBottom: '5em' }}>
       <ToastContainer />
       <h1 data-aos="fade-in">pics or it didn&#39;t happen</h1>
       <header data-aos="fade-in">
