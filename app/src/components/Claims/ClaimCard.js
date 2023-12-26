@@ -100,6 +100,7 @@ ClaimCard.propTypes = {
     id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
     issuer: PropTypes.string.isRequired,
+    issuerMyBountyUrl: PropTypes.string.isRequired,
     tokenId: PropTypes.number.isRequired,
     description: PropTypes.string.isRequired,
   }).isRequired,
