@@ -25,11 +25,6 @@ function Navigation({
     navigate('/');
   };
 
-  const handleTerms = () => {
-    setMenu(false);
-    navigate(`/terms`);
-  };
-
   const handleFaq = () => {
     setMenu(false);
     window.open('https://info.poidh.xyz', '_blank');
@@ -97,7 +92,6 @@ function Navigation({
             <li onClick={handleDune}>dune analytics</li>
             <li onClick={handleTwitter}>twitter</li>
             <li onClick={handleDiscord}>discord</li>
-            <li onClick={handleTerms}>terms</li>
           </ul>
         </div>
       )}
