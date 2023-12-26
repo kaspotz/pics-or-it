@@ -11,7 +11,7 @@ function ClaimCard({
   bountyDetails,
   isClaimed,
 }) {
-  const { name, issuer, tokenId, issuerMyBountyUrl, description } = claim;
+  const { name, issuer, tokenId, description } = claim;
   const [isLoading, setIsLoading] = useState(true);
   const [imageSrc, setImageSrc] = useState('');
 
@@ -82,7 +82,7 @@ function ClaimCard({
             </div>
             <details className="claim-card-issuer">
               <summary className="summary">issuer</summary>
-              <a className="summary-body summary-issuer" href={`/my-bounties/${issuerMyBountyUrl}`}>{issuer}</a>
+              <a className="summary-body summary-issuer" href={`/my-bounties/${issuer}`}>{issuer}</a>
             </details>
             <details className="claim-card-details">
               <summary className="summary">description</summary>
@@ -100,7 +100,6 @@ ClaimCard.propTypes = {
     id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
     issuer: PropTypes.string.isRequired,
-    issuerMyBountyUrl: PropTypes.string.isRequired,
     tokenId: PropTypes.number.isRequired,
     description: PropTypes.string.isRequired,
   }).isRequired,
