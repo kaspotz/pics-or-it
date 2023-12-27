@@ -32,6 +32,9 @@ const Terms = () => {
             <p>Users from Cuba, Iran, North Korea, Syria, and Venezuela are not permitted to utilize poidh for posting or claiming bounties.</p>
             <h2>Contact</h2>
             <p>For any questions about these Terms, contact poidhxyz@gmail.com</p>
+            <h2>Fees</h2>
+            <p>Completed bounties via the poidh contract will pay a 2.5% fee automatically to the poidh treasury address.</p>
+            <p>poidh NFTs that are resold will pay a 5% fee to the poidh treasury address.</p>
             <h2>Governing Law</h2>
             <p>These Terms are governed by the laws of the United States.</p>
         </div>
