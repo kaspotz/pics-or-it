@@ -18,7 +18,8 @@ const BOUNTIES_PER_PAGE = 18;
 const fetchBounties = async (
   connectedContract,
   count = null,
-  startIndex = null
+  doneBountiesFilter = true,
+  startIndex = null,
 ) => {
   try {
     if (connectedContract) {
@@ -51,8 +52,10 @@ const fetchBounties = async (
             claimId: bounty.claimId,
             createdAt: Number(bounty.createdAt),
           }))
-          .filter(
-            bounty => bounty.claimer === ZeroAddress && bounty.amount > 0
+          .filter(bounty =>
+            doneBountiesFilter
+              ? bounty.claimer === ZeroAddress && bounty.amount > 0
+              : bounty.claimer !== ZeroAddress && bounty.amount > 0
           );
         unclaimedBounties = [...filteredBounties, ...unclaimedBounties];
 
@@ -111,13 +114,17 @@ function AllBounties({
   const [isUpdating, setIsUpdating] = useState(true);
   const intervalId = useRef();
 
+  const [doneBountiesOnly, setDoneBountiesOnly] = useState(true);
+  const [activeButton, setActiveButton] = useState('first');
+
   useEffect(() => {
     const fetchInitialBounties = async () => {
       const contract = await getContract();
       // Fetch BOUNTIES_PER_PAGE bounties when the component mounts
       const { bounties, hasMore, lastIndex } = await fetchBounties(
         contract,
-        BOUNTIES_PER_PAGE
+        BOUNTIES_PER_PAGE,
+        doneBountiesOnly
       );
       setBounties(bounties);
       setHasMore(hasMore);
@@ -178,7 +185,8 @@ function AllBounties({
     } = await fetchBounties(
       contract,
       BOUNTIES_PER_PAGE,
-      offset - BOUNTIES_PER_PAGE
+      doneBountiesOnly,
+      offset - BOUNTIES_PER_PAGE,
     );
 
     setBounties([...bounties, ...moreBounties]);
@@ -188,6 +196,22 @@ function AllBounties({
     console.log("isUpdating: ", isUpdating);
     console.log("intervalId: ", intervalId);
   };
+
+  const bountyFilter = async (value) => {
+    console.log("hi kenny the value is: ", value);
+    setDoneBountiesOnly(value);
+
+    // fetches bounties with initial load parameters to mimic page refresh.
+    const contract = await getContract();
+    const { bounties, hasMore, lastIndex } = await fetchBounties(
+      contract,
+      BOUNTIES_PER_PAGE,
+      value
+    );
+    setBounties(bounties);
+    setHasMore(hasMore);
+    setOffset(lastIndex);
+  }
 
   return (
     <div className="my-bounties-wrap">
@@ -225,6 +249,30 @@ function AllBounties({
                   </div>
                 )
               )}
+            </div>
+          </div>
+          <div>
+            <div>
+              <button className={`bounty-filter-button ${activeButton === 'first' ? 'active' : ''}`}
+                onClick={() => {
+                  bountyFilter(true);
+                  setActiveButton('first');
+                }}
+                style={{
+                  backgroundColor: activeButton === 'first' ? '#c24648' : '#f4595b'
+                }}
+              >
+                Open Bounties</button>
+              <button className={`bounty-filter-button ${activeButton === 'second' ? 'active' : ''}`}
+                onClick={() => {
+                  bountyFilter(false);
+                  setActiveButton('second');
+                }}
+                style={{
+                  backgroundColor: activeButton === 'second' ? '#c24648' : '#f4595b'
+                }}
+              >
+                Completed Bounties</button>
             </div>
           </div>
           <div className="bounties-grid all-bounties-grid">
