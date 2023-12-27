@@ -127,6 +127,41 @@ button:active {
   letter-spacing: 2px;
 }
 
+.bounty-filter-button {
+  -webkit-transition-duration: 0.1s;
+  /* Safari */
+  transition-duration: 0.1s;
+  background-color: #f4595b;
+  border-radius: 8px;
+  border-width: 1px;
+  color: white;
+  padding: 10px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 12px;
+  font-family: 'Oxygen', sans-serif;
+  letter-spacing: 2px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  margin-right: 1em;
+
+}
+
+.bounty-filter-button:active {
+  background-color: #a63c3e;
+  border: none;
+  border-radius: 8px;
+  border-bottom: 4px solid #a63c3e;
+  color: #ccc;
+  padding: 10px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 12px;
+  font-family: 'Oxygen', sans-serif;
+  letter-spacing: 2px;
+}
+
 img {
   max-width: 90%;
   max-height: 340px;
