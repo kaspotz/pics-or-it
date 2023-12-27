@@ -186,7 +186,7 @@ function AllBounties({
       contract,
       BOUNTIES_PER_PAGE,
       doneBountiesOnly,
-      offset - BOUNTIES_PER_PAGE,
+      offset,
     );
 
     setBounties([...bounties, ...moreBounties]);
