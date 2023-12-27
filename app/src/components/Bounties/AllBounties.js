@@ -186,7 +186,7 @@ function AllBounties({
       contract,
       BOUNTIES_PER_PAGE,
       doneBountiesOnly,
-      offset - BOUNTIES_PER_PAGE,
+      offset,
     );
 
     setBounties([...bounties, ...moreBounties]);
@@ -262,7 +262,7 @@ function AllBounties({
                   backgroundColor: activeButton === 'first' ? '#c24648' : '#f4595b'
                 }}
               >
-                Open Bounties</button>
+                open bounties</button>
               <button className={`bounty-filter-button ${activeButton === 'second' ? 'active' : ''}`}
                 onClick={() => {
                   bountyFilter(false);
@@ -272,7 +272,7 @@ function AllBounties({
                   backgroundColor: activeButton === 'second' ? '#c24648' : '#f4595b'
                 }}
               >
-                Completed Bounties</button>
+                completed bounties</button>
             </div>
           </div>
           <div className="bounties-grid all-bounties-grid">
