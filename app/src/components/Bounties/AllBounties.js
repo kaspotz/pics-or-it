@@ -290,7 +290,7 @@ function AllBounties({
               ))}
           </div>
           <div className="load-more-wrap">
-            {hasMore && <button onClick={loadMoreBounties}>Load More</button>}
+            {hasMore && <button onClick={loadMoreBounties}>load more</button>}
           </div>
         </div>
         <ToastContainer />
