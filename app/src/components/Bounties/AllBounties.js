@@ -262,7 +262,7 @@ function AllBounties({
                   backgroundColor: activeButton === 'first' ? '#c24648' : '#f4595b'
                 }}
               >
-                open bounties</button>
+                open to submission</button>
               <button className={`bounty-filter-button ${activeButton === 'second' ? 'active' : ''}`}
                 onClick={() => {
                   bountyFilter(false);
