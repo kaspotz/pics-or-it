@@ -67,13 +67,13 @@ function CreateClaim({ onClose, bountyId }) {
 
     let compressedFile = null;
 
-    if (image.size > 500000) {
+    if (image.size > 30720000) {
       setStatus({
         loading: true,
         processString: 'compressing image...',
       });
       const options = {
-        maxSizeMB: 0.5,
+        maxSizeMB: 30,
         maxWidthOrHeight: 1920,
         useWebWorker: true,
       };
