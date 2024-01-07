@@ -45,7 +45,7 @@ app.post('/uploadFile', (req: Request, res: Response) => {
 
   const busboy = Busboy({
     headers: req.headers,
-    limits: { files: 1, fileSize: 1024 * 1024 },
+    limits: { files: 1, fileSize: 30485760 },
   })
   const tmpdir = os.tmpdir()
 
