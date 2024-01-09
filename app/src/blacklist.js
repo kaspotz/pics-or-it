@@ -20,3 +20,7 @@ export const blacklist = [
         ]
     }
 ]
+
+export const blacklistedBounties = [254]
+
+
