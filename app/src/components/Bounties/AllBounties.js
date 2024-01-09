@@ -262,7 +262,7 @@ function AllBounties({
                   backgroundColor: activeButton === 'first' ? '#c24648' : '#f4595b'
                 }}
               >
-                open bounties</button>
+                open to claim</button>
               <button className={`bounty-filter-button ${activeButton === 'second' ? 'active' : ''}`}
                 onClick={() => {
                   bountyFilter(false);
@@ -272,7 +272,7 @@ function AllBounties({
                   backgroundColor: activeButton === 'second' ? '#c24648' : '#f4595b'
                 }}
               >
-                completed bounties</button>
+                past bounties</button>
             </div>
           </div>
           <div className="bounties-grid all-bounties-grid">
@@ -290,7 +290,7 @@ function AllBounties({
               ))}
           </div>
           <div className="load-more-wrap">
-            {hasMore && <button onClick={loadMoreBounties}>Load More</button>}
+            {hasMore && <button onClick={loadMoreBounties}>load more</button>}
           </div>
         </div>
         <ToastContainer />

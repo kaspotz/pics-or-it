@@ -140,7 +140,7 @@ function BountyDetails({
           </div>
         ) : (
           <div className="bounty-details-connect-claim-button-wrap">
-            <button onClick={handleClaimClick}>claim</button>
+            <button onClick={handleClaimClick}>submit proof</button>
           </div>
         ))}
       <div className="bounties-grid bounty-details-right">
