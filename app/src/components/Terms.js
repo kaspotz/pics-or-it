@@ -14,9 +14,10 @@ const Terms = () => {
             <div className="terms-list-prohibited">
                 <ul>
                     <li>{'\u2022'} Post illegal or unethical bounties</li>
+                    <li>{'\u2022'} Post bounties requesting content that is violent or sexual in nature</li>
                     <li>{'\u2022'} Use the platform for fraudulent purposes</li>
-                    <li>{'\u2022'} Post illegal or unethical claims</li>
-                    <li>{'\u2022'} Post illegal or unethical photos</li>
+                    <li>{'\u2022'} Post illegal or unethical photos/claims</li>
+                    <li>{'\u2022'} Post violent or sexual photos/claims</li>
                     <li>{'\u2022'} Harass other users</li>
                 </ul>
             </div>
