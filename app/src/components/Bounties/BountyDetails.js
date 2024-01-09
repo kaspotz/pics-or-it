@@ -6,7 +6,7 @@ import { ethers } from 'ethers';
 import CreateClaim from '../Claims/CreateClaim';
 import { ToastContainer, toast } from 'react-toastify';
 import { BsArrowRightCircle } from 'react-icons/bs';
-import { blacklist } from '../../blacklist';
+import { blacklist, blacklistedBounties } from '../../blacklist';
 
 function BountyDetails({
   getTokenUri,
@@ -93,7 +93,14 @@ function BountyDetails({
       setLoading(false);
     };
 
-    fetchClaimsAndDetails();
+
+
+    if (!blacklistedBounties.includes(Number(id))) {
+      console.log("id", id)
+      fetchClaimsAndDetails();
+    }
+
+
 
     //const intervalId = setInterval(fetchClaimsAndDetails, 3000);
     //return () => clearInterval(intervalId);

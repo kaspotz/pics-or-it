@@ -4,6 +4,7 @@ import BountyCard from './BountyCard';
 import { ToastContainer } from 'react-toastify';
 import BountyCreation from './BountyCreation';
 import { ZeroAddress, ethers } from 'ethers';
+import { blacklistedBounties } from '../../blacklist';
 
 const BOUNTIES_PER_PAGE = 18;
 
@@ -53,9 +54,10 @@ const fetchBounties = async (
             createdAt: Number(bounty.createdAt),
           }))
           .filter(bounty =>
-            doneBountiesFilter
+            (doneBountiesFilter
               ? bounty.claimer === ZeroAddress && bounty.amount > 0
-              : bounty.claimer !== ZeroAddress && bounty.amount > 0
+              : bounty.claimer !== ZeroAddress && bounty.amount > 0) &&
+            !blacklistedBounties.includes(bounty.id)
           );
         unclaimedBounties = [...filteredBounties, ...unclaimedBounties];
 
