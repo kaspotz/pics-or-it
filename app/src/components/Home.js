@@ -6,7 +6,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import BountyCreation from './Bounties/BountyCreation';
 
-function Home({ wallet, connect, disconnect, connecting, userBalance }) {
+function Home({ wallet, connect, disconnect, connecting, userBalance, userChainId }) {
   useEffect(() => {
     AOS.refresh();
   }, [wallet]);
@@ -47,7 +47,7 @@ function Home({ wallet, connect, disconnect, connecting, userBalance }) {
           </button>
         </div>
       ) : (
-        <BountyCreation userBalance={userBalance} />
+        <BountyCreation userBalance={userBalance} wallet={wallet} userChainId={userChainId} />
       )}
     </div>
   );
@@ -59,6 +59,7 @@ Home.propTypes = {
   disconnect: PropTypes.func.isRequired,
   connecting: PropTypes.bool.isRequired,
   userBalance: PropTypes.string,
+  userChainId: PropTypes.string,
 };
 
 export default Home;

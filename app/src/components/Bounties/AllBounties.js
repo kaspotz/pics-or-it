@@ -106,6 +106,7 @@ function AllBounties({
   disconnect,
   connecting,
   userBalance,
+  userChainId,
 }) {
   const [showCreateBounty, setShowCreateBounty] = useState(false);
 
@@ -118,6 +119,7 @@ function AllBounties({
 
   const [doneBountiesOnly, setDoneBountiesOnly] = useState(true);
   const [activeButton, setActiveButton] = useState('first');
+  const [triggerRender, setTriggerRender] = useState(true);
 
   useEffect(() => {
     const fetchInitialBounties = async () => {
@@ -133,8 +135,12 @@ function AllBounties({
       setOffset(lastIndex);
     };
 
-    fetchInitialBounties();
-  }, []);
+    if (triggerRender) {
+      fetchInitialBounties();
+      setTriggerRender(false);
+    }
+
+  }, [triggerRender]);
 
 
   // useEffect(() => {
@@ -301,6 +307,9 @@ function AllBounties({
             <BountyCreation
               userBalance={userBalance}
               handleClose={handleCreateBounty}
+              wallet={wallet}
+              userChainId={userChainId}
+              setTriggerRender={setTriggerRender}
             />
           </div>
         )}
@@ -319,6 +328,7 @@ AllBounties.propTypes = {
   cancelBounty: PropTypes.func.isRequired,
   userBalance: PropTypes.string.isRequired,
   getContract: PropTypes.func.isRequired,
+  userChainId: PropTypes.string,
 };
 
 export default AllBounties;

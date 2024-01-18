@@ -6,7 +6,7 @@ import { BeatLoader } from 'react-spinners';
 import { useContract } from '../../web3';
 import { FaX } from 'react-icons/fa6';
 
-function BountyCreation({ userBalance, handleClose }) {
+function BountyCreation({ userBalance, handleClose, userChainId, setTriggerRender }) {
   const { createBounty } = useContract();
   const [bountyAmount, setBountyAmount] = useState(0);
   const [bountyName, setBountyName] = useState('');
@@ -14,6 +14,12 @@ function BountyCreation({ userBalance, handleClose }) {
   const [loading, setLoading] = useState(false);
 
   const handleCreateBounty = async () => {
+
+    if (userChainId != "0xa4b1") {
+      toast.error('Must be connected to Arbitrum chain');
+      return;
+    }
+
     if (bountyName.length > 40) {
       toast.error('Bounty name should not exceed 40 characters');
       return;
@@ -32,14 +38,20 @@ function BountyCreation({ userBalance, handleClose }) {
     }
 
     setLoading(true);
-    await createBounty(bountyName, bountyDescription, bountyAmount);
+    let result = await createBounty(bountyName, bountyDescription, bountyAmount);
+
+    if (!result.toLowerCase().includes("success")) {
+      toast.error(result.slice(0, 100));
+    } else {
+      toast.success('Bounty created successfully');
+      // reset state attributes
+      setBountyAmount(0);
+      setBountyName('');
+      setBountyDescription('');
+      setTriggerRender(true);
+    }
     setLoading(false);
 
-    toast.success('Bounty created successfully');
-    // reset state attributes
-    setBountyAmount(0);
-    setBountyName('');
-    setBountyDescription('');
   };
 
   return (
@@ -112,6 +124,9 @@ function BountyCreation({ userBalance, handleClose }) {
 BountyCreation.propTypes = {
   userBalance: PropTypes.string,
   handleClose: PropTypes.func.isRequired,
+  wallet: PropTypes.object,
+  userChainId: PropTypes.string,
+  setTriggerRender: PropTypes.func,
 };
 
 export default BountyCreation;
