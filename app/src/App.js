@@ -8,6 +8,7 @@ import AllBounties from './components/Bounties/AllBounties.js';
 import BountyDetails from './components/Bounties/BountyDetails.js';
 import Footer from './components/Footer';
 import Terms from './components/Terms';
+import { ArcxAnalyticsProvider } from '@arcxmoney/analytics'
 
 function App() {
   const {
@@ -45,91 +46,93 @@ function App() {
   }, [wallet]);
 
   return (
-    <Router basename="/">
-      <div className="site-container">
-        <div className="content-wrap">
-          <Navigation
-            wallet={wallet}
-          />
-          <Routes>
-            <Route
-              path="/create"
-              element={
-                <Home
-                  wallet={wallet}
-                  connect={connect}
-                  disconnect={disconnect}
-                  connecting={connecting}
-                  userBalance={userBalance.toString()}
-                />
-              }
+    <ArcxAnalyticsProvider apiKey='17301c3747b41bb158b8f6dc99d3687688a292d7afecf6955ded49f047e1f828'>
+      <Router basename="/">
+        <div className="site-container">
+          <div className="content-wrap">
+            <Navigation
+              wallet={wallet}
             />
-            <Route
-              path="/"
-              element={
-                <AllBounties
-                  unClaimedBounties={unClaimedBounties}
-                  wallet={wallet}
-                  connect={connect}
-                  disconnect={disconnect}
-                  connecting={connecting}
-                  fetchAllBounties={fetchAllBounties}
-                  getContract={getContract}
-                  cancelBounty={cancelBounty}
-                  userBalance={userBalance.toString()}
-                />
-              }
-            />
-            <Route
-              path="/my-bounties/:urlUserAddress"
-              element={
-                <MyBounties
-                  userBounties={userBounties}
-                  wallet={wallet}
-                  connect={connect}
-                  disconnect={disconnect}
-                  connecting={connecting}
-                  fetchUserBounties={fetchUserBounties}
-                  cancelBounty={cancelBounty}
-                  fetchUserSummary={fetchUserSummary}
-                  userSummary={userSummary}
-                  getTokenUri={getTokenUri}
-                  acceptClaim={acceptClaim}
-                  fetchClaimerBounties={fetchClaimerBounties}
-                  createNftCards={createNftCards}
-                  userNftCards={userNftCards}
-                  claimedBounties={claimedBounties}
-                  fetchAllBounties={fetchAllBounties}
-                />
-              }
-            />
-            <Route
-              path="/bounties/:id"
-              element={
-                <BountyDetails
-                  wallet={wallet}
-                  connect={connect}
-                  disconnect={disconnect}
-                  connecting={connecting}
-                  getClaimsByBountyId={getClaimsByBountyId}
-                  getTokenUri={getTokenUri}
-                  fetchBountyDetails={fetchBountyDetails}
-                  acceptClaim={acceptClaim}
-                />
-              }
-            />
-            <Route
-              path="/terms"
-              element={
-                <Terms
-                />
-              }
-            />
-          </Routes>
+            <Routes>
+              <Route
+                path="/create"
+                element={
+                  <Home
+                    wallet={wallet}
+                    connect={connect}
+                    disconnect={disconnect}
+                    connecting={connecting}
+                    userBalance={userBalance.toString()}
+                  />
+                }
+              />
+              <Route
+                path="/"
+                element={
+                  <AllBounties
+                    unClaimedBounties={unClaimedBounties}
+                    wallet={wallet}
+                    connect={connect}
+                    disconnect={disconnect}
+                    connecting={connecting}
+                    fetchAllBounties={fetchAllBounties}
+                    getContract={getContract}
+                    cancelBounty={cancelBounty}
+                    userBalance={userBalance.toString()}
+                  />
+                }
+              />
+              <Route
+                path="/my-bounties/:urlUserAddress"
+                element={
+                  <MyBounties
+                    userBounties={userBounties}
+                    wallet={wallet}
+                    connect={connect}
+                    disconnect={disconnect}
+                    connecting={connecting}
+                    fetchUserBounties={fetchUserBounties}
+                    cancelBounty={cancelBounty}
+                    fetchUserSummary={fetchUserSummary}
+                    userSummary={userSummary}
+                    getTokenUri={getTokenUri}
+                    acceptClaim={acceptClaim}
+                    fetchClaimerBounties={fetchClaimerBounties}
+                    createNftCards={createNftCards}
+                    userNftCards={userNftCards}
+                    claimedBounties={claimedBounties}
+                    fetchAllBounties={fetchAllBounties}
+                  />
+                }
+              />
+              <Route
+                path="/bounties/:id"
+                element={
+                  <BountyDetails
+                    wallet={wallet}
+                    connect={connect}
+                    disconnect={disconnect}
+                    connecting={connecting}
+                    getClaimsByBountyId={getClaimsByBountyId}
+                    getTokenUri={getTokenUri}
+                    fetchBountyDetails={fetchBountyDetails}
+                    acceptClaim={acceptClaim}
+                  />
+                }
+              />
+              <Route
+                path="/terms"
+                element={
+                  <Terms
+                  />
+                }
+              />
+            </Routes>
+          </div>
+          <Footer />
         </div>
-        <Footer />
-      </div>
-    </Router>
+      </Router>
+    </ArcxAnalyticsProvider>
   );
 }
 

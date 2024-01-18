@@ -8,7 +8,7 @@ const Footer = () => {
 
     return (
         <footer className="footer-style">
-            <span style={{ color: 'white' }}>© 2023 </span>
+            <span style={{ color: 'white' }}>© 2024 </span>
             <span style={{ marginRight: '1em' }}></span>
             <span style={{ color: 'white' }}>{'\u2022'}</span>
             <span style={{ marginRight: '1em' }}></span>
