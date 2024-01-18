@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -6,14 +6,53 @@ import { BeatLoader } from 'react-spinners';
 import { useContract } from '../../web3';
 import { FaX } from 'react-icons/fa6';
 
-function BountyCreation({ userBalance, handleClose }) {
+function BountyCreation({ userBalance, handleClose, wallet, fetchUserBounties, userBounties, userChainId }) {
   const { createBounty } = useContract();
   const [bountyAmount, setBountyAmount] = useState(0);
   const [bountyName, setBountyName] = useState('');
   const [bountyDescription, setBountyDescription] = useState('');
   const [loading, setLoading] = useState(false);
 
+  //when loading is true, try and find the new bounty (with retries). 
+  //if found, say success in toast. 
+  useEffect(() => {
+    let attemptCount = 0;
+
+    const findCreatedBounty = async (address) => {
+      await fetchUserBounties(address);
+    };
+
+    const callFindCreatedBounty = (address) => {
+      if (attemptCount < 6) {
+        findCreatedBounty(address);
+        if (userBounties.some(bounty => bounty.name.toLowerCase() == bountyName.toLowerCase())) {
+          toast.success('Bounty created successfully');
+          // reset state attributes
+          setBountyAmount(0);
+          setBountyName('');
+          setBountyDescription('');
+        }
+        attemptCount++;
+        setTimeout(() => callFindCreatedBounty(address), 5000);
+      } else {
+        toast.error('Time out fault. Unsure if bounty created. Check your /MyBounties page to see if successful.');
+      }
+    };
+
+    if (loading) {
+      callFindCreatedBounty(wallet.accounts[0].address);
+    }
+
+    setLoading(false);
+  }, [loading]);
+
   const handleCreateBounty = async () => {
+
+    if (userChainId != "0xa4b1") {
+      toast.error('Must be connected to Arbitrum chain');
+      return;
+    }
+
     if (bountyName.length > 40) {
       toast.error('Bounty name should not exceed 40 characters');
       return;
@@ -31,15 +70,15 @@ function BountyCreation({ userBalance, handleClose }) {
       return;
     }
 
-    setLoading(true);
-    await createBounty(bountyName, bountyDescription, bountyAmount);
-    setLoading(false);
+    let result = await createBounty(bountyName, bountyDescription, bountyAmount);
+    console.log("result", result);
 
-    toast.success('Bounty created successfully');
-    // reset state attributes
-    setBountyAmount(0);
-    setBountyName('');
-    setBountyDescription('');
+    if (!result.toLowerCase().includes("success")) {
+      toast.error(result.slice(0, 100));
+    } else {
+      loading(true);
+    }
+
   };
 
   return (
@@ -112,6 +151,10 @@ function BountyCreation({ userBalance, handleClose }) {
 BountyCreation.propTypes = {
   userBalance: PropTypes.string,
   handleClose: PropTypes.func.isRequired,
+  fetchUserBounties: PropTypes.func.isRequired,
+  userBounties: PropTypes.array.isRequired,
+  wallet: PropTypes.object,
+  userChainId: PropTypes.string,
 };
 
 export default BountyCreation;

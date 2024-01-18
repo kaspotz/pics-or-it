@@ -106,6 +106,9 @@ function AllBounties({
   disconnect,
   connecting,
   userBalance,
+  fetchUserBounties,
+  userBounties,
+  userChainId,
 }) {
   const [showCreateBounty, setShowCreateBounty] = useState(false);
 
@@ -301,6 +304,10 @@ function AllBounties({
             <BountyCreation
               userBalance={userBalance}
               handleClose={handleCreateBounty}
+              wallet={wallet}
+              fetchUserBounties={fetchUserBounties}
+              userBounties={userBounties}
+              userChainId={userChainId}
             />
           </div>
         )}
@@ -319,6 +326,9 @@ AllBounties.propTypes = {
   cancelBounty: PropTypes.func.isRequired,
   userBalance: PropTypes.string.isRequired,
   getContract: PropTypes.func.isRequired,
+  fetchUserBounties: PropTypes.func.isRequired,
+  userBounties: PropTypes.array.isRequired,
+  userChainId: PropTypes.string,
 };
 
 export default AllBounties;

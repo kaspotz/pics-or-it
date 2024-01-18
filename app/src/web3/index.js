@@ -67,6 +67,7 @@ export const useContract = () => {
   const [setChainAttempts, setSetChainAttempts] = useState(false);
   const [unClaimedBounties, setUnClaimedBounties] = useState([]);
   const [claimedBounties, setClaimedBounties] = useState([]);
+  const [userChainId, setUserChainId] = useState("");
 
   useEffect(() => {
     if (wallet?.provider) {
@@ -357,9 +358,11 @@ export const useContract = () => {
           value: ethers.parseEther(amount),
         });
         await tx.wait();
+        return "success";
       }
     } catch (error) {
       console.error('Error creating bounty:', error);
+      return ("error: ", error.message);
     }
   };
 
@@ -457,6 +460,14 @@ export const useContract = () => {
     return contract;
   };
 
+  useEffect(() => {
+
+    if (connectedChain?.id) {
+      setUserChainId(connectedChain?.id.toString());
+    }
+
+  }, [connectedChain]);
+
   return {
     wallet,
     userBounties,
@@ -483,5 +494,6 @@ export const useContract = () => {
     userSummary,
     createNftCards,
     userNftCards,
+    userChainId,
   };
 };
