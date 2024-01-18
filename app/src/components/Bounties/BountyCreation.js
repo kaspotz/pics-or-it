@@ -17,16 +17,18 @@ function BountyCreation({ userBalance, handleClose, wallet, fetchUserBounties, u
   //if found, say success in toast. 
   useEffect(() => {
     let attemptCount = 0;
+    let bountyFound = false;
 
     const findCreatedBounty = async (address) => {
       await fetchUserBounties(address);
     };
 
     const callFindCreatedBounty = (address) => {
-      if (attemptCount < 6) {
+      if (attemptCount < 6 && !bountyFound) {
         findCreatedBounty(address);
         if (userBounties.some(bounty => bounty.name.toLowerCase() == bountyName.toLowerCase())) {
           toast.success('Bounty created successfully');
+          bountyFound = true;
           // reset state attributes
           setBountyAmount(0);
           setBountyName('');
@@ -34,7 +36,7 @@ function BountyCreation({ userBalance, handleClose, wallet, fetchUserBounties, u
         }
         attemptCount++;
         setTimeout(() => callFindCreatedBounty(address), 5000);
-      } else {
+      } else if (!bountyFound) {
         toast.error('Time out fault. Unsure if bounty created. Check your /MyBounties page to see if successful.');
       }
     };
