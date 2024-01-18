@@ -35,10 +35,10 @@ function App() {
     fetchClaimerBounties,
     createNftCards,
     userNftCards,
+    userChainId,
   } = useContract();
 
   useEffect(() => {
-    console.log("is this getting called?");
     if (wallet?.provider) {
       fetchUserClaims();
       fetchUserBalance();
@@ -63,6 +63,9 @@ function App() {
                     disconnect={disconnect}
                     connecting={connecting}
                     userBalance={userBalance.toString()}
+                    fetchUserBounties={fetchUserBounties}
+                    userBounties={userBounties}
+                    userChainId={userChainId}
                   />
                 }
               />
@@ -79,6 +82,9 @@ function App() {
                     getContract={getContract}
                     cancelBounty={cancelBounty}
                     userBalance={userBalance.toString()}
+                    fetchUserBounties={fetchUserBounties}
+                    userBounties={userBounties}
+                    userChainId={userChainId}
                   />
                 }
               />
