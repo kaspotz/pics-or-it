@@ -49,6 +49,7 @@ function BountyCreation({ userBalance, handleClose, userChainId, setTriggerRende
       setBountyName('');
       setBountyDescription('');
       setTriggerRender(true);
+      setTimeout(() => handleClose(), 2000); // close form
     }
     setLoading(false);
 
