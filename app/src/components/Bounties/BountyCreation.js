@@ -49,6 +49,7 @@ function BountyCreation({ userBalance, handleClose, userChainId, setTriggerRende
       setBountyName('');
       setBountyDescription('');
       setTriggerRender(true);
+      handleClose();
     }
     setLoading(false);
 
