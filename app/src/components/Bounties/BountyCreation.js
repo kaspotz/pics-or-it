@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -6,47 +6,12 @@ import { BeatLoader } from 'react-spinners';
 import { useContract } from '../../web3';
 import { FaX } from 'react-icons/fa6';
 
-function BountyCreation({ userBalance, handleClose, wallet, fetchUserBounties, userBounties, userChainId }) {
+function BountyCreation({ userBalance, handleClose, userChainId, setTriggerRender }) {
   const { createBounty } = useContract();
   const [bountyAmount, setBountyAmount] = useState(0);
   const [bountyName, setBountyName] = useState('');
   const [bountyDescription, setBountyDescription] = useState('');
   const [loading, setLoading] = useState(false);
-
-  //when loading is true, try and find the new bounty (with retries). 
-  //if found, say success in toast. 
-  useEffect(() => {
-    let attemptCount = 0;
-    let bountyFound = false;
-
-    const findCreatedBounty = async (address) => {
-      await fetchUserBounties(address);
-    };
-
-    const callFindCreatedBounty = (address) => {
-      if (attemptCount < 6 && !bountyFound) {
-        findCreatedBounty(address);
-        if (userBounties.some(bounty => bounty.name.toLowerCase() == bountyName.toLowerCase())) {
-          toast.success('Bounty created successfully');
-          bountyFound = true;
-          // reset state attributes
-          setBountyAmount(0);
-          setBountyName('');
-          setBountyDescription('');
-        }
-        attemptCount++;
-        setTimeout(() => callFindCreatedBounty(address), 5000);
-      } else if (!bountyFound) {
-        toast.error('Time out fault. Unsure if bounty created. Check your /MyBounties page to see if successful.');
-      }
-    };
-
-    if (loading) {
-      callFindCreatedBounty(wallet.accounts[0].address);
-    }
-
-    setLoading(false);
-  }, [loading]);
 
   const handleCreateBounty = async () => {
 
@@ -72,14 +37,20 @@ function BountyCreation({ userBalance, handleClose, wallet, fetchUserBounties, u
       return;
     }
 
+    setLoading(true);
     let result = await createBounty(bountyName, bountyDescription, bountyAmount);
-    console.log("result", result);
 
     if (!result.toLowerCase().includes("success")) {
       toast.error(result.slice(0, 100));
     } else {
-      loading(true);
+      toast.success('Bounty created successfully');
+      // reset state attributes
+      setBountyAmount(0);
+      setBountyName('');
+      setBountyDescription('');
+      setTriggerRender(true);
     }
+    setLoading(false);
 
   };
 
@@ -153,10 +124,9 @@ function BountyCreation({ userBalance, handleClose, wallet, fetchUserBounties, u
 BountyCreation.propTypes = {
   userBalance: PropTypes.string,
   handleClose: PropTypes.func.isRequired,
-  fetchUserBounties: PropTypes.func.isRequired,
-  userBounties: PropTypes.array.isRequired,
   wallet: PropTypes.object,
   userChainId: PropTypes.string,
+  setTriggerRender: PropTypes.func,
 };
 
 export default BountyCreation;
