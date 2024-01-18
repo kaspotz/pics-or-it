@@ -40,7 +40,7 @@ function BountyCreation({ userBalance, handleClose, userChainId, setTriggerRende
     setLoading(true);
     let result = await createBounty(bountyName, bountyDescription, bountyAmount);
 
-    if (!result.toLowerCase().includes("success")) {
+    if (result.toLowerCase().includes("success")) {
       toast.error(result.slice(0, 100));
     } else {
       toast.success('Bounty created successfully');
@@ -49,7 +49,7 @@ function BountyCreation({ userBalance, handleClose, userChainId, setTriggerRende
       setBountyName('');
       setBountyDescription('');
       setTriggerRender(true);
-      handleClose();
+      setTimeout(() => handleClose(), 2000); // close form
     }
     setLoading(false);
 
