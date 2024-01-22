@@ -143,7 +143,7 @@ function CreateClaim({ onClose, bountyId }) {
         setFormData({ name: '', description: '' });
         setStatus({ loading: false, processString: '' });
         setFile(null);
-        toast.info('Claim submitted succesfully');
+        toast.info('Claim submitted successfully');
       })();
     }
   }, [imageUri]);
