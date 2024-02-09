@@ -377,9 +377,11 @@ export const useContract = () => {
           description
         );
         await tx.wait();
+        return "success";
       }
     } catch (error) {
       console.error('Error creating claim:', error);
+      return ("error: ", error.message);
     }
   };
 
