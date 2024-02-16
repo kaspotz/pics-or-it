@@ -38,7 +38,6 @@ function CreateClaim({ onClose, bountyId, userChainId, setBountyRender, wallet }
   }
 
   const handleSubmit = async croppedImage => {
-
     console.log("userChainId", userChainId);
 
     if (userChainId != "0xa4b1") {
@@ -88,7 +87,9 @@ function CreateClaim({ onClose, bountyId, userChainId, setBountyRender, wallet }
       try {
         compressedFile = await imageCompression(image, options);
       } catch (error) {
-        toast.error('error compressing file: ', error);
+        toast.error(`error compressing file: ${error}`);
+        setStatus({ loading: false });
+        return;
       }
     }
     setStatus({
@@ -96,18 +97,37 @@ function CreateClaim({ onClose, bountyId, userChainId, setBountyRender, wallet }
       processString: 'uploading image to IPFS...',
     });
 
-    try {
-      const res = await uploadFile(compressedFile ? compressedFile : image);
-      if (!res) {
-        toast.error('Error uploading image to IPFS');
-        onClose();
-        return;
+    // Retry strategy
+    const MAX_RETRIES = 2; // Maximum number of retries
+    const RETRY_DELAY = 5000; // Delay between retries in milliseconds
+
+    const retryUpload = async (file) => {
+      for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+        try {
+          const res = await uploadFile(file);
+          if (!res) {
+            throw new Error('No response from upload service');
+          }
+          return res; // Upload was successful, return the response
+        } catch (error) {
+          if (attempt === MAX_RETRIES) {
+            throw error; // All attempts failed, throw the error
+          }
+          console.log(`Attempt ${attempt} failed, retrying in ${RETRY_DELAY}ms...`);
+          await new Promise(resolve => setTimeout(resolve, RETRY_DELAY));
+        }
       }
+    };
+
+    try {
+      const fileToUpload = compressedFile ? compressedFile : image;
+      const res = await retryUpload(fileToUpload);
       setImageUri(`${gateway}${res.IpfsHash}`);
     } catch (error) {
-      toast.error('Error uploading image to IPFS: ', error);
+      toast.error(`Error uploading image to IPFS: ${error}`);
       onClose();
-      return;
+    } finally {
+      setStatus({ loading: false });
     }
   };
 
