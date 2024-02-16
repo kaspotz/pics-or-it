@@ -1,14 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import CropZone from '../CropZone';
-import { ethers } from 'ethers';
 
-function PreviewClaim({ file, name, description, showSubmit, handleSubmit, wallet }) {
+function PreviewClaim({ file, name, description, showSubmit, handleSubmit }) {
   // eslint-disable-next-line no-unused-vars
   const [submitOrCrop, setSubmitOrCrop] = useState(showSubmit);
   const [showCrop, setShowCrop] = useState(false);
   const [croppedImage, setCroppedImage] = useState(URL.createObjectURL(file));
-  const [issuer, setIssuer] = useState()
 
   const truncatedName =
     name.length > 30
@@ -20,19 +18,6 @@ function PreviewClaim({ file, name, description, showSubmit, handleSubmit, walle
     setSubmitOrCrop(true);
     setShowCrop(false);
   };
-
-  useEffect(() => {
-
-    if (wallet?.provider) {
-
-      const claimerAddress = ethers.getAddress(wallet.accounts[0].address);
-      if (
-        claimerAddress.length > 0
-      ) {
-        setIssuer(claimerAddress);
-      }
-    }
-  }, [wallet]);
 
   return (
     <div>
@@ -47,7 +32,7 @@ function PreviewClaim({ file, name, description, showSubmit, handleSubmit, walle
           <details className="claim-card-issuer">
             <summary className="summary">issuer</summary>
             <div className="summary-body summary-issuer">
-              {issuer}
+              0x000000000000000000000000000000000000dead
             </div>
           </details>
           <details className="claim-card-details">
@@ -87,7 +72,6 @@ PreviewClaim.propTypes = {
   description: PropTypes.string.isRequired,
   showSubmit: PropTypes.bool.isRequired,
   handleSubmit: PropTypes.func.isRequired,
-  wallet: PropTypes.object,
 };
 
 export default PreviewClaim;

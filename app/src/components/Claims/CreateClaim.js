@@ -13,7 +13,7 @@ import imageCompression from 'browser-image-compression';
 
 const gateway = 'https://beige-impossible-dragon-883.mypinata.cloud/ipfs/';
 
-function CreateClaim({ onClose, bountyId, userChainId, setBountyRender, wallet }) {
+function CreateClaim({ onClose, bountyId }) {
   const [file, setFile] = useState(null);
   const [status, setStatus] = useState({ loading: false, processString: '' });
   const [formData, setFormData] = useState({ name: '', description: '' });
@@ -38,14 +38,6 @@ function CreateClaim({ onClose, bountyId, userChainId, setBountyRender, wallet }
   }
 
   const handleSubmit = async croppedImage => {
-
-    console.log("userChainId", userChainId);
-
-    if (userChainId != "0xa4b1") {
-      toast.error('Must be connected to Arbitrum chain');
-      return;
-    }
-
     if (!formData.name || !formData.description) {
       toast.error('Please fill out all fields');
       return;
@@ -135,30 +127,23 @@ function CreateClaim({ onClose, bountyId, userChainId, setBountyRender, wallet }
           formData.description
         );
         const resMetadata = await uploadMetadata(metadata);
-        // if (!resMetadata) {
-        //   toast.error('Error uploading metadata to IPFS');
-        //   onClose();
-        //   return;
-        // }
+        if (!resMetadata) {
+          toast.error('Error uploading metadata to IPFS');
+          onClose();
+          return;
+        }
         setStatus({ loading: true, processString: 'creating claim...' });
-        let result = await createClaim(
+        await createClaim(
           bountyId,
           formData.name,
           `${gateway}${resMetadata.IpfsHash}`,
           formData.description
         );
-
-        if (!result.toLowerCase().includes("success")) {
-          toast.error(result.slice(0, 100));
-        } else {
-          // Reset fields after submit
-          setFormData({ name: '', description: '' });
-          setStatus({ loading: false, processString: '' });
-          setFile(null);
-          toast.success('claim submitted successfully');
-          setBountyRender(true);
-        }
-
+        // Reset fields after submit
+        setFormData({ name: '', description: '' });
+        setStatus({ loading: false, processString: '' });
+        setFile(null);
+        toast.info('Claim submitted successfully');
       })();
     }
   }, [imageUri]);
@@ -184,7 +169,6 @@ function CreateClaim({ onClose, bountyId, userChainId, setBountyRender, wallet }
             description={formData.description}
             showSubmit={showSubmit}
             handleSubmit={handleSubmit}
-            wallet={wallet}
           />
         ) : (
           <>
@@ -250,9 +234,6 @@ function CreateClaim({ onClose, bountyId, userChainId, setBountyRender, wallet }
 CreateClaim.propTypes = {
   onClose: PropTypes.func.isRequired,
   bountyId: PropTypes.number.isRequired,
-  userChainId: PropTypes.string,
-  setBountyRender: PropTypes.func,
-  wallet: PropTypes.object,
 };
 
 export default CreateClaim;

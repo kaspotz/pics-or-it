@@ -123,7 +123,6 @@ function App() {
                     getTokenUri={getTokenUri}
                     fetchBountyDetails={fetchBountyDetails}
                     acceptClaim={acceptClaim}
-                    userChainId={userChainId}
                   />
                 }
               />
