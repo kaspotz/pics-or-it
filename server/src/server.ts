@@ -76,7 +76,7 @@ class Server {
         }
 
         // Validate mimetype
-        const validMimetypes = ['image/jpeg', 'image/png', 'image/gif'] // Add any other image types you want to accept
+        const validMimetypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/heic'] // Add any other image types you want to accept
         if (!validMimetypes.includes(req.file.mimetype)) {
           logger.error('Invalid file type')
           return res.status(400).json({ error: 'Invalid file type' })

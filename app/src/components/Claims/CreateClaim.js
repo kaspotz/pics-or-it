@@ -155,7 +155,7 @@ function CreateClaim({ onClose, bountyId, userChainId, setBountyRender, wallet }
           setFormData({ name: '', description: '' });
           setStatus({ loading: false, processString: '' });
           setFile(null);
-          toast.success('Claim submitted successfully');
+          toast.success('claim submitted successfully');
           setBountyRender(true);
         }
 
