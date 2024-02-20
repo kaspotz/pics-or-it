@@ -36,7 +36,10 @@ export const blacklist = [
     {
         "bountyId": 353,
         "claims": [
-            517
+            517,
+            506,
+            502,
+            505
         ]
     }
 ]
