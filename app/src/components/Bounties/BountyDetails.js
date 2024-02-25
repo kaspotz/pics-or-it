@@ -18,6 +18,7 @@ function BountyDetails({
   connecting,
   acceptClaim,
   userChainId,
+  userBalance,
 }) {
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
@@ -95,10 +96,7 @@ function BountyDetails({
       setLoading(false);
     };
 
-
-
     if (!blacklistedBounties.includes(Number(id))) {
-      console.log("id", id)
       fetchClaimsAndDetails();
     }
 
@@ -109,7 +107,6 @@ function BountyDetails({
 
     //const intervalId = setInterval(fetchClaimsAndDetails, 3000);
     //return () => clearInterval(intervalId);
-
   }, [id, bountyRender]);
 
   useEffect(() => {
@@ -174,7 +171,14 @@ function BountyDetails({
         )}
       </div>
       {showCreateClaim && (
-        <CreateClaim bountyId={id} onClose={handleCloseCreateClaim} userChainId={userChainId} setBountyRender={setBountyRender} wallet={wallet} />
+        <CreateClaim
+          bountyId={id}
+          onClose={handleCloseCreateClaim}
+          userChainId={userChainId}
+          setBountyRender={setBountyRender}
+          wallet={wallet}
+          userBalance={userBalance}
+        />
       )}
       <ToastContainer />
     </div>
@@ -191,6 +195,7 @@ BountyDetails.propTypes = {
   disconnect: PropTypes.func.isRequired,
   connecting: PropTypes.bool.isRequired,
   userChainId: PropTypes.string,
+  userBalance: PropTypes.string,
 };
 
 export default BountyDetails;
