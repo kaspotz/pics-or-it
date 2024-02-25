@@ -13,7 +13,14 @@ import imageCompression from 'browser-image-compression';
 
 const gateway = 'https://beige-impossible-dragon-883.mypinata.cloud/ipfs/';
 
-function CreateClaim({ onClose, bountyId, userChainId, setBountyRender, wallet }) {
+function CreateClaim({
+  onClose,
+  bountyId,
+  userChainId,
+  setBountyRender,
+  wallet,
+  userBalance,
+}) {
   const [file, setFile] = useState(null);
   const [status, setStatus] = useState({ loading: false, processString: '' });
   const [formData, setFormData] = useState({ name: '', description: '' });
@@ -27,7 +34,7 @@ function CreateClaim({ onClose, bountyId, userChainId, setBountyRender, wallet }
     const fileName = acceptedFiles[0].name;
 
     setFile(acceptedFiles[0]);
-    setFormData({ ...formData, });
+    setFormData({ ...formData });
     if (showSubmit) setShowSubmit(true);
   };
 
@@ -38,11 +45,13 @@ function CreateClaim({ onClose, bountyId, userChainId, setBountyRender, wallet }
   }
 
   const handleSubmit = async croppedImage => {
-
-    console.log("userChainId", userChainId);
-
-    if (userChainId != "0xa4b1") {
+    if (userChainId != '0xa4b1') {
       toast.error('Must be connected to Arbitrum chain');
+      return;
+    }
+
+    if (parseFloat(userBalance) < BigInt(0.00002 * 1e18)) {
+      toast.error('User balance too low for gas fee.');
       return;
     }
 
@@ -88,7 +97,9 @@ function CreateClaim({ onClose, bountyId, userChainId, setBountyRender, wallet }
       try {
         compressedFile = await imageCompression(image, options);
       } catch (error) {
-        toast.error('error compressing file: ', error);
+        toast.error(`error compressing file: ${error}`);
+        setStatus({ loading: false });
+        return;
       }
     }
     setStatus({
@@ -96,18 +107,39 @@ function CreateClaim({ onClose, bountyId, userChainId, setBountyRender, wallet }
       processString: 'uploading image to IPFS...',
     });
 
-    try {
-      const res = await uploadFile(compressedFile ? compressedFile : image);
-      if (!res) {
-        toast.error('Error uploading image to IPFS');
-        onClose();
-        return;
+    // Retry strategy
+    const MAX_RETRIES = 6; // Maximum number of retries
+    const RETRY_DELAY = 3000; // Delay between retries in milliseconds
+
+    const retryUpload = async file => {
+      for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+        try {
+          const res = await uploadFile(file);
+          if (!res) {
+            throw new Error('No response from upload service');
+          }
+          return res; // Upload was successful, return the response
+        } catch (error) {
+          if (attempt === MAX_RETRIES) {
+            throw error; // All attempts failed, throw the error
+          }
+          console.log(
+            `Attempt ${attempt} failed, retrying in ${RETRY_DELAY}ms...`
+          );
+          await new Promise(resolve => setTimeout(resolve, RETRY_DELAY));
+        }
       }
+    };
+
+    try {
+      const fileToUpload = compressedFile ? compressedFile : image;
+      const res = await retryUpload(fileToUpload);
       setImageUri(`${gateway}${res.IpfsHash}`);
     } catch (error) {
-      toast.error('Error uploading image to IPFS: ', error);
+      toast.error(`Error uploading image to IPFS: ${error}`);
       onClose();
-      return;
+    } finally {
+      setStatus({ loading: false });
     }
   };
 
@@ -148,17 +180,20 @@ function CreateClaim({ onClose, bountyId, userChainId, setBountyRender, wallet }
           formData.description
         );
 
-        if (!result.toLowerCase().includes("success")) {
+        if (!result.toLowerCase().includes('success')) {
           toast.error(result.slice(0, 100));
+          onClose();
         } else {
           // Reset fields after submit
           setFormData({ name: '', description: '' });
           setStatus({ loading: false, processString: '' });
           setFile(null);
           toast.success('claim submitted successfully');
-          setBountyRender(true);
+          setTimeout(() => {
+            onClose();
+            setBountyRender(true);
+          }, 2000);
         }
-
       })();
     }
   }, [imageUri]);
@@ -253,6 +288,7 @@ CreateClaim.propTypes = {
   userChainId: PropTypes.string,
   setBountyRender: PropTypes.func,
   wallet: PropTypes.object,
+  userBalance: PropTypes.string,
 };
 
 export default CreateClaim;

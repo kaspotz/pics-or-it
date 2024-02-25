@@ -8,7 +8,7 @@ import AllBounties from './components/Bounties/AllBounties.js';
 import BountyDetails from './components/Bounties/BountyDetails.js';
 import Footer from './components/Footer';
 import Terms from './components/Terms';
-import { ArcxAnalyticsProvider } from '@arcxmoney/analytics'
+import { ArcxAnalyticsProvider } from '@arcxmoney/analytics';
 
 function App() {
   const {
@@ -46,13 +46,11 @@ function App() {
   }, [wallet]);
 
   return (
-    <ArcxAnalyticsProvider apiKey='17301c3747b41bb158b8f6dc99d3687688a292d7afecf6955ded49f047e1f828'>
+    <ArcxAnalyticsProvider apiKey="17301c3747b41bb158b8f6dc99d3687688a292d7afecf6955ded49f047e1f828">
       <Router basename="/">
         <div className="site-container">
           <div className="content-wrap">
-            <Navigation
-              wallet={wallet}
-            />
+            <Navigation wallet={wallet} />
             <Routes>
               <Route
                 path="/create"
@@ -124,16 +122,11 @@ function App() {
                     fetchBountyDetails={fetchBountyDetails}
                     acceptClaim={acceptClaim}
                     userChainId={userChainId}
+                    userBalance={userBalance.toString()}
                   />
                 }
               />
-              <Route
-                path="/terms"
-                element={
-                  <Terms
-                  />
-                }
-              />
+              <Route path="/terms" element={<Terms />} />
             </Routes>
           </div>
           <Footer />
