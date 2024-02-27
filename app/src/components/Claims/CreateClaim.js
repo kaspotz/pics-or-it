@@ -46,7 +46,7 @@ function CreateClaim({
 
   const handleSubmit = async croppedImage => {
     if (userChainId != '0xa4b1') {
-      toast.error('Must be connected to Arbitrum chain');
+      toast.error('Must be on Arbitrum chain. Switch then refresh browser.');
       return;
     }
 
