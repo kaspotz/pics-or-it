@@ -7,6 +7,7 @@ import CreateClaim from '../Claims/CreateClaim';
 import { ToastContainer, toast } from 'react-toastify';
 import { BsArrowRightCircle } from 'react-icons/bs';
 import { blacklist, blacklistedBounties } from '../../blacklist';
+import { Helmet } from 'react-helmet';
 
 function BountyDetails({
   getTokenUri,
@@ -122,6 +123,31 @@ function BountyDetails({
 
   return (
     <div className="bounty-details-wrap">
+      <Helmet>
+      <title>pics or it didn&#39;t happen</title>
+        <meta
+          property="og:title"
+          content={bountyDetails.name ? bountyDetails.name : 'Bounty Details'}
+        />
+        <meta
+          property="og:description"
+          content={
+            `${bountyDetails.amount ? bountyDetails.amount +  'Ξ ' : ''}` +
+            `${
+              bountyDetails.description
+                ? bountyDetails.description
+                : 'No description available.'
+            }`
+          }
+        />
+        <meta
+          property="og:image"
+          content={"https://raw.githubusercontent.com/kaspotz/pics-or-it/master/app/public/poidh-preview-hero.png"}
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={`https://staging.poidh.xyz/bounties/${id}`} />
+      </Helmet>
+
       <div className="bounty-details-left">
         <h1 data-aos="fade-in">pics or it didn&#39;t happen</h1>
         <h1>bounty details</h1>
