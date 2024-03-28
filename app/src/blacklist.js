@@ -50,6 +50,6 @@ export const blacklist = [
     }
 ]
 
-export const blacklistedBounties = [26,33,35,38,40,45,254]
+export const blacklistedBounties = [26,33,35,38,40,45,254,433]
 
 
