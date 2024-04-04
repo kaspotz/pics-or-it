@@ -28,6 +28,7 @@ function BountyDetails({
   const [showCreateClaim, setShowCreateClaim] = useState(false);
   const [isClaimed, setIsClaimed] = useState(false);
   const [bountyRender, setBountyRender] = useState(false);
+  const [truncIssuer, setTruncIssuer] = useState();
 
   useEffect(() => {
     if (bountyDetails.claimer) {
@@ -118,6 +119,19 @@ function BountyDetails({
         setIsOwner(true);
       }
     }
+
+    if (bountyDetails?.issuer?.length > 10) { 
+      const truncatedName =
+      bountyDetails.issuer.length > 10
+        ? `${bountyDetails.issuer.substr(0, 6)}...${bountyDetails.issuer.substr(bountyDetails.issuer.length - 4, bountyDetails.issuer.length)}`
+        : bountyDetails.issuer;
+
+      setTruncIssuer(truncatedName);
+      console.log("bountyDetails.issuer", bountyDetails.issuer);
+      console.log("truncatedName", truncatedName);
+
+    }
+    
   }, [wallet, bountyDetails]);
 
   return (
@@ -129,6 +143,7 @@ function BountyDetails({
           <h2 className="bounty-details-title">{bountyDetails.name}</h2>
           <p className="summary-body">{bountyDetails.description}</p>
           <h3>{bountyDetails.amount} eth</h3>
+          <a href={`/my-bounties/${bountyDetails.issuer}`}>bounty creator: {truncIssuer}</a>
           <div className="share-bounty-wrap" onClick={copyToClipboard}>
             <p>share bounty</p>
             <BsArrowRightCircle size={20} color="#F4595B" />
