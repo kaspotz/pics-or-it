@@ -4,7 +4,7 @@ const Terms = () => {
     return (
         <div style={{ paddingBottom: '5em' }}>
             <h1>Terms of Service</h1>
-            <p>Welcome to poidh, operated by poidh, inc. ("we", "our", or "us"). These poidh Terms of Service ({"\"Terms\""}) govern your use of the poidh platform, which connects bounty posters with users that upload photos to claim bounties. By using our platform, you agree to these Terms.</p>
+            <p>Welcome to poidh, operated by poidh, inc. ({"\"we\""}, {"\"our\""}, or {"\"us\""}). These poidh Terms of Service ({"\"Terms\""}) govern your use of the poidh platform, which connects bounty posters with users that upload photos to claim bounties. By using our platform, you agree to these Terms.</p>
             <h2>Acceptance of Terms</h2>
             <p>By accessing or using the platform, you acknowledge that you have read, understood, and agree to be bound by these Terms.</p>
             <h2>Eligibility</h2>
