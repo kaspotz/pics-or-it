@@ -4,7 +4,7 @@ const Terms = () => {
     return (
         <div style={{ paddingBottom: '5em' }}>
             <h1>Terms of Service</h1>
-            <p>These poidh Terms of Service ({"\"Terms\""}) govern your use of the poidh platform, which connects bounty posters with users that upload photos to claim bounties. By using our platform, you agree to these Terms.</p>
+            <p>Welcome to poidh, operated by poidh, inc. ("we", "our", or "us"). These poidh Terms of Service ({"\"Terms\""}) govern your use of the poidh platform, which connects bounty posters with users that upload photos to claim bounties. By using our platform, you agree to these Terms.</p>
             <h2>Acceptance of Terms</h2>
             <p>By accessing or using the platform, you acknowledge that you have read, understood, and agree to be bound by these Terms.</p>
             <h2>Eligibility</h2>
@@ -26,7 +26,7 @@ const Terms = () => {
             <h2>Disclaimers</h2>
             <p>The platform is provided {"\"as is\""}. We make no guarantees regarding the accuracy, completeness, or reliability of any user-posted content.</p>
             <h2>Limitation of Liability</h2>
-            <p>Pics or it didn’t happen (poidh) shall not be liable for any indirect, incidental, special, or consequential damages resulting from the use of the platform.</p>
+            <p>Pics or it didn’t happen (poidh) or poidh, inc. shall not be liable for any indirect, incidental, special, or consequential damages resulting from the use of the platform.</p>
             <h2>Updates to These Terms</h2>
             <p>We may modify these Terms at any time. By continuing to use the platform after changes are made, you agree to be bound by the updated Terms.</p>
             <h2>Geographic Limitations</h2>
